@@ -9,7 +9,7 @@
     "references": [
       {
         "info": "Requirement to aggregate massive datasets effortlessly in real-time.",
-        "source": "005.G - Artifacts/AIPD-000002 - Sales Dashboard/001.Requirement Development Workflow/End User Requirement.md (Section 2. User Expectations)"
+        "source": "005.Develop.002.Artifacts/AIPD-000002 - Sales Dashboard/001.Requirement Development Workflow/End User Requirement.md (Section 2. User Expectations)"
       }
     ],
     "additional_info": "Impacts caching vs direct querying load on backend infrastructure.",
@@ -27,7 +27,7 @@
     "references": [
       {
         "info": "Inline directional element for percentage growth compared to strictly equivalent prior period.",
-        "source": "005.G - Artifacts/AIPD-000002 - Sales Dashboard/001.Requirement Development Workflow/End User Requirement.md (Section 3.2. Core Performance KPIs)"
+        "source": "005.Develop.002.Artifacts/AIPD-000002 - Sales Dashboard/001.Requirement Development Workflow/End User Requirement.md (Section 3.2. Core Performance KPIs)"
       }
     ],
     "additional_info": "We need to know how to handle partial periods (e.g., mid-month comparisons).",
@@ -45,7 +45,7 @@
     "references": [
       {
         "info": "Distinctly different target audiences ranging from localized managers to global scope analysts.",
-        "source": "005.G - Artifacts/AIPD-000002 - Sales Dashboard/001.Requirement Development Workflow/End User Requirement.md (Section 1. Target Audience)"
+        "source": "005.Develop.002.Artifacts/AIPD-000002 - Sales Dashboard/001.Requirement Development Workflow/End User Requirement.md (Section 1. Target Audience)"
       }
     ],
     "additional_info": "Crucial for applying secure database filters when fetching temporal metrics.",
@@ -63,7 +63,7 @@
     "references": [
       {
         "info": "Users expect to instantly export the current dashboard snapshot into PDF or CSV.",
-        "source": "005.G - Artifacts/AIPD-000002 - Sales Dashboard/001.Requirement Development Workflow/End User Requirement.md (Section 2. User Expectations)"
+        "source": "005.Develop.002.Artifacts/AIPD-000002 - Sales Dashboard/001.Requirement Development Workflow/End User Requirement.md (Section 2. User Expectations)"
       }
     ],
     "additional_info": "PDF export generation often requires expensive backend rendering components.",
