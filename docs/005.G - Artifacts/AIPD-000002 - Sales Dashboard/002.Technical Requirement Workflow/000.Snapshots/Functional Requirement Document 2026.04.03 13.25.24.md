@@ -91,10 +91,6 @@ For this feature, the Sales Dashboard is categorized as a **mission-critical rea
 
 The React Client Dashboard shall provide a dropdown or toggle group allowing users to select {Weekly, Monthly, Quarterly, Annually}. Selecting a value immediately triggers a state dispatch that re-fetches or re-calculates all visual data panes using the Redis cache without reloading the browser.
 
-#### **FR-010: UI Race Condition & State Locking**
-
-To prevent Context Collision during asynchronous operations, the React UI must completely lock the Temporal Context dropdown and display an impenetrable loading overlay while a PDF Export request is actively pending. Users cannot switch temporal contexts until the original RPC response concludes or times out.
-
 #### **FR-002: PDF Snapshot Generation**
 
 When a user clicks "Export PDF", the NestJS REST API Gateway shall serialize the current Temporal UI state constraints and pass them to the Puppeteer PDF Worker over HTTP/RPC.
@@ -118,13 +114,6 @@ To compute growth percentage, the backend calculates: `((Current_Period_Revenue 
 #### **FR-005: Time-Series Line Graphs**
 
 The dashboard shall render responsive SVG elements (Recharts) mapping incremental revenue chunks over the designated temporal x-axis coordinates.
-
-#### **FR-011: DOM Density Bucket Aggregation**
-
-To prevent browser client-side DOM freeze from massive SVG point generation, the Backend must enforce server-side aggregation bucketing prior to payload delivery:
-- If Temporal Scope = `Annually`, Backend groups `$sum` by Month (Maximum 12 columns).
-- If Temporal Scope = `Monthly`, Backend groups `$sum` by Day (Maximum 31 columns).
-- If Temporal Scope = `Quarterly`, Backend groups `$sum` by Week (Maximum 13 columns).
 
 ---
 
@@ -179,11 +168,9 @@ The system shall implement the feature within the existing backend architecture 
 * NestJS CQRS Handlers bridging the API payloads explicitly to Redis/Mongo without exposing business logic in Controllers.
 * Direct memory allocation monitoring on the Puppeteer K8s Pods.
 
-### **8.2. Background CRM Polling & Cache Invalidation**
+### **8.2. Background CRM Polling**
 
 The NestJS Background Cron Poller operates on a strictly defined `*/5 * * * *` interval checking the External CRM Integration for `$gt: last_sync` records, subsequently upserting to MongoDB 7.
-
-Immediately upon a successful MongoDB 7 upsert batch conclusion, the Cron Poller must fire a synchronous EventBus trigger compelling the Redis Cache Cluster to surgically execute `DEL sales:aggregate:*` (Cache Invalidation). This guarantees the UI does not perpetually serve stale metrics after the CRM sync finishes.
 
 ---
 

@@ -1,0 +1,242 @@
+[
+  {
+    "id": "SEC-001",
+    "title": "Table 1: API Endpoints",
+    "theme": "blue",
+    "requestVersion": "2026.04.03 13.52.11",
+    "version": "2026.04.03 13.52.11",
+    "parentVersion": "2026.04.03 13.36.21",
+    "items": [
+      {
+        "id": "API_01",
+        "component_ref": "Component 2: NestJS REST API Gateway",
+        "fr_ref": "FR-002, FR-007",
+        "uri": "/api/v1/export/pdf",
+        "method": "POST",
+        "auth_guard": "JwtAuthGuard, RolesGuard",
+        "rate_limit": "5 requests/min per IP"
+      },
+      {
+        "id": "API_02",
+        "component_ref": "Component 7: External CRM Integration",
+        "fr_ref": "8.2 CRM Polling",
+        "uri": "https://api.crm-provider.com/v1/deals/delta",
+        "method": "GET",
+        "auth_guard": "Bearer CRM_SECRET",
+        "rate_limit": "N/A"
+      }
+    ]
+  },
+  {
+    "id": "SEC-002",
+    "title": "Table 2: API Payloads",
+    "theme": "red",
+    "requestVersion": "2026.04.03 13.52.11",
+    "version": "2026.04.03 13.52.11",
+    "parentVersion": "2026.04.03 13.36.21",
+    "items": [
+      {
+        "api_ref_id": "API_01",
+        "payload_type": "request",
+        "field_name": "temporalMode",
+        "data_type": "string",
+        "is_required": "true",
+        "validation_rule": "IsEnum(WEEKLY, MONTHLY, QUARTERLY, ANNUALLY)"
+      },
+      {
+        "api_ref_id": "API_01",
+        "payload_type": "request",
+        "field_name": "startDate",
+        "data_type": "string",
+        "is_required": "true",
+        "validation_rule": "IsISO8601() && <= endDate"
+      },
+      {
+        "api_ref_id": "API_01",
+        "payload_type": "request",
+        "field_name": "endDate",
+        "data_type": "string",
+        "is_required": "true",
+        "validation_rule": "IsISO8601() && (endDate - startDate <= 365 Days)"
+      },
+      {
+        "api_ref_id": "API_01",
+        "payload_type": "request",
+        "field_name": "timezoneOffset",
+        "data_type": "number",
+        "is_required": "true",
+        "validation_rule": "IsInt() && >= -720 && <= 840"
+      },
+      {
+        "api_ref_id": "API_01",
+        "payload_type": "response",
+        "field_name": "success",
+        "data_type": "boolean",
+        "is_required": "true",
+        "validation_rule": "N/A"
+      },
+      {
+        "api_ref_id": "API_01",
+        "payload_type": "response",
+        "field_name": "data.downloadUrl",
+        "data_type": "string",
+        "is_required": "true",
+        "validation_rule": "IsUrl() (S3 Presigned)"
+      },
+      {
+        "api_ref_id": "API_02",
+        "payload_type": "request",
+        "field_name": "gt_updated_at",
+        "data_type": "number",
+        "is_required": "true",
+        "validation_rule": "Unix Timestamp"
+      }
+    ]
+  },
+  {
+    "id": "SEC-003",
+    "title": "Table 3: Database Entities",
+    "theme": "emerald",
+    "requestVersion": "2026.04.03 13.52.11",
+    "version": "2026.04.03 13.52.11",
+    "parentVersion": "2026.04.03 13.36.21",
+    "items": [
+      {
+        "id": "TBL_01",
+        "component_ref": "Component 4: PostgreSQL Database",
+        "fr_ref": "FR-006",
+        "table_name": "users",
+        "db_type": "SQL"
+      },
+      {
+        "id": "TBL_02",
+        "component_ref": "Component 5: MongoDB 7",
+        "fr_ref": "FR-003, FR-004",
+        "table_name": "sales_bookings_delta",
+        "db_type": "NoSQL Collection"
+      }
+    ]
+  },
+  {
+    "id": "SEC-004",
+    "title": "Table 4: Entity Columns",
+    "theme": "teal",
+    "requestVersion": "2026.04.03 13.52.11",
+    "version": "2026.04.03 13.52.11",
+    "parentVersion": "2026.04.03 13.36.21",
+    "items": [
+      {
+        "table_ref_id": "TBL_01",
+        "field_name": "id",
+        "data_type": "UUID",
+        "is_primary_key": "true",
+        "index_type": "Primary",
+        "default_value": "uuid_generate_v4()"
+      },
+      {
+        "table_ref_id": "TBL_01",
+        "field_name": "role",
+        "data_type": "VARCHAR(50)",
+        "is_primary_key": "false",
+        "index_type": "B-Tree",
+        "default_value": "'Account Executive'"
+      },
+      {
+        "table_ref_id": "TBL_02",
+        "field_name": "_id",
+        "data_type": "ObjectId",
+        "is_primary_key": "true",
+        "index_type": "Primary",
+        "default_value": "Auto"
+      },
+      {
+        "table_ref_id": "TBL_02",
+        "field_name": "owner_id",
+        "data_type": "UUID",
+        "is_primary_key": "false",
+        "index_type": "Compound { owner_id: 1, booked_at: -1 }",
+        "default_value": "null"
+      },
+      {
+        "table_ref_id": "TBL_02",
+        "field_name": "amount_cents",
+        "data_type": "NumberLong",
+        "is_primary_key": "false",
+        "index_type": "None",
+        "default_value": "0"
+      },
+      {
+        "table_ref_id": "TBL_02",
+        "field_name": "booked_at",
+        "data_type": "ISODate",
+        "is_primary_key": "false",
+        "index_type": "Compound",
+        "default_value": "null"
+      }
+    ]
+  },
+  {
+    "id": "SEC-005",
+    "title": "Table 5: Cache Policies",
+    "theme": "rose",
+    "requestVersion": "2026.04.03 13.52.11",
+    "version": "2026.04.03 13.52.11",
+    "parentVersion": "2026.04.03 13.36.21",
+    "items": [
+      {
+        "id": "CACHE_01",
+        "component_ref": "Component 6: Redis Cache Cluster",
+        "fr_ref": "FR-001",
+        "key_pattern": "sales:aggregate:{temporalMode}:{userId}",
+        "data_type": "Stringified JSON Array",
+        "ttl": "None (Infinite)",
+        "eviction_rule": "Surgically invalidated by EventBus (SCAN + UNLINK)"
+      }
+    ]
+  },
+  {
+    "id": "SEC-006",
+    "title": "Table 6: EventBus / Queues",
+    "theme": "yellow",
+    "requestVersion": "2026.04.03 13.52.11",
+    "version": "2026.04.03 13.52.11",
+    "parentVersion": "2026.04.03 13.36.21",
+    "items": [
+      {
+        "id": "EVT_01",
+        "component_ref": "Component 3 (Producer), Component 6 (Consumer)",
+        "fr_ref": "8.2 Cache Invalidation",
+        "topic_name": "sync.completed.invalidate_cache",
+        "producer": "NestJS Cron Poller",
+        "consumer": "NestJS Gateway (Redis Wrapper)",
+        "payload_schema_desc": "{ keys_to_purge: string[] }"
+      }
+    ]
+  },
+  {
+    "id": "SEC-007",
+    "title": "Table 7: Frontend UI States",
+    "theme": "sky",
+    "requestVersion": "2026.04.03 13.52.11",
+    "version": "2026.04.03 13.52.11",
+    "parentVersion": "2026.04.03 13.36.21",
+    "items": [
+      {
+        "id": "UI_01",
+        "component_ref": "Component 1: React Client Dashboard",
+        "fr_ref": "FR-010",
+        "state_key": "isExporting",
+        "data_type": "boolean",
+        "dom_behavior": "Renders `z-index: 9999` impenetrable overlay. Unblocks on AbortController(15000ms) or RPC resolution."
+      },
+      {
+        "id": "UI_02",
+        "component_ref": "Component 1: React Client Dashboard",
+        "fr_ref": "FR-009",
+        "state_key": "growthPercentage",
+        "data_type": "number",
+        "dom_behavior": "If > 0 then color #4CAF50, else #F44336."
+      }
+    ]
+  }
+]

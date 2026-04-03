@@ -1,0 +1,119 @@
+[
+  {
+    "id": "SEC-001",
+    "title": "Table 1: Atoms",
+    "requestVersion": "2026.04.03 14.29.29",
+    "version": "2026.04.03 14.29.29",
+    "parentVersion": "2026.04.03 13.56.27",
+    "items": [
+      {
+        "id": "COM_01",
+        "component_name": "ExportButton",
+        "classification": "Dumb",
+        "props": "Pick<ButtonProps, 'onClick' | 'disabled'> & { isExporting: boolean }",
+        "state_bindings": "None",
+        "api_dependency": "None",
+        "dom_hierarchy": "<button><span>{isExporting ? 'Exporting...' : 'Export'}</span></button>"
+      },
+      {
+        "id": "COM_02",
+        "component_name": "TemporalSelect",
+        "classification": "Dumb",
+        "props": "value: TemporalMode, onChange: (val: TemporalMode) => void",
+        "state_bindings": "None",
+        "api_dependency": "None",
+        "dom_hierarchy": "<select><option>Weekly</option>...</select>"
+      },
+      {
+        "id": "COM_03",
+        "component_name": "LoadingOverlay",
+        "classification": "Dumb",
+        "props": "isVisible: boolean",
+        "state_bindings": "None",
+        "api_dependency": "None",
+        "dom_hierarchy": "<div style={{ zIndex: 9999, position: 'fixed' }}><Spinner /></div>"
+      }
+    ]
+  },
+  {
+    "id": "SEC-002",
+    "title": "Table 2: Molecules",
+    "requestVersion": "2026.04.03 14.29.29",
+    "version": "2026.04.03 14.29.29",
+    "parentVersion": "2026.04.03 13.56.27",
+    "items": [
+      {
+        "id": "COM_04",
+        "component_name": "DashboardToolbar",
+        "classification": "Smart",
+        "props": "None",
+        "state_bindings": "UI_STATE_01 (temporalMode), UI_STATE_02 (isExportingPdf)",
+        "api_dependency": "API_01 (Trigger PDF Export)",
+        "dom_hierarchy": "<header><TemporalSelect /><ExportButton /></header>"
+      }
+    ]
+  },
+  {
+    "id": "SEC-003",
+    "title": "Table 3: Organisms",
+    "requestVersion": "2026.04.03 14.29.29",
+    "version": "2026.04.03 14.29.29",
+    "parentVersion": "2026.04.03 13.56.27",
+    "items": [
+      {
+        "id": "COM_05",
+        "component_name": "SalesLineChart",
+        "classification": "Dumb",
+        "props": "data: ChartDataPoint[]",
+        "state_bindings": "None",
+        "api_dependency": "None",
+        "dom_hierarchy": "<ResponsiveContainer><LineChart><Line dataKey='amount_cents' /></LineChart></ResponsiveContainer>"
+      },
+      {
+        "id": "COM_06",
+        "component_name": "SalesBoardMetrics",
+        "classification": "Smart",
+        "props": "None",
+        "state_bindings": "UI_STATE_01 (temporalMode triggers re-fetch)",
+        "api_dependency": "API_03 (GET /metrics)",
+        "dom_hierarchy": "<section><SalesLineChart data={apiData} /></section>"
+      }
+    ]
+  },
+  {
+    "id": "SEC-004",
+    "title": "Table 4: Templates",
+    "requestVersion": "2026.04.03 14.29.29",
+    "version": "2026.04.03 14.29.29",
+    "parentVersion": "2026.04.03 13.56.27",
+    "items": [
+      {
+        "id": "COM_07",
+        "component_name": "DashboardLayout",
+        "classification": "Dumb",
+        "props": "children: ReactNode",
+        "state_bindings": "None",
+        "api_dependency": "None",
+        "dom_hierarchy": "<main><Sidebar /><article>{children}</article></main>"
+      }
+    ]
+  },
+  {
+    "id": "SEC-005",
+    "title": "Table 5: Pages",
+    "requestVersion": "2026.04.03 14.29.29",
+    "version": "2026.04.03 14.29.29",
+    "parentVersion": "2026.04.03 13.56.27",
+    "items": [
+      {
+        "id": "COM_08",
+        "component_name": "IntelligenceCommercePage",
+        "classification": "Smart",
+        "props": "None",
+        "state_bindings": "Context Provider Root for temporalMode",
+        "api_dependency": "None",
+        "dom_hierarchy": "<DashboardLayout><DashboardToolbar /><SalesBoardMetrics /><LoadingOverlay isVisible={isExportingPdf} /></DashboardLayout>"
+      }
+    ]
+  }
+]
