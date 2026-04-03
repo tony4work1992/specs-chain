@@ -1,8 +1,8 @@
 # **BUSINESS REQUIREMENT DOCUMENT (BRD)**
 
-**Request Version:** 2026.04.03 10.34.16
-**Version:** 2026.04.03 10.34.16
-**Parent Version:** 2026.04.03 10.28.26
+**Request Version:** 2026.04.03 16.09.06
+**Version:** 2026.04.03 16.09.06
+**Parent Version:** 2026.04.03 16.07.13
 
 ## **Feature: Sales Dashboard (AIPD-000002)**
 
@@ -10,13 +10,13 @@
 
 ## **1. Purpose**
 
-The purpose of the **Sales Dashboard** is to provide Sales Management and Operational Teams with an authoritative, unified real-time data visualization capability. 
+The purpose of the **Sales Dashboard** is to provide Sales Management and Operational Teams with a highly responsive, unified interface for real-time tracking of macro and micro revenue metrics.
 
-The feature enables Leadership and Analysts to:
+The feature enables Sales Managers and Analysts to:
 
-* Monitor continuous temporal revenue figures (Weekly, Monthly, Quarterly, Annually) seamlessly without manual data crunching.
-* Instantly measure chronological growth percentages to determine the real-time health of the business.
-* Make immediate, data-driven operational decisions backed by strictly governed, role-isolated metrics.
+* Instantly pivot the entire dashboard's context across distinct temporal milestones (Weekly, Monthly, Quarterly, Annually).
+* Accurately track historical revenue generation against prior periods to deduce growth or decline patterns.
+* Standardize global revenue reporting to a single source of truth, removing timezone and currency discrepancies.
 
 ---
 
@@ -26,11 +26,11 @@ The feature enables Leadership and Analysts to:
 
 The feature includes:
 
-* Implementation of a master Temporal Metric Control Panel for dynamic slice toggling.
-* Calculation engines for strictly paired historical Growth Indicators (e.g., Year-over-Year).
-* Strict Role-Based Access Control (RBAC) ensuring data visibility boundaries per user level.
-* Synchronous PDF and CSV data exporting mechanisms for snapshot reporting.
-* High-volume data integration capabilities satisfying near real-time rendering.
+* A global Temporal Filtering Controller controlling the time-horizon for the entire view.
+* Primary KPI Overview cards (Revenue Snapshot, Period Growth Indicator, Transaction Volume).
+* Time-Series Revenue Chart for comparative temporal distribution over the selected period.
+* Automatic currency conversion to a base currency (USD) mapping to the transaction day's rate.
+* Timezone normalization logic translating UTC database records to the user's localized browser timezone.
 
 ---
 
@@ -38,9 +38,9 @@ The feature includes:
 
 The following are not included in this feature:
 
-* The actual ingestion and ETL pipelines from external 3rd-party CRMs (Assumed to be handled by a separate Data Lake/API layer).
-* Advanced AI-based predictive forecasting or machine learning trend estimations (Dashboard focuses solely on historical and current booked data).
-* Input forms for manually altering or editing sales records through the dashboard UI.
+* Top-selling products leaderboards and granular item-level metrics (Deferred to Phase 2).
+* Sales pipeline conversion rate analytics (Deferred to Phase 2).
+* Exporting reports to PDF or Excel formats.
 
 ---
 
@@ -48,79 +48,71 @@ The following are not included in this feature:
 
 * **Primary Stakeholders:**
 
-  * Sales Managers / Directors
-  * Sales Operations / Analysts
+  * Chief Revenue Officer (CRO)
+  * Regional Sales Directors
 
 * **Secondary Stakeholders:**
 
-  * System Architecture & Data Engineering Teams (responsible for providing the real-time aggregated endpoints).
-  * Executive Leadership (Consumers of the exported PDF business reports).
+  * Sales Operations Analysts
+  * Financial Planning & Analysis (FP&A) Team
 
 ---
 
 ## **4. Business Objectives**
 
-* **Efficiency:** Decrease time spent generating weekly and monthly revenue summaries by 80%.
-* **Speed to Insight:** Facilitate sub-5-minute latency visualizations between a CRM record closing and its reflection on the dashboard.
-* **Security:** Guarantee 100% adherence to organizational data isolation rules via strictly enacted RBAC.
+* **Increase Reporting Efficiency:** Reduce the time required for sales managers to aggregate quarterly and annual performance by 80%.
+* **Standardize Metrics:** Enforce a single standard for global timezone aggregation and currency conversion.
+* **Enhance Decision Making:** Provide immediate visual cues for period-over-period growth or loss to allow for mid-quarter tactical pivots.
 
 ---
 
 ## **5. Functional Overview**
 
-The Sales Dashboard is structured into 3 main sections:
+The Sales Dashboard is structured into 2 main sections:
 
 ---
 
-### **5.1. Temporal Metric Control & Data Exporting**
+### **5.1. Dashboard Navigation & Control**
 
-* Provide interactive controls allowing the user to seamlessly pivot the entire dashboard's context across Weekly, Monthly, Quarterly, and Annually spans.
-* Provide one-click generation of PDF/CSV reports mirroring the current temporal context.
-
----
-
-### **5.2. Core Revenue & Growth KPIs**
-
-* Display authoritative total sales revenue for the selected timeframe.
-* Compute and display positive or negative percentage growth against the exact chronologically equivalent prior period.
+* **Temporal Toggle Switch:** The system must provide a master toggle allowing the user to select 'Weekly', 'Monthly', 'Quarterly', or 'Annually'.
+* **Global Context Linking:** All data visualizations and KPIs on the page must re-fetch and re-render automatically upon changing the temporal toggle.
 
 ---
 
-### **5.3. Distribution Visualizations**
+### **5.2. Core Performance Indicators & Visualization**
 
-* Render time-series graphs distributing the chosen metric across the specified temporal spans (e.g., 12 column indicators for a Yearly view).
+* **Aggregate Revenue & Volume Calculation:** The system must sum all closed transactions within the defined temporal boundaries and display the absolute revenue amount alongside total transaction count.
+* **Percentage Growth Calculation:** The system must compare current period revenue to the exact prior equivalent period and render an upward/downward percentage indicator.
+* **Time-Series Charting:** The system must map the summed data onto a sequence chart representing slices of the timeline.
 
 ---
 
 ## **6. Business Rules**
 
-* **BR-01 (Role Isolation):** A user holding an 'Account Executive' role shall ONLY view aggregated data corresponding structurally to their owned portfolio. 'Sales Managers' inherit global viewing privileges.
-* **BR-02 (Growth Math Integrity):** Growth percentages formulas MUST evaluate strictly equivalent chronological days. (e.g., 'Quarter-to-Date' must be compared only to the exact equivalent number of days from the start of the previous Quarter, not the full previous Quarter).
-* **BR-03 (Export Engine Limit):** Users shall not invoke a PDF export containing a data spread exceeding a 12-month temporal scope to protect server rendering resources.
+* **BR-01 (Calendar Year Standard):** All "Quarterly" and "Annually" aggregations must strictly follow the standard Gregorian calendar year (January 1st to December 31st), rather than custom fiscal calendars.
+* **BR-02 (Timezone Handling):** Revenue must be aggregated based on UTC timestamps at the database level but displayed mapped to the user's local browser timezone to prevent boundary cutoff errors.
+* **BR-03 (Currency Normalization):** All dashboard metrics must be presented in US Dollars (USD). Transactions in foreign currencies must be converted using the exchange rate valid on the day of the transaction.
+* **BR-04 (Incomplete Periods):** If a user selects "Annually" for the current ongoing year, the data should project partial metrics transparently without falsely zeroing out future months.
 
 ---
 
 ## **7. Non-Functional Requirements**
 
-* **Usability:**
-
-  * Toggling the Temporal Metric Control Panel (e.g., switching from Weekly to Monthly) must asynchronously update the dashboard Data Views without causing a full browser page reload.
-
 * **Performance:**
+  * The dashboard must load aggregate metrics and update the UI within 1.5 seconds after the user switches the temporal toggle.
 
-  * The dashboard must target a data freshness latency of under 5 minutes from the central data source.
-  * PDF and CSV data exports must complete processing and downloading within 10 seconds of user invocation.
+* **Usability:**
+  * The user interface must gracefully handle empty states (e.g., a startup in its first month trying to view "Quarterly" data) by displaying informative placeholders rather than chart errors.
 
 ---
 
 ## **8. Assumptions**
 
-* The underlying Data Source or CRM already calculates "Booked vs. Billed" revenue cleanly and exposes it natively through standard API endpoints.
-* Valid user session tokens contain accurately mapped RBAC role definitions that the backend can consume securely.
+* The underlying transaction database already accurately captures the transaction date, original currency, and successfully completed status for all historical sales.
+* A reliable internal or third-party daily currency exchange rate API is already available to the backend system.
 
 ---
 
 ## **9. Constraints**
 
-* The backend infrastructure must be sized to support potentially heavy concurrent PDF rendering operations at common reporting times (e.g., End of Month).
-* The dashboard's visual clarity relies heavily on the availability of standardized modern charting UI libraries (e.g., Recharts, Chart.js).
+* The dashboard must be responsive but is primarily designed and constrained for Desktop and Tablet resolutions (min-width: 1024px) for Phase 1.

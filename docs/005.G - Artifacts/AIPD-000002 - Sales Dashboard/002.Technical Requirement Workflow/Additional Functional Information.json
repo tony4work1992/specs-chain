@@ -1,56 +1,74 @@
 [
   {
-    "code": "AFI-000004",
+    "code": "AFI-000001",
     "index": 1,
-    "criteria": "Are Timezone Normalization offsets defined for the Server-side DOM Density Bucketing logic?",
+    "criteria": "Define Debouncing/Throttling policy for Redis Cache Invalidation to prevent Cache Stampede.",
     "pass": false,
-    "hint": "Specify if the DB aggregations happen in rigid UTC or if the GraphQL/REST payload accepts a Client TZ offset to adjust 'Day' transition boundaries.",
-    "placeholder": "e.g., The React UI must append the user's `America/New_York` offset header so MongoDB's `$dateTrunc` accurately splits 'Days' based on the viewer's local midnight instead of UTC midnight.",
+    "hint": "High transaction volume will trigger constant invalidations. Should we batch cache invalidation events (e.g., invalidate merely every 30 seconds) rather than per-transaction?",
+    "placeholder": "Specify 'Throttle cache eviction to max 1 per 60 seconds'.",
     "references": [
-      {
-        "info": "If the Dashboard groups data by Day (FR-011) strictly using generic UTC on the backend, a sale finalized at 22:00 PST on Monday will erroneously display as a Tuesday sale on the React UI.",
-        "source": "Functional Requirement Document.md (Section 5.3: FR-011)"
-      }
+       {
+          "info": "Risk of Redis cache churn and DB overload during peak write times.",
+          "source": "6.2. Caching Strategy: FR-000006"
+       }
     ],
-    "additional_info": "This is a critical oversight for multi-regional financial dashboards.",
-    "requestVersion": "2026.04.03 13.36.21",
-    "version": "2026.04.03 13.36.21",
-    "parentVersion": "2026.04.03 13.34.31"
+    "additional_info": "Essential background processing mechanism to stabilize CQRS read operations.",
+    "requestVersion": "2026.04.03 16.21.08",
+    "version": "2026.04.03 16.21.08",
+    "parentVersion": "2026.04.03 16.18.42"
   },
   {
-    "code": "AFI-000005",
+    "code": "AFI-000002",
     "index": 2,
-    "criteria": "Is the Redis Cache Invalidation query strictly enforced to use `UNLINK` or iterative `SCAN` instead of thread-blocking `DEL / KEYS` commands?",
+    "criteria": "Determine exact indexing strategy and schema for MongoDB Exchange Rate collection.",
     "pass": false,
-    "hint": "Identify the precise Redis invalidation pattern applied by the EventBus to avoid blocking the single-threaded Redis cluster.",
-    "placeholder": "e.g., The Cron Poller must execute `SCAN` with `MATCH sales:aggregate:*` followed by `UNLINK` batches.",
+    "hint": "Provide explicit instructions on compound indexes (e.g., currency_code + date) to ensure fast lookup during the aggregation pipeline processing.",
+    "placeholder": "Specify 'Create unique compound index on { date: 1, currency: 1 }'.",
     "references": [
-      {
-        "info": "FR-012 incorrectly requests `surgically execute DEL sales:aggregate:*`. Redis does not natively support wildcard `DEL` efficiently. Large wildcard evaluations block all incoming read traffic.",
-        "source": "Functional Requirement Document.md (Section 8.2)"
-      }
+       {
+          "info": "Vague data persistence definition for cron worker.",
+          "source": "6.1. Currency Exchange Processing: FR-000005"
+       }
     ],
-    "additional_info": "If the system accumulates 10,000 aggregates per 5-minute window, issuing a massive blocking wildcard cache wipe will immediately spike API latency to thousands of seconds.",
-    "requestVersion": "2026.04.03 13.36.21",
-    "version": "2026.04.03 13.36.21",
-    "parentVersion": "2026.04.03 13.34.31"
+    "additional_info": "Prevents slow aggregation loops joining large historical rate tables in MongoDB.",
+    "requestVersion": "2026.04.03 16.21.08",
+    "version": "2026.04.03 16.21.08",
+    "parentVersion": "2026.04.03 16.18.42"
   },
   {
-    "code": "AFI-000006",
+    "code": "AFI-000003",
     "index": 3,
-    "criteria": "What is the specific Threshold value for the 'RPC Request Timeout' during the UI Race Condition blocking state?",
+    "criteria": "Resolve Role-Based Access Control (RBAC) Data Isolation Boundaries.",
     "pass": false,
-    "hint": "Provide a hard numerical timeout cap forcing the React UI to unblock if the PDF rendering node goes silent.",
-    "placeholder": "e.g., React UI invokes an `AbortController()` resolving state if the RPC promise remains unfulfilled for exactly 15,000 ms.",
+    "hint": "Does the API need to inject 'Region_ID' or 'Team_ID' extracted from the JWT into the MongoDB aggregation match clause for Directors versus the CRO?",
+    "placeholder": "Specify 'API must extract UserRole from JWT and apply { region: User.region } filter for Directors'.",
     "references": [
-      {
-        "info": "FR-010 states users cannot interact with the Dashboard until the request 'times out'. The duration is completely unspecified, risking infinite UI lock.",
-        "source": "Functional Requirement Document.md (Section 5.1: FR-010)"
-      }
+       {
+          "info": "Undefined permissions logic concerning data visibility.",
+          "source": "3. Intended Users & 8.1 Backend Structure"
+       }
     ],
-    "additional_info": "Absence of client-side timeouts means ghost states block users indefinitely if the Puppeteer worker drops the socket silently.",
-    "requestVersion": "2026.04.03 13.36.21",
-    "version": "2026.04.03 13.36.21",
-    "parentVersion": "2026.04.03 13.34.31"
+    "additional_info": "Critical security gap that could lead to authorization data leaks.",
+    "requestVersion": "2026.04.03 16.21.08",
+    "version": "2026.04.03 16.21.08",
+    "parentVersion": "2026.04.03 16.18.42"
+  },
+  {
+    "code": "AFI-000004",
+    "index": 4,
+    "criteria": "Define API Payload Compression Standards for heavy Time-Series Responses.",
+    "pass": false,
+    "hint": "Are there mandatory requirements for the gateway to apply GZIP/Brotli compression to large array responses to minimize latency?",
+    "placeholder": "Specify 'Enable Global GZIP interceptor in NestJS'.",
+    "references": [
+       {
+          "info": "Missing network optimization details for < 1.5s load constraint.",
+          "source": "10. Constraints & 7.2. Visual Requirements"
+       }
+    ],
+    "additional_info": "Impacts REST API Middleware layer configuration.",
+    "requestVersion": "2026.04.03 16.21.08",
+    "version": "2026.04.03 16.21.08",
+    "parentVersion": "2026.04.03 16.18.42"
   }
 ]

@@ -1,0 +1,266 @@
+[
+  {
+    "id": "SEC-001",
+    "title": "Table 1: Environment Variables & Configurations",
+    "theme": "slate",
+    "requestVersion": "2026.04.03 13.56.27",
+    "version": "2026.04.03 13.56.27",
+    "parentVersion": "2026.04.03 13.36.21",
+    "items": [
+      {
+        "id": "ENV_01",
+        "key_name": "CRM_WEBHOOK_SECRET",
+        "data_type": "string",
+        "is_required": "true",
+        "component_ref": "Component 7: External CRM Integration"
+      },
+      {
+        "id": "ENV_02",
+        "key_name": "PUPPETEER_MAX_TIMEOUT_MS",
+        "data_type": "number",
+        "is_required": "true",
+        "component_ref": "Component 8: Puppeteer PDF Worker"
+      }
+    ]
+  },
+  {
+    "id": "SEC-002",
+    "title": "Table 2: React Context States & Stores",
+    "theme": "sky",
+    "requestVersion": "2026.04.03 13.56.27",
+    "version": "2026.04.03 13.56.27",
+    "parentVersion": "2026.04.03 13.36.21",
+    "items": [
+      {
+        "id": "UI_STATE_01",
+        "state_name": "temporalMode",
+        "data_type": "string (WEEKLY | MONTHLY | QUARTERLY | ANNUALLY)",
+        "default_value": "WEEKLY",
+        "component_ref": "Component 1: React Client"
+      },
+      {
+        "id": "UI_STATE_02",
+        "state_name": "isExportingPdf",
+        "data_type": "boolean",
+        "default_value": "false",
+        "component_ref": "Component 1: React Client"
+      }
+    ]
+  },
+  {
+    "id": "SEC-003",
+    "title": "Table 3: UI-to-API Action Mappings",
+    "theme": "amber",
+    "requestVersion": "2026.04.03 13.56.27",
+    "version": "2026.04.03 13.56.27",
+    "parentVersion": "2026.04.03 13.36.21",
+    "items": [
+      {
+        "id": "UIMAP_01",
+        "dom_trigger": "onClick 'Export PDF' Button",
+        "state_mutation": "set_isExportingPdf(true)",
+        "api_ref_id": "API_01",
+        "fallback_action": "AbortController(15000ms) -> throw Error Toast"
+      },
+      {
+        "id": "UIMAP_02",
+        "dom_trigger": "onChange 'Temporal Select Dropdown'",
+        "state_mutation": "set_temporalMode(value)",
+        "api_ref_id": "API_03",
+        "fallback_action": "XHR background refresh"
+      }
+    ]
+  },
+  {
+    "id": "SEC-004",
+    "title": "Table 4: Backend API Endpoints",
+    "theme": "blue",
+    "requestVersion": "2026.04.03 13.56.27",
+    "version": "2026.04.03 13.56.27",
+    "parentVersion": "2026.04.03 13.36.21",
+    "items": [
+      {
+        "id": "API_01",
+        "component_ref": "Component 2: NestJS Gateway",
+        "uri": "/api/v1/export/pdf",
+        "method": "POST",
+        "middleware_ref": "MW_01 (Throttler), MW_02 (JWT)"
+      },
+      {
+        "id": "API_02",
+        "component_ref": "Component 7: CRM Integration",
+        "uri": "https://api.crm-provider.com/v1/deals/delta",
+        "method": "GET",
+        "middleware_ref": "MW_03 (Bearer Injector)"
+      },
+      {
+        "id": "API_03",
+        "component_ref": "Component 2: NestJS Gateway",
+        "uri": "/api/v1/dashboard/metrics",
+        "method": "GET",
+        "middleware_ref": "MW_01, MW_02"
+      }
+    ]
+  },
+  {
+    "id": "SEC-005",
+    "title": "Table 5: Payload DTO Structures",
+    "theme": "red",
+    "requestVersion": "2026.04.03 13.56.27",
+    "version": "2026.04.03 13.56.27",
+    "parentVersion": "2026.04.03 13.36.21",
+    "items": [
+      {
+        "api_ref_id": "API_01",
+        "payload_type": "request",
+        "field_name": "startDate",
+        "data_type": "string",
+        "required": "true",
+        "validator": "IsISO8601()"
+      },
+      {
+        "api_ref_id": "API_01",
+        "payload_type": "request",
+        "field_name": "endDate",
+        "data_type": "string",
+        "required": "true",
+        "validator": "IsISO8601() && (val - startDate <= 365 Days)"
+      },
+      {
+        "api_ref_id": "API_01",
+        "payload_type": "response",
+        "field_name": "downloadUrl",
+        "data_type": "string",
+        "required": "true",
+        "validator": "S3 Signed URL"
+      }
+    ]
+  },
+  {
+    "id": "SEC-006",
+    "title": "Table 6: Middleware & Interceptors",
+    "theme": "violet",
+    "requestVersion": "2026.04.03 13.56.27",
+    "version": "2026.04.03 13.56.27",
+    "parentVersion": "2026.04.03 13.36.21",
+    "items": [
+      {
+        "id": "MW_01",
+        "component_ref": "Component 2: NestJS Gateway",
+        "type": "RateLimit Guard",
+        "logic": "ttl: 60s, limit: 100 requests"
+      },
+      {
+        "id": "MW_02",
+        "component_ref": "Component 2: NestJS Gateway",
+        "type": "JWT Decoder & Injector",
+        "logic": "Intercepts Bearer Token, queries TBL_01 for `role`. Returns HTTP 403 if invalid."
+      }
+    ]
+  },
+  {
+    "id": "SEC-007",
+    "title": "Table 7: Background Cron Actions",
+    "theme": "emerald",
+    "requestVersion": "2026.04.03 13.56.27",
+    "version": "2026.04.03 13.56.27",
+    "parentVersion": "2026.04.03 13.36.21",
+    "items": [
+      {
+        "id": "JOB_01",
+        "component_ref": "Component 3: Cron Poller",
+        "cron_expression": "*/5 * * * *",
+        "action": "Executes API_02 -> maps Delta -> Upserts TBL_02 -> Emits EVT_01",
+        "max_retries": "3 (Circuit Breaker Array fallbacks)"
+      }
+    ]
+  },
+  {
+    "id": "SEC-008",
+    "title": "Table 8: Message EventBus/Broker",
+    "theme": "orange",
+    "requestVersion": "2026.04.03 13.56.27",
+    "version": "2026.04.03 13.56.27",
+    "parentVersion": "2026.04.03 13.36.21",
+    "items": [
+      {
+        "id": "EVT_01",
+        "component_ref": "EventBus Matrix",
+        "topic_name": "sync.completed.invalidate_cache",
+        "publisher": "JOB_01",
+        "consumer": "Component 6: Redis Cache",
+        "payload_schema": "{ matched_user_ids: string[] }"
+      }
+    ]
+  },
+  {
+    "id": "SEC-009",
+    "title": "Table 9: Database Entities",
+    "theme": "teal",
+    "requestVersion": "2026.04.03 13.56.27",
+    "version": "2026.04.03 13.56.27",
+    "parentVersion": "2026.04.03 13.36.21",
+    "items": [
+      {
+        "id": "TBL_01",
+        "table_name": "postgres.users",
+        "db_type": "Relational",
+        "primary_key": "id (UUID)"
+      },
+      {
+        "id": "TBL_02",
+        "table_name": "mongodb.sales_bookings_delta",
+        "db_type": "Document NoSQL",
+        "primary_key": "_id (ObjectId)"
+      }
+    ]
+  },
+  {
+    "id": "SEC-010",
+    "title": "Table 10: Database Schema Columns",
+    "theme": "lime",
+    "requestVersion": "2026.04.03 13.56.27",
+    "version": "2026.04.03 13.56.27",
+    "parentVersion": "2026.04.03 13.36.21",
+    "items": [
+      {
+        "table_ref_id": "TBL_01",
+        "col_name": "role",
+        "data_type": "string (Account Executive | Manager)",
+        "nullable": "false",
+        "index_type": "B-Tree (idx_user_roles)"
+      },
+      {
+        "table_ref_id": "TBL_02",
+        "col_name": "amount_cents",
+        "data_type": "NumberLong",
+        "nullable": "false",
+        "index_type": "None"
+      },
+      {
+        "table_ref_id": "TBL_02",
+        "col_name": "booked_at",
+        "data_type": "ISODate",
+        "nullable": "false",
+        "index_type": "Compound { owner_id: 1, booked_at: -1 }"
+      }
+    ]
+  },
+  {
+    "id": "SEC-011",
+    "title": "Table 11: Application Cache Policies",
+    "theme": "rose",
+    "requestVersion": "2026.04.03 13.56.27",
+    "version": "2026.04.03 13.56.27",
+    "parentVersion": "2026.04.03 13.36.21",
+    "items": [
+      {
+        "id": "CACHE_01",
+        "key_pattern": "sales:aggregate:{temporalMode}:{userId}",
+        "ttl": "-1 (Infinite)",
+        "eviction_trigger": "EVT_01 intercepts -> runs SCAN 0 -> UNLINK batches",
+        "stored_value_type": "Stringified JSON Array"
+      }
+    ]
+  }
+]

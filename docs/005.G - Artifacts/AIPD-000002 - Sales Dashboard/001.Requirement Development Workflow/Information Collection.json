@@ -2,73 +2,73 @@
   {
     "code": "INF-000001",
     "index": 1,
-    "criteria": "Identification of the Core Data Integration Strategy for Real-Time Sync.",
+    "criteria": "Define fiscal year boundaries versus calendar year for Annually/Quarterly metrics.",
     "pass": false,
-    "hint": "Specify the precise CRM or ERP data source, and detail the technical mechanisms (e.g., WebSockets, Webhooks, Polling) required to satisfy the \"real-time updates without manual refreshing\" mandate.",
-    "placeholder": "Enter exact data source and latency specs...",
+    "hint": "Specify whether the company uses a standard Jan-Dec calendar year or a custom fiscal calendar (e.g., Apr-Mar) for temporal aggregation.",
+    "placeholder": "Enter fiscal calendar rules...",
     "references": [
-      {
-        "info": "Requirement to aggregate massive datasets effortlessly in real-time.",
-        "source": "005.G - Artifacts/AIPD-000002 - Sales Dashboard/001.Requirement Development Workflow/End User Requirement.md (Section 2. User Expectations)"
-      }
+       {
+          "info": "Requires clarification on 'Quarterly, Annually viewpoints'",
+          "source": "2. User Expectations: Temporal Agility and Control"
+       }
     ],
-    "additional_info": "Impacts caching vs direct querying load on backend infrastructure.",
-    "requestVersion": "2026.04.03 10.28.26",
-    "version": "2026.04.03 10.28.26",
-    "parentVersion": "2026.04.02 21.15.21"
+    "additional_info": "Fundamentally alters how the DB and Backend groups data by date.",
+    "requestVersion": "2026.04.03 16.07.13",
+    "version": "2026.04.03 16.07.13",
+    "parentVersion": "2026.04.03 15.57.16"
   },
   {
     "code": "INF-000002",
     "index": 2,
-    "criteria": "Formulaization of the 'Growth Indicator' Calculations.",
+    "criteria": "Clarify timezone standards for Revenue & Transaction Volume aggregation.",
     "pass": false,
-    "hint": "Provide the exact mathematical definitions for evaluating chronological growth (e.g., YoY, QoQ) when a user toggles the Temporal Metric Control Panel.",
-    "placeholder": "Describe formula and baseline calculation rules...",
+    "hint": "Sales span multiple zones. Should metrics be standardized to UTC or localized to the viewing User's timezone?",
+    "placeholder": "Specify timezone handling (e.g., 'All metrics in UTC' or 'Local timezone based on browser').",
     "references": [
-      {
-        "info": "Inline directional element for percentage growth compared to strictly equivalent prior period.",
-        "source": "005.G - Artifacts/AIPD-000002 - Sales Dashboard/001.Requirement Development Workflow/End User Requirement.md (Section 3.2. Core Performance KPIs)"
-      }
+       {
+          "info": "Lack of timezone tracking context for daily/weekly boundaries",
+          "source": "3.1. Temporal Filtering Controller"
+       }
     ],
-    "additional_info": "We need to know how to handle partial periods (e.g., mid-month comparisons).",
-    "requestVersion": "2026.04.03 10.28.26",
-    "version": "2026.04.03 10.28.26",
-    "parentVersion": "2026.04.02 21.15.21"
+    "additional_info": "Highly critical for Weekly and Monthly bucket aggregation to prevent data skew.",
+    "requestVersion": "2026.04.03 16.07.13",
+    "version": "2026.04.03 16.07.13",
+    "parentVersion": "2026.04.03 15.57.16"
   },
   {
     "code": "INF-000003",
     "index": 3,
-    "criteria": "Definition of Role-Based Access Control (RBAC) filtering parameters.",
+    "criteria": "Determine scope of subsidiary metrics (Top-Selling Items, Conversion Rates).",
     "pass": false,
-    "hint": "Explicitly define which data points 'Sales Operations/Analysts' vs 'Sales Managers' have access to (e.g., row-level security per region vs global viewing).",
-    "placeholder": "Define strict data visibility rules per role...",
+    "hint": "The document references 'top-selling items lists, or conversion rates' but does not declare them as Component Requirements. Confirm if these are in Phase 1 scope.",
+    "placeholder": "Confirm 'Yes, include Top-Selling Items component' or 'No, out of scope for Phase 1'.",
     "references": [
-      {
-        "info": "Distinctly different target audiences ranging from localized managers to global scope analysts.",
-        "source": "005.G - Artifacts/AIPD-000002 - Sales Dashboard/001.Requirement Development Workflow/End User Requirement.md (Section 1. Target Audience)"
-      }
+       {
+          "info": "Inconsistency between expectations and defined UI components",
+          "source": "2. User Expectations: Actionable Metrics Consistency"
+       }
     ],
-    "additional_info": "Crucial for applying secure database filters when fetching temporal metrics.",
-    "requestVersion": "2026.04.03 10.28.26",
-    "version": "2026.04.03 10.28.26",
-    "parentVersion": "2026.04.02 21.15.21"
+    "additional_info": "Saves unnecessary API/UI implementation if these are reserved for Phase 2.",
+    "requestVersion": "2026.04.03 16.07.13",
+    "version": "2026.04.03 16.07.13",
+    "parentVersion": "2026.04.03 15.57.16"
   },
   {
     "code": "INF-000004",
     "index": 4,
-    "criteria": "Specifications for PDF/CSV Exporting Engine Limits.",
+    "criteria": "Clarify currency conversion and formatting policies.",
     "pass": false,
-    "hint": "Provide details on the expected load for exporting (e.g., maximum rows allowed, rendering strategy).",
-    "placeholder": "Enter export engine rules and data limits...",
+    "hint": "If sales are global, how is revenue converted into the macro revenue figure?",
+    "placeholder": "Specify currency policy (e.g., 'Display in USD, convert at daily rate').",
     "references": [
-      {
-        "info": "Users expect to instantly export the current dashboard snapshot into PDF or CSV.",
-        "source": "005.G - Artifacts/AIPD-000002 - Sales Dashboard/001.Requirement Development Workflow/End User Requirement.md (Section 2. User Expectations)"
-      }
+       {
+          "info": "Unclear currency handling for the 'Revenue Snapshot Card'",
+          "source": "3.2. Primary KPI Overview"
+       }
     ],
-    "additional_info": "PDF export generation often requires expensive backend rendering components.",
-    "requestVersion": "2026.04.03 10.28.26",
-    "version": "2026.04.03 10.28.26",
-    "parentVersion": "2026.04.02 21.15.21"
+    "additional_info": "Impacts DB schema (needs amount and currency) and API DTO.",
+    "requestVersion": "2026.04.03 16.07.13",
+    "version": "2026.04.03 16.07.13",
+    "parentVersion": "2026.04.03 15.57.16"
   }
 ]

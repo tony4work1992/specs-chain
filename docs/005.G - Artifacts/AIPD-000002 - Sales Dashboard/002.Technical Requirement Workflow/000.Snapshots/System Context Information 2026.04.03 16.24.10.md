@@ -1,7 +1,7 @@
 # **SYSTEM CONTEXT INFORMATION**
 
 **Request Version:** 2026.04.03 16.11.51
-**Version:** 2026.04.03 16.24.10
+**Version:** 2026.04.03 16.11.51
 **Parent Version:** 2026.04.03 16.09.06
 
 ## **Project / Feature: Sales Dashboard (AIPD-000002)**
@@ -42,7 +42,7 @@ Describe the architectural paradigms driving the implementation.
 * **Architecture Style:** Monolithic API with decoupled React Client (Client-Server Architecture).
 * **Core Design Patterns:** CQRS (Separating complex dashboard read queries from transaction write operations), Repository Pattern.
 * **Communication Protocols:** REST API (JSON payloads).
-* **Authentication & Authorization:** JWT validation via JWKS endpoint connected to the Internal Auth Microservice.
+* **Authentication & Authorization:** JWT validation assumed.
 
 ---
 
@@ -52,7 +52,6 @@ Provide context on how and where the system is hosted and run.
 
 * **Containerization & Orchestration:** Docker Compose (for scaffolding NestJS, MongoDB, and Redis locally/production).
 * **Environment Setup:** Local Development environments replicating Staging.
-* **High-Availability (HA) SLA:** 99.9% uptime SLA mandated for Production MongoDB and Redis, achieved via single-region multi-zone distribution.
 
 ---
 
@@ -61,7 +60,7 @@ Provide context on how and where the system is hosted and run.
 List external systems or third-party services the feature/system must interact with.
 
 * **Third-Party APIs:** Currency Exchange Rate API (e.g., OpenExchangeRates or alternative) for daily USD normalization.
-* **Internal Core Systems:** Main System Authentication service via JWKS.
+* **Internal Core Systems:** Main System Authentication service if decoupled.
 
 ---
 
@@ -69,7 +68,7 @@ List external systems or third-party services the feature/system must interact w
 
 Describe specific technical procedures or mechanisms relevant to this feature.
 
-* **Background Processing & Cron Jobs:** A background cron worker to fetch and cache daily currency exchange rates at 00:00 UTC. The worker applies a 3-retry policy at 1-hour intervals on failure, subsequently falling back to the previous day's rate upon exhaustion.
+* **Background Processing & Cron Jobs:** A background cron worker to fetch and cache daily currency exchange rates at 00:00 UTC.
 * **Data Synchronization:** Dynamic currency conversion calculation mechanism during data aggregation.
 * **Aggregated Caching Mechanism:** Caching strategy in Redis for frequently requested structural datasets (like Annual view), invalidated upon new transaction arrival.
 
@@ -80,8 +79,7 @@ Describe specific technical procedures or mechanisms relevant to this feature.
 Define any architectural or technical limitations.
 
 * **Technical Constraints:**
-  * System must support an anticipated peak traffic load of 100 QPS scaling up to 500 Daily Active Users.
-  * System must process and deliver aggregated temporal data to the frontend in under 1.5s.
+  * System must process and deliver aggregated temporal data to the frontend in under 1.5 seconds.
   * All database operations must store timestamps in pure UTC.
 * **Technical Assumptions:**
   * The frontend client will explicitly dispatch its Local Timezone Offset to the backend during API calls to allow proper aggregation boundaries dynamically.

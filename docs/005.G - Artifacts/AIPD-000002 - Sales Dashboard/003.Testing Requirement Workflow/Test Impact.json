@@ -1,52 +1,42 @@
 [
   {
     "code": "IMP-000001",
-    "systemName": "Global CRM Front-End",
-    "componentName": "UI Item",
-    "elementName": "Shared Date Picker Context",
-    "description": "REGRESSION RISK (Frontend Layer): The new Temporal Date Toggle injects normalized UTC 00:00:00Z boundaries into Redux/React Context. This might override and corrupt legacy Local-Timezone date pickers used in the existing 'Leads Management' module.",
-    "requestVersion": "2026.04.03 12.09.06",
-    "version": "2026.04.03 12.09.06",
-    "parentVersion": "2026.04.03 12.04.48"
+    "systemName": "Legacy Checkout System",
+    "componentName": "API",
+    "elementName": "Redis Cache Invalidation Event",
+    "description": "RISK: The existing Checkout Write API is now coupled with Redis cache invalidation logic for dashboard aggregation updates. If the Redis cluster is unreachable or suffers high latency, the new event emitter might synchronously block the Checkout Write API, causing user payment timeouts. Ensure the Redis eviction call is strictly non-blocking.",
+    "requestVersion": "2026.04.03 16.30.22",
+    "version": "2026.04.03 16.30.22",
+    "parentVersion": "2026.04.03 16.28.47"
   },
   {
     "code": "IMP-000002",
-    "systemName": "Main API Gateway",
+    "systemName": "Database Component",
     "componentName": "API",
-    "elementName": "Nginx Connection Limit",
-    "description": "REGRESSION RISK (Backend Layer): Persistent SSE WebSockets (/api/v1/dashboard/stream) hold TCP connections forever. If 10,000 agents open the Dashboard, the Nginx worker limit `worker_connections` could be exhausted, causing legacy REST APIs (e.g. Billing) to fail with HTTP 502 Bad Gateway.",
-    "requestVersion": "2026.04.03 12.09.06",
-    "version": "2026.04.03 12.09.06",
-    "parentVersion": "2026.04.03 12.04.48"
+    "elementName": "MongoDB Transactions Collection",
+    "description": "RISK: Heavy read aggregation pipelines executing against the `transactions` table could exhaust MongoDB CPU/RAM during peak QPS dashboard loads. This could inadvertently lock out or slow down standard OLTP write operations (e.g., saving new carts/transactions) across the entire system. DB Read Replica routing should be verified.",
+    "requestVersion": "2026.04.03 16.30.22",
+    "version": "2026.04.03 16.30.22",
+    "parentVersion": "2026.04.03 16.28.47"
   },
   {
     "code": "IMP-000003",
-    "systemName": "Core Database Cluster",
+    "systemName": "Internal Auth Microservice",
     "componentName": "API",
-    "elementName": "MongoDB Bookings Collection Lock",
-    "description": "REGRESSION RISK (Persistence Layer): The new Cron Poller runs aggressively `*/5 * * * *` to purge ghost records (Hard Deletes) via batch `$pull`. This could invoke Collection/Document locks, triggering WriteTimeouts for the Core CRM App trying to insert live deals simultaneously.",
-    "requestVersion": "2026.04.03 12.09.06",
-    "version": "2026.04.03 12.09.06",
-    "parentVersion": "2026.04.03 12.04.48"
+    "elementName": "JWKS Endpoint Fetcher",
+    "description": "RISK: If the NestJS Sales Dashboard Backend recursively fetches the JWKS public keys from the Auth Microservice for every single incoming request without utilizing JWKS caching, the dashboard traffic will act as a DDoS vector against the central Auth IdP. JWT Validation must be explicitly verified to be cached.",
+    "requestVersion": "2026.04.03 16.30.22",
+    "version": "2026.04.03 16.30.22",
+    "parentVersion": "2026.04.03 16.28.47"
   },
   {
     "code": "IMP-000004",
-    "systemName": "Redis Caching Layer",
-    "componentName": "API",
-    "elementName": "Redis Memory Eviction",
-    "description": "REGRESSION RISK (Persistence Layer): Huge serialized JSON Metric payloads pushed to Redis without proper TTL could rapidly invoke `volatile-lru` eviction policies, accidentally purging critical Session Tokens used globally by the Authentication System.",
-    "requestVersion": "2026.04.03 12.09.06",
-    "version": "2026.04.03 12.09.06",
-    "parentVersion": "2026.04.03 12.04.48"
-  },
-  {
-    "code": "IMP-000005",
-    "systemName": "Puppeteer Worker Node",
-    "componentName": "API",
-    "elementName": "Shared Kubernetes CPU Throttling",
-    "description": "REGRESSION RISK (Infrastructure Layer): PDF Export via Chromium is extremely CPU-heavy. If the `node:alpine` task isn't rigorously bound with cgroup CPU quota limits (e.g., `requests.cpu`), it will siphon resources from shared nodes and degrade performance of all adjacent microservices.",
-    "requestVersion": "2026.04.03 12.09.06",
-    "version": "2026.04.03 12.09.06",
-    "parentVersion": "2026.04.03 12.04.48"
+    "systemName": "Frontend React Client",
+    "componentName": "UI Item",
+    "elementName": "RevenueChart DOM Node",
+    "description": "RISK: Rapidly toggling between Weekly/Monthly scopes forces the DOM to frequently recalculate SVG nodes. If previous instances of chart components are not cleanly unmounted (mem-leaks), the client browser will inevitably freeze during prolonged session usage.",
+    "requestVersion": "2026.04.03 16.30.22",
+    "version": "2026.04.03 16.30.22",
+    "parentVersion": "2026.04.03 16.28.47"
   }
 ]

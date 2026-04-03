@@ -1,62 +1,52 @@
 [
   {
     "code": "SCO-000001",
-    "systemName": "Sales Dashboard Client",
+    "systemName": "Frontend React Client",
     "componentName": "UI Item",
-    "elementName": "Temporal Date Toggle",
-    "description": "IN-SCOPE: Validating React Context state updates strictly bound to UTC 00:00:00Z - 23:59:59Z and silent refetch initialization.",
-    "requestVersion": "2026.04.03 12.07.41",
-    "version": "2026.04.03 12.07.41",
-    "parentVersion": "2026.04.03 12.04.48"
+    "elementName": "TemporalToggle",
+    "description": "IN-SCOPE: Must verify 4 toggle states (Weekly, Monthly, Quarterly, Annually). Must default to 'Monthly'. Must immediately trigger API refetch upon change. OUT-OF-SCOPE: Exporting data to CSV/PDF from this toggle.",
+    "requestVersion": "2026.04.03 16.28.47",
+    "version": "2026.04.03 16.28.47",
+    "parentVersion": "2026.04.03 16.25.13"
   },
   {
     "code": "SCO-000002",
-    "systemName": "Sales Dashboard Client",
+    "systemName": "Frontend React Client",
     "componentName": "UI Validation rules",
-    "elementName": "PDF Export Constraints",
-    "description": "IN-SCOPE: Enforce UI limitation where Temporal boundaries > 365 Days force Export Button to `disabled=true`. Catch HTTP 429 and 400 gracefully. OUT-OF-SCOPE: AWS S3 Bucket creation policies.",
-    "requestVersion": "2026.04.03 12.07.41",
-    "version": "2026.04.03 12.07.41",
-    "parentVersion": "2026.04.03 12.04.48"
+    "elementName": "KPICard Growth Percentage",
+    "description": "IN-SCOPE: Verify positive growth shows '+' and text color #4CAF50. Verify negative growth shows '-' and text color #F44336. Values > 1,000,000 must render with 'M'.",
+    "requestVersion": "2026.04.03 16.28.47",
+    "version": "2026.04.03 16.28.47",
+    "parentVersion": "2026.04.03 16.25.13"
   },
   {
     "code": "SCO-000003",
-    "systemName": "Sales Dashboard API",
+    "systemName": "Backend NestJS / MongoDB / Redis",
     "componentName": "API",
-    "elementName": "GET /api/v1/dashboard/metrics",
-    "description": "IN-SCOPE: Validate JWT Bearer RBAC isolation, Growth % Math Formula precision, and Redis-to-Mongo Failover Degradation header `X-Performance-Degraded: true`.",
-    "requestVersion": "2026.04.03 12.07.41",
-    "version": "2026.04.03 12.07.41",
-    "parentVersion": "2026.04.03 12.04.48"
+    "elementName": "GET /api/v1/dashboard/sales",
+    "description": "IN-SCOPE: Must load under 1.5 seconds under 100 QPS load. Must validate X-Timezone-Offset header and return currentPeriodRevenue, growthPercentage, and chartData. Aggregation must map transactions using exact transaction_date 3rd-party currency rates fetched from MongoDB.",
+    "requestVersion": "2026.04.03 16.28.47",
+    "version": "2026.04.03 16.28.47",
+    "parentVersion": "2026.04.03 16.25.13"
   },
   {
     "code": "SCO-000004",
-    "systemName": "Sales Dashboard API",
+    "systemName": "Backend Infrastructure Worker",
     "componentName": "API",
-    "elementName": "GET /api/v1/dashboard/stream",
-    "description": "IN-SCOPE: Validate Server-Sent Events push `{ event: 'sync_ready'}` and the exact `0-2000ms` random jitter to prevent Thundering Herd DDoSing. OUT-OF-SCOPE: Real load balancer hardware limits.",
-    "requestVersion": "2026.04.03 12.07.41",
-    "version": "2026.04.03 12.07.41",
-    "parentVersion": "2026.04.03 12.04.48"
+    "elementName": "FetchExchangeRates Cron Job",
+    "description": "IN-SCOPE: Job fires at 00:00 UTC. Test 3-retry mechanism on 1-hour intervals. Test complete-failure fallback logic returning exactly yesterday's rate from DB_COLL_02.",
+    "requestVersion": "2026.04.03 16.28.47",
+    "version": "2026.04.03 16.28.47",
+    "parentVersion": "2026.04.03 16.25.13"
   },
   {
     "code": "SCO-000005",
-    "systemName": "Sales Dashboard API",
+    "systemName": "Backend Infrastructure Auth",
     "componentName": "API",
-    "elementName": "POST /api/v1/dashboard/export/pdf",
-    "description": "IN-SCOPE: Validate asynchronous Puppeteer buffer generation, AWS S3 24-hour exact TTL expiration, and 365-day block rule. OUT-OF-SCOPE: Puppeteer visual layout regression testing.",
-    "requestVersion": "2026.04.03 12.07.41",
-    "version": "2026.04.03 12.07.41",
-    "parentVersion": "2026.04.03 12.04.48"
-  },
-  {
-    "code": "SCO-000006",
-    "systemName": "System Polling Service",
-    "componentName": "API",
-    "elementName": "CRM Delta Cron",
-    "description": "IN-SCOPE: Validating REST diff against External CRM every 5 mins ensuring Hard Deletes are safely purged from Read MongoDB. OUT-OF-SCOPE: Validating the External CRM database architecture.",
-    "requestVersion": "2026.04.03 12.07.41",
-    "version": "2026.04.03 12.07.41",
-    "parentVersion": "2026.04.03 12.04.48"
+    "elementName": "JWT JWKS Authentication Middleware",
+    "description": "IN-SCOPE: API must reject unauthorized requests with HTTP 401. Must properly resolve and decode token payload via Internal Auth Microservice JWKS endpoint. Enforce Region data isolation based on token payload.",
+    "requestVersion": "2026.04.03 16.28.47",
+    "version": "2026.04.03 16.28.47",
+    "parentVersion": "2026.04.03 16.25.13"
   }
 ]

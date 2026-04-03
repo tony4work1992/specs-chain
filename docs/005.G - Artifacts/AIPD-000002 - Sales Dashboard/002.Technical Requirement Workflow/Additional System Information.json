@@ -2,73 +2,73 @@
   {
     "code": "ASI-000001",
     "index": 1,
-    "criteria": "Does the Puppeteer PDF Worker node have explicit concurrency limits mapped to Kubernetes CPU/Memory requests to prevent node death during End of Month bursts?",
+    "criteria": "Define precise SLA and high-availability (HA) requirements for MongoDB and Redis.",
     "pass": false,
-    "hint": "Define the max concurrent Headless Chrome sessions the worker node should accept.",
-    "placeholder": "e.g., Limit concurrent PDF generations to 5 sessions per Pod with a 2GB RAM strict ceiling.",
+    "hint": "Provide the mandated uptime percentage (e.g., 99.9%) and clarify if multi-zone redundancy is required.",
+    "placeholder": "Specify SLA such as '99.9% uptime, single region multi-zone backup'.",
     "references": [
-      {
-        "info": "Puppeteer is extremely resource-heavy and causes Node.js OOM easily on Shared nodes.",
-        "source": "System Context Information.md (Component Registry - Component 8: Puppeteer PDF Worker)"
-      }
+       {
+          "info": "Missing availability expectations for aggregate data delivery.",
+          "source": "8. Constraints & Assumptions: Technical Constraints"
+       }
     ],
-    "additional_info": "We need to ensure EoM (End of Month) traffic spikes don't crash the adjoining microservices across the K8s cluster.",
-    "requestVersion": "2026.04.03 13.23.22",
-    "version": "2026.04.03 13.23.22",
-    "parentVersion": "2026.04.03 12.38.08"
+    "additional_info": "Impacts Docker/Kubernetes scaling policies and cloud infrastructure sizing.",
+    "requestVersion": "2026.04.03 16.16.41",
+    "version": "2026.04.03 16.16.41",
+    "parentVersion": "2026.04.03 16.11.51"
   },
   {
     "code": "ASI-000002",
     "index": 2,
-    "criteria": "Are there automated Data Lifecycle Management (TTL) policies established on the AWS S3 exports bucket to strictly minimize long-term blob storage costs?",
+    "criteria": "Define anticipated Traffic load (DAU / Peak QPS) for Dashboard reads.",
     "pass": false,
-    "hint": "Confirm if S3 objects have an explicit lifecycle rule configured to auto-delete after 24h.",
-    "placeholder": "e.g., S3 Bucket policy enforces auto-deletion of objects tagged 'temporary_export' exactly after 24 hours.",
+    "hint": "Clarify the concurrent user load expected on the Sales Dashboard during peak business hours to calibrate Redis.",
+    "placeholder": "Provide estimated QPS (e.g., 'Peak 100 QPS, 500 Daily Active Users').",
     "references": [
-      {
-        "info": "Objects like PDF/CSV snapshosts are only valuable temporarily before they leak or escalate storage costs.",
-        "source": "System Context Information.md (Component Registry - Component 9: AWS S3 Object Storage)"
-      }
+       {
+          "info": "To guarantee the < 1.5s load time, throughput capacity must be defined.",
+          "source": "3. Database & Storage Architecture: Caching & In-Memory Store"
+       }
     ],
-    "additional_info": "GDPR/Compliance requires us not to store sensitive report data indefinitely if it's considered localized snapshot data.",
-    "requestVersion": "2026.04.03 13.23.22",
-    "version": "2026.04.03 13.23.22",
-    "parentVersion": "2026.04.03 12.38.08"
+    "additional_info": "Necessary to set resource limits (CPU/Memory) on the NestJS and Redis containers.",
+    "requestVersion": "2026.04.03 16.16.41",
+    "version": "2026.04.03 16.16.41",
+    "parentVersion": "2026.04.03 16.11.51"
   },
   {
     "code": "ASI-000003",
     "index": 3,
-    "criteria": "Is there a strictly defined Rate-Limiting or Throttling policy applied directly to the NestJS Gateway routing tier?",
+    "criteria": "Clarify Identity Provider (IdP) integration constraints for JWT.",
     "pass": false,
-    "hint": "Provide explicit Throttler limits for the public Gateway endpoints (especially fetching and SSE mappings).",
-    "placeholder": "e.g., Apply ThrottlerModule overriding max 20 req/sec per IP address natively in NestJS.",
+    "hint": "Is the JWT minted by a legacy internal service, or an external provider like Auth0/Okta? Specify public key retrieval methods.",
+    "placeholder": "Provide JWT validation source (e.g., 'Internal Auth Microservice via JWKS').",
     "references": [
-      {
-        "info": "Monolithic backend exposed natively can easily be subjected to Thundering Herd attacks scaling out via SSE streams.",
-        "source": "System Context Information.md (Component Registry - Component 2: NestJS REST API Gateway)"
-      }
+       {
+          "info": "Authentication assumption lacks implementation direction.",
+          "source": "4. System Architecture & Design Patterns: Authentication & Authorization"
+       }
     ],
-    "additional_info": "Absolute necessity before lifting out of Local Staging into active Production channels.",
-    "requestVersion": "2026.04.03 13.23.22",
-    "version": "2026.04.03 13.23.22",
-    "parentVersion": "2026.04.03 12.38.08"
+    "additional_info": "Crucial for writing the JWT Guards/Middleware securely in the NestJS application.",
+    "requestVersion": "2026.04.03 16.16.41",
+    "version": "2026.04.03 16.16.41",
+    "parentVersion": "2026.04.03 16.11.51"
   },
   {
     "code": "ASI-000004",
     "index": 4,
-    "criteria": "Does the NestJS Background Cron Poller possess a robust Dead-Letter Queue (DLQ) or fallback circuit-breaker mechanism if the External CRM throws HTTP 503?",
+    "criteria": "Determine resilience/fallback policy for the Currency Exchange Worker.",
     "pass": false,
-    "hint": "Outline how the integration safely stalls sync routines without crashing the Node event loop if the endpoint timeouts.",
-    "placeholder": "e.g., Implementing Axios interceptors with a 3-retry backing-off algorithm before sliding into hibernation.",
+    "hint": "If the 3rd-party exchange API is down at 00:00 UTC, what is the exact fallback rule?",
+    "placeholder": "Specify 'Retry after 1 hour, fallback to yesterday's rate after 3 failures'.",
     "references": [
-      {
-        "info": "Synchronizing CRM delta records every 5 minutes puts hard dependency on External CRM SLA.",
-        "source": "System Context Information.md (Component Registry - Component 3 & 7: Cron Poller / CRM Integration)"
-      }
+       {
+          "info": "Lack of error handling definition for critical external dependency.",
+          "source": "7. Key Technical Mechanisms: Background Processing & Cron Jobs"
+       }
     ],
-    "additional_info": "Prevents cascading failures (Thread Starvation) within our own backend.",
-    "requestVersion": "2026.04.03 13.23.22",
-    "version": "2026.04.03 13.23.22",
-    "parentVersion": "2026.04.03 12.38.08"
+    "additional_info": "Determines the failure logic in the Node.js Background worker to prevent dashboard calculation crashes.",
+    "requestVersion": "2026.04.03 16.16.41",
+    "version": "2026.04.03 16.16.41",
+    "parentVersion": "2026.04.03 16.11.51"
   }
 ]

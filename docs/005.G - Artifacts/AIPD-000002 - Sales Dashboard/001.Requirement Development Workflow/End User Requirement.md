@@ -1,62 +1,64 @@
 # **HIGH-LEVEL REQUIREMENTS DOCUMENT**
 
-**Request Version:** 2026.04.02 21.15.21
-**Version:** 2026.04.02 21.15.21
-**Parent Version:** 2026.04.02 21.15.21
+**Request Version:** 2026.04.03 15.57.16
+**Version:** 2026.04.03 15.57.16
+**Parent Version:** 2026.04.03 15.57.16
 
-## **Feature: Sales Dashboard (AIPD-000002)**
+## **Feature: Sales Dashboard**
 
 ---
 
 ## **1. Target Audience**
 
-This feature is designed for Sales Management and Operations Teams with the following responsibilities:
+This feature is designed for Sales Management and Operational Teams with the following primary responsibilities:
 
-* **Sales Managers / Directors:**
-  Need to monitor global and team-level historical sales performance effectively to track progress against distinct temporal milestones (Weekly, Monthly, Quarterly, Annually).
+* **[Sales Managers and Directors]:**
+  Requires high-level visibility into team performance and revenue generation across various time horizons (Weekly, Monthly, Quarterly, Annually) to ensure strategic targets are met.
 
-* **Sales Operations / Analysts:**
-  Require macro-level insights to compare temporal metrics across different quarters and years for performance auditing and revenue forecasting.
+* **[Sales Analysts and Operations]:**
+  Needs access to granular temporal metrics to conduct trend analysis, identify seasonal patterns, and present historical data to refine accurate revenue forecasting models.
 
 ---
 
 ## **2. User Expectations**
 
-* **Comprehensive Temporal Analysis:**
-  Users expect the ability to instantly toggle and pivot metric views across distinct time dimensions (Weekly, Monthly, Quarterly, and Annually) without page reloads.
+* **[Temporal Agility and Control]:**
+  The user expects a seamless and immediate way to switch the context of the entire dashboard across Weekly, Monthly, Quarterly, and Annually viewpoints without losing context or experiencing significant loading delays.
 
-* **Metric Consistency & Historical Tracking:**
-  Expect all displayed KPIs to accurately aggregate past and current revenues across corresponding periods, showing growth or decline percentages (e.g., Year-over-Year, Quarter-over-Quarter).
+* **[Comprehensive Trend Visualization]:**
+  The user expects data to be intuitively plotted over time, allowing for the quick identification of sales trajectories, comparative growth (e.g., Year-over-Year, Quarter-over-Quarter), and anomalies across the selected timelines.
 
-* **Intuitive and Standardized UI:**
-  Expect standardized temporal charting elements (Line charts for Year-over-Year, Bar charts for Monthly comparison, etc.) that clearly visualize long-term trends versus short-term targets.
+* **[Actionable Metrics Consistency]:**
+  The user expects that all subsidiary metrics (KPI cards, top-selling items lists, or conversion rates) dynamically and accurately recalculate to map exactly to the chosen temporal scope.
 
 ---
 
 ## **3. Component Requirements**
 
-The Sales Dashboard focuses on timeline-based metrics and is divided into 3 main sections:
+The Sales Dashboard is divided into 3 main sections:
 
 ---
 
-### **3.1. Temporal Metric Control Panel**
+### **3.1. Temporal Filtering Controller**
 
-* **Time-Slice Toggle:**
-  A primary interactive filter/switch element allowing the user to select the master dashboard view span (Weekly, Monthly, Quarterly, Annually). The whole dashboard reacts to this selection.
-
----
-
-### **3.2. Core Performance KPIs (Filtered Context)**
-
-* **Period Revenue Card:**
-  Displays the total accumulated sales revenue strictly scoped to the active temporal timeframe.
-  
-* **Growth Indicator:**
-  An inline directional element visually expressing the percentage growth or loss compared to the strictly equivalent prior temporal period (e.g., This Quarter vs Last Quarter).
+* **[Time-Horizon Selector]:**
+  A persistent top-level navigation or control bar allowing users to effortlessly switch the primary time dimension of the dashboard (Weekly, Monthly, Quarterly, Annually). The rest of the dashboard acts as a slave to this master selection.
 
 ---
 
-### **3.3. Long-Term and Short-Term Visualizations**
+### **3.2. Primary KPI Overview**
 
-* **Temporal Distribution Graph:**
-  A time-series chart directly linked to the user's temporal selection, offering a continuous trend outline representing the aggregated metrics (Sales volume) across the required milestones (e.g., 12 bars for monthly over an annual view).
+* **[Revenue & Growth Snapshot Card]:**
+  Displays the macro revenue figure for the selected time span, including a clear visual indicator of growth or decline compared to the immediate preceding period of equal length.
+
+* **[Transaction Volume Card]:**
+  Displays the absolute number of sales or deals closed within the selected time window.
+
+---
+
+### **3.3. Temporal Analytics Visualization**
+
+* **[Time-Series Revenue Chart]:**
+  A primary line or bar chart visualizing revenue spread over the selected temporal dimension (e.g., showing 12 bars for months within the "Annually" view).
+
+*(Add additional components and elements as needed to fully capture high-level structure)*
