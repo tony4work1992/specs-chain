@@ -1,0 +1,232 @@
+{
+  "_description": "Keyword-to-Files Index — Use this for SEMANTIC search. When an AI Agent encounters a term, lookup here FIRST before grep.",
+  "_version": "2026.04.03",
+
+  "Redis": {
+    "aliases": ["redis", "cache cluster", "in-memory store", "volatile-lru", "RESP"],
+    "relatedComponents": ["Redis Cache"],
+    "files": [
+      "004. System Context Information/AIPD-000002.component-registry.md",
+      "004. System Context Information/AIPD-000002.database-architecture.md",
+      "004. System Context Information/AIPD-000002.infrastructure-deployment.md",
+      "005. Additional System Information/AIPD-000002.ASI-000001.sla-ha-requirements.json",
+      "005. Additional System Information/AIPD-000002.ASI-000002.traffic-load-capacity.json",
+      "006. Functional Requirement Document/AIPD-000002.frd-functional-behavior.md",
+      "006. Functional Requirement Document/AIPD-000002.frd-presentation-constraints.md",
+      "006. Functional Requirement Document/AIPD-000002.frd-scope-context.md",
+      "007. Additional Functional Information/AIPD-000002.AFI-000001.cache-stampede-policy.json",
+      "008. Function Specifications/AIPD-000002.function-specifications.json",
+      "008. Function Specifications/AIPD-000002.function-specifications.md",
+      "009. API Tactic Architecture/AIPD-000002.SLICE_02.dashboard-metrics-module.json",
+      "009. API Tactic Architecture/AIPD-000002.SLICE_03.background-poller-module.json",
+      "010. Flow Sequence Architecture/AIPD-000002.flow-background-cache-invalidation.md",
+      "011. Strategic Architecture/AIPD-000002.c4-container-diagram.md",
+      "013. Test Cases/AIPD-000002.CAS-000003.redis-oom-failover.json",
+      "014. Test Checklist/AIPD-000002.CHE-000006.legacy-checkout-redis-down.json",
+      "015. Test Impact/AIPD-000002.IMP-000001.redis-checkout-coupling.json",
+      "016. Test Scope/AIPD-000002.SCO-000003.api-dashboard-scope.json",
+      "017. Test Steps/AIPD-000002.TES-000002.CAS-000003.redis-oom-steps.json"
+    ]
+  },
+
+  "MongoDB": {
+    "aliases": ["mongodb", "mongo", "document database", "aggregation pipeline", "Mongoose"],
+    "relatedComponents": ["MongoDB"],
+    "files": [
+      "004. System Context Information/AIPD-000002.component-registry.md",
+      "004. System Context Information/AIPD-000002.database-architecture.md",
+      "004. System Context Information/AIPD-000002.infrastructure-deployment.md",
+      "005. Additional System Information/AIPD-000002.ASI-000001.sla-ha-requirements.json",
+      "006. Functional Requirement Document/AIPD-000002.frd-functional-behavior.md",
+      "006. Functional Requirement Document/AIPD-000002.frd-scope-context.md",
+      "007. Additional Functional Information/AIPD-000002.AFI-000002.exchange-rate-indexing.json",
+      "007. Additional Functional Information/AIPD-000002.AFI-000003.rbac-data-isolation.json",
+      "008. Function Specifications/AIPD-000002.function-specifications.json",
+      "009. API Tactic Architecture/AIPD-000002.SLICE_02.dashboard-metrics-module.json",
+      "010. Flow Sequence Architecture/AIPD-000002.flow-background-cache-invalidation.md",
+      "011. Strategic Architecture/AIPD-000002.c4-container-diagram.md",
+      "014. Test Checklist/AIPD-000002.CHE-000004.cron-retry-fallback.json",
+      "014. Test Checklist/AIPD-000002.CHE-000007.mongodb-concurrent-load.json",
+      "015. Test Impact/AIPD-000002.IMP-000002.mongodb-oltp-contention.json",
+      "016. Test Scope/AIPD-000002.SCO-000003.api-dashboard-scope.json",
+      "017. Test Steps/AIPD-000002.TES-000002.CAS-000003.redis-oom-steps.json",
+      "017. Test Steps/AIPD-000002.TES-000002.CAS-000004.crm-delete-sync-steps.json"
+    ]
+  },
+
+  "currency": {
+    "aliases": ["exchange rate", "USD", "conversion", "FX", "foreign currency"],
+    "relatedComponents": ["Cron Worker (Exchange Rate)", "MongoDB"],
+    "files": [
+      "002. End User Information Collection/AIPD-000002.INF-000004.currency-conversion-policy.json",
+      "003. Business Requirement Document/AIPD-000002.brd-business-rules.md",
+      "003. Business Requirement Document/AIPD-000002.brd-constraints-assumptions.md",
+      "003. Business Requirement Document/AIPD-000002.brd-scope-and-objectives.md",
+      "004. System Context Information/AIPD-000002.infrastructure-deployment.md",
+      "005. Additional System Information/AIPD-000002.ASI-000004.currency-worker-resilience.json",
+      "006. Functional Requirement Document/AIPD-000002.frd-functional-behavior.md",
+      "006. Functional Requirement Document/AIPD-000002.frd-presentation-constraints.md",
+      "007. Additional Functional Information/AIPD-000002.AFI-000002.exchange-rate-indexing.json",
+      "008. Function Specifications/AIPD-000002.function-specifications.json",
+      "014. Test Checklist/AIPD-000002.CHE-000004.cron-retry-fallback.json",
+      "016. Test Scope/AIPD-000002.SCO-000003.api-dashboard-scope.json",
+      "016. Test Scope/AIPD-000002.SCO-000004.cron-exchange-rate-scope.json"
+    ]
+  },
+
+  "timezone": {
+    "aliases": ["UTC", "X-Timezone-Offset", "localized", "date boundary", "temporal boundary"],
+    "relatedComponents": ["NestJS API Gateway", "React Client"],
+    "files": [
+      "002. End User Information Collection/AIPD-000002.INF-000002.timezone-aggregation-standards.json",
+      "003. Business Requirement Document/AIPD-000002.brd-business-rules.md",
+      "003. Business Requirement Document/AIPD-000002.brd-scope-and-objectives.md",
+      "004. System Context Information/AIPD-000002.component-registry.md",
+      "004. System Context Information/AIPD-000002.tech-stack.md",
+      "006. Functional Requirement Document/AIPD-000002.frd-functional-requirements.md",
+      "006. Functional Requirement Document/AIPD-000002.frd-scope-context.md",
+      "009. API Tactic Architecture/AIPD-000002.SLICE_02.dashboard-metrics-module.json",
+      "014. Test Checklist/AIPD-000002.CHE-000003.api-load-test.json"
+    ]
+  },
+
+  "JWT": {
+    "aliases": ["JWKS", "authentication", "authorization", "Bearer token", "auth guard", "JwtAuthGuard"],
+    "relatedComponents": ["Auth Microservice (JWKS)", "NestJS API Gateway"],
+    "files": [
+      "004. System Context Information/AIPD-000002.infrastructure-deployment.md",
+      "004. System Context Information/AIPD-000002.system-design-patterns.md",
+      "005. Additional System Information/AIPD-000002.ASI-000003.idp-jwt-integration.json",
+      "006. Functional Requirement Document/AIPD-000002.frd-presentation-constraints.md",
+      "007. Additional Functional Information/AIPD-000002.AFI-000003.rbac-data-isolation.json",
+      "008. Function Specifications/AIPD-000002.function-specifications.json",
+      "008. Function Specifications/AIPD-000002.function-specifications.md",
+      "014. Test Checklist/AIPD-000002.CHE-000005.jwt-auth-region-isolation.json",
+      "014. Test Checklist/AIPD-000002.CHE-000008.jwks-cache-ddos-prevention.json",
+      "015. Test Impact/AIPD-000002.IMP-000003.jwks-ddos-risk.json",
+      "016. Test Scope/AIPD-000002.SCO-000005.jwt-auth-middleware-scope.json"
+    ]
+  },
+
+  "temporal": {
+    "aliases": ["weekly", "monthly", "quarterly", "annually", "temporal toggle", "time-horizon", "date range"],
+    "relatedComponents": ["React Client", "NestJS API Gateway"],
+    "files": [
+      "001. End User Requirement/AIPD-000002.end-user-requirement.md",
+      "002. End User Information Collection/AIPD-000002.INF-000001.fiscal-calendar-boundaries.json",
+      "003. Business Requirement Document/AIPD-000002.brd-constraints-assumptions.md",
+      "003. Business Requirement Document/AIPD-000002.brd-functional-overview.md",
+      "003. Business Requirement Document/AIPD-000002.brd-scope-and-objectives.md",
+      "004. System Context Information/AIPD-000002.component-registry.md",
+      "004. System Context Information/AIPD-000002.tech-stack.md",
+      "006. Functional Requirement Document/AIPD-000002.frd-functional-requirements.md",
+      "008. Function Specifications/AIPD-000002.function-specifications.md",
+      "012. UI Component Architecture/AIPD-000002.ui-molecules.json",
+      "012. UI Component Architecture/AIPD-000002.ui-organisms.json",
+      "012. UI Component Architecture/AIPD-000002.ui-pages.json",
+      "013. Test Cases/AIPD-000002.CAS-000001.temporal-toggle-positive.json",
+      "013. Test Cases/AIPD-000002.CAS-000002.temporal-toggle-negative.json",
+      "014. Test Checklist/AIPD-000002.CHE-000001.temporal-toggle-verify.json",
+      "016. Test Scope/AIPD-000002.SCO-000001.temporal-toggle-scope.json"
+    ]
+  },
+
+  "PDF": {
+    "aliases": ["export", "Puppeteer", "report generation", "download", "S3 presigned URL"],
+    "relatedComponents": ["Puppeteer PDF Worker", "AWS S3", "NestJS API Gateway"],
+    "files": [
+      "003. Business Requirement Document/AIPD-000002.brd-scope-and-objectives.md",
+      "006. Functional Requirement Document/AIPD-000002.frd-scope-context.md",
+      "008. Function Specifications/AIPD-000002.function-specifications.md",
+      "009. API Tactic Architecture/AIPD-000002.SLICE_01.export-module.json",
+      "010. Flow Sequence Architecture/AIPD-000002.flow-pdf-generation.md",
+      "011. Strategic Architecture/AIPD-000002.c4-container-diagram.md",
+      "011. Strategic Architecture/AIPD-000002.c4-system-context.md",
+      "012. UI Component Architecture/AIPD-000002.ui-molecules.json",
+      "013. Test Cases/AIPD-000002.CAS-000001.temporal-toggle-positive.json",
+      "013. Test Cases/AIPD-000002.CAS-000002.temporal-toggle-negative.json",
+      "017. Test Steps/AIPD-000002.TES-000001.CAS-000001.date-range-365.json"
+    ]
+  },
+
+  "CRM": {
+    "aliases": ["CRM integration", "sales bookings", "external CRM", "delta sync", "webhook"],
+    "relatedComponents": ["External CRM", "Cron Worker (CRM Poller)"],
+    "files": [
+      "008. Function Specifications/AIPD-000002.function-specifications.md",
+      "009. API Tactic Architecture/AIPD-000002.SLICE_03.background-poller-module.json",
+      "010. Flow Sequence Architecture/AIPD-000002.flow-background-cache-invalidation.md",
+      "011. Strategic Architecture/AIPD-000002.c4-container-diagram.md",
+      "011. Strategic Architecture/AIPD-000002.c4-system-context.md",
+      "013. Test Cases/AIPD-000002.CAS-000004.crm-hard-delete-sync.json",
+      "017. Test Steps/AIPD-000002.TES-000002.CAS-000004.crm-delete-sync-steps.json"
+    ]
+  },
+
+  "cache invalidation": {
+    "aliases": ["cache stampede", "SCAN UNLINK", "EVT_01", "sync.completed.invalidate_cache", "eviction"],
+    "relatedComponents": ["Redis Cache", "Cron Worker (CRM Poller)"],
+    "files": [
+      "006. Functional Requirement Document/AIPD-000002.frd-functional-behavior.md",
+      "007. Additional Functional Information/AIPD-000002.AFI-000001.cache-stampede-policy.json",
+      "008. Function Specifications/AIPD-000002.function-specifications.md",
+      "009. API Tactic Architecture/AIPD-000002.SLICE_03.background-poller-module.json",
+      "010. Flow Sequence Architecture/AIPD-000002.flow-background-cache-invalidation.md",
+      "015. Test Impact/AIPD-000002.IMP-000001.redis-checkout-coupling.json"
+    ]
+  },
+
+  "RBAC": {
+    "aliases": ["role-based access", "data isolation", "region filtering", "permissions", "authorization"],
+    "relatedComponents": ["Auth Microservice (JWKS)", "NestJS API Gateway"],
+    "files": [
+      "007. Additional Functional Information/AIPD-000002.AFI-000003.rbac-data-isolation.json",
+      "008. Function Specifications/AIPD-000002.function-specifications.json",
+      "011. Strategic Architecture/AIPD-000002.c4-container-diagram.md",
+      "014. Test Checklist/AIPD-000002.CHE-000005.jwt-auth-region-isolation.json",
+      "016. Test Scope/AIPD-000002.SCO-000005.jwt-auth-middleware-scope.json"
+    ]
+  },
+
+  "CQRS": {
+    "aliases": ["command query responsibility segregation", "query handler", "command handler", "read model"],
+    "relatedComponents": ["NestJS API Gateway"],
+    "files": [
+      "004. System Context Information/AIPD-000002.system-design-patterns.md",
+      "006. Functional Requirement Document/AIPD-000002.frd-presentation-constraints.md",
+      "007. Additional Functional Information/AIPD-000002.AFI-000001.cache-stampede-policy.json"
+    ]
+  },
+
+  "revenue": {
+    "aliases": ["sales metrics", "growth percentage", "KPI", "transaction amount", "period-over-period"],
+    "relatedComponents": ["React Client", "NestJS API Gateway", "MongoDB"],
+    "files": [
+      "001. End User Requirement/AIPD-000002.end-user-requirement.md",
+      "002. End User Information Collection/AIPD-000002.INF-000004.currency-conversion-policy.json",
+      "003. Business Requirement Document/AIPD-000002.brd-functional-overview.md",
+      "003. Business Requirement Document/AIPD-000002.brd-scope-and-objectives.md",
+      "006. Functional Requirement Document/AIPD-000002.frd-functional-requirements.md",
+      "006. Functional Requirement Document/AIPD-000002.frd-presentation-constraints.md",
+      "008. Function Specifications/AIPD-000002.function-specifications.json",
+      "014. Test Checklist/AIPD-000002.CHE-000002.kpicard-growth-display.json",
+      "016. Test Scope/AIPD-000002.SCO-000002.kpi-growth-display-scope.json"
+    ]
+  },
+
+  "cron": {
+    "aliases": ["background job", "scheduled task", "worker", "*/5 * * * *", "00:00 UTC"],
+    "relatedComponents": ["Cron Worker (Exchange Rate)", "Cron Worker (CRM Poller)"],
+    "files": [
+      "004. System Context Information/AIPD-000002.infrastructure-deployment.md",
+      "005. Additional System Information/AIPD-000002.ASI-000004.currency-worker-resilience.json",
+      "006. Functional Requirement Document/AIPD-000002.frd-functional-behavior.md",
+      "008. Function Specifications/AIPD-000002.function-specifications.json",
+      "008. Function Specifications/AIPD-000002.function-specifications.md",
+      "009. API Tactic Architecture/AIPD-000002.SLICE_03.background-poller-module.json",
+      "011. Strategic Architecture/AIPD-000002.c4-container-diagram.md",
+      "014. Test Checklist/AIPD-000002.CHE-000004.cron-retry-fallback.json",
+      "016. Test Scope/AIPD-000002.SCO-000004.cron-exchange-rate-scope.json"
+    ]
+  }
+}

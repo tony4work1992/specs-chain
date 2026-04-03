@@ -1,0 +1,13 @@
+{
+  "_metadata": { "featureCode": "AIPD-000002", "featureName": "Sales Dashboard", "sourceFile": "003.Software Architecture Workflow/API Tactic Architecture.json", "sourceVersion": "2026.04.03 14.29.29" },
+  "id": "SLICE_03",
+  "module_name": "Background Poller Module",
+  "requestVersion": "2026.04.03 14.29.29",
+  "version": "2026.04.03 14.29.29",
+  "parentVersion": "2026.04.03 13.56.27",
+  "items": [
+    { "layer": "Presentation/Adapter", "file_name": "crm-cron.adapter.ts", "responsibility": "Binds to `@Cron('*/5 * * * *')`. Initiates synchronizer task.", "dependencies": "SyncSalesDataCommand" },
+    { "layer": "Application", "file_name": "sync-sales.command-handler.ts", "responsibility": "Requests delta from `ICrmWebHookService`. Pushes array to `ISalesRepository`. Emits `sync.completed.invalidate_cache` event.", "dependencies": "ICrmWebHookService, ISalesRepository, EventPublisher" },
+    { "layer": "Infrastructure", "file_name": "redis-invalidation.event-listener.ts", "responsibility": "Listens for `sync.completed.invalidate_cache`. Executes `SCAN 0 ... UNLINK` logic over the Redis cluster.", "dependencies": "RedisClient" }
+  ]
+}

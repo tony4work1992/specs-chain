@@ -1,0 +1,11 @@
+{
+  "_metadata": { "featureCode": "AIPD-000002", "featureName": "Sales Dashboard", "sourceFile": "002.Technical Requirement Workflow/Additional Functional Information.json", "sourceVersion": "2026.04.03 16.21.08" },
+  "code": "AFI-000002", "index": 2,
+  "criteria": "Determine exact indexing strategy and schema for MongoDB Exchange Rate collection.",
+  "pass": false,
+  "hint": "Provide explicit instructions on compound indexes (e.g., currency_code + date) to ensure fast lookup during the aggregation pipeline processing.",
+  "placeholder": "Specify 'Create unique compound index on { date: 1, currency: 1 }'.",
+  "references": [{ "info": "Vague data persistence definition for cron worker.", "source": "6.1. Currency Exchange Processing: FR-000005" }],
+  "additional_info": "Prevents slow aggregation loops joining large historical rate tables in MongoDB.",
+  "requestVersion": "2026.04.03 16.21.08", "version": "2026.04.03 16.21.08", "parentVersion": "2026.04.03 16.18.42"
+}

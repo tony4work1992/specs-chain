@@ -1,0 +1,6 @@
+{
+  "_metadata": { "featureCode": "AIPD-000002", "featureName": "Sales Dashboard", "sourceFile": "003.Testing Requirement Workflow/Test Scope.json", "sourceVersion": "2026.04.03 16.28.47" },
+  "code": "SCO-000005", "systemName": "Backend Infrastructure Auth", "componentName": "API", "elementName": "JWT JWKS Authentication Middleware",
+  "description": "IN-SCOPE: API must reject unauthorized requests with HTTP 401. Must properly resolve and decode token payload via Internal Auth Microservice JWKS endpoint. Enforce Region data isolation based on token payload.",
+  "requestVersion": "2026.04.03 16.28.47", "version": "2026.04.03 16.28.47", "parentVersion": "2026.04.03 16.25.13"
+}

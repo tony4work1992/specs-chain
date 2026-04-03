@@ -1,0 +1,101 @@
+{
+  "_description": "Master Knowledge Index — AI Agent reads this file FIRST to understand what knowledge is available and how to navigate it.",
+  "_version": "2026.04.03",
+  "_usage": "1. Read this manifest to understand available features and components. 2. Use by-component.json for impact analysis. 3. Use by-feature.json for feature-scoped queries. 4. Use by-keyword.json for semantic search.",
+
+  "features": {
+    "AIPD-000002": {
+      "name": "Sales Dashboard",
+      "status": "production",
+      "description": "Highly responsive, unified interface for real-time tracking of macro and micro revenue metrics with temporal filtering (Weekly, Monthly, Quarterly, Annually).",
+      "components": [
+        "React Client",
+        "NestJS API Gateway",
+        "MongoDB",
+        "Redis Cache",
+        "Cron Worker (Exchange Rate)",
+        "Cron Worker (CRM Poller)",
+        "Puppeteer PDF Worker",
+        "External CRM",
+        "AWS S3",
+        "Auth Microservice (JWKS)"
+      ],
+      "techStack": {
+        "frontend": ["React", "TypeScript", "Material UI", "Recharts"],
+        "backend": ["NestJS", "TypeScript", "CQRS"],
+        "database": ["MongoDB 7"],
+        "cache": ["Redis"],
+        "infrastructure": ["Docker Compose"]
+      },
+      "businessRules": ["BR-01 Calendar Year Standard", "BR-02 Timezone Handling", "BR-03 Currency Normalization", "BR-04 Incomplete Periods"],
+      "apiEndpoints": [
+        { "method": "GET", "path": "/api/v1/dashboard/sales", "purpose": "Dashboard metrics aggregation" },
+        { "method": "POST", "path": "/api/v1/export/pdf", "purpose": "PDF report generation" }
+      ],
+      "knowledgeCategories": {
+        "what-we-build": {
+          "description": "Requirements, business rules, scope — answers WHY and WHAT",
+          "folders": [
+            "001. End User Requirement",
+            "002. End User Information Collection",
+            "003. Business Requirement Document"
+          ],
+          "fileCount": 9
+        },
+        "how-we-build": {
+          "description": "Technical stack, architecture, specifications — answers HOW",
+          "folders": [
+            "004. System Context Information",
+            "005. Additional System Information",
+            "006. Functional Requirement Document",
+            "007. Additional Functional Information",
+            "008. Function Specifications",
+            "009. API Tactic Architecture",
+            "010. Flow Sequence Architecture",
+            "011. Strategic Architecture",
+            "012. UI Component Architecture"
+          ],
+          "fileCount": 35
+        },
+        "how-we-test": {
+          "description": "Test boundaries, cases, execution steps — answers HOW TO VERIFY",
+          "folders": [
+            "013. Test Cases",
+            "014. Test Checklist",
+            "016. Test Scope",
+            "017. Test Steps"
+          ],
+          "fileCount": 22
+        },
+        "what-can-break": {
+          "description": "Risk analysis, cross-system impacts — answers WHAT IF",
+          "folders": [
+            "015. Test Impact"
+          ],
+          "fileCount": 4
+        }
+      },
+      "totalFiles": 66
+    }
+  },
+
+  "folderRegistry": {
+    "001. End User Requirement": { "category": "what-we-build", "artifactType": "End User Requirement", "skillSource": "Skill 01" },
+    "002. End User Information Collection": { "category": "what-we-build", "artifactType": "Information Collection", "skillSource": "Skill 02" },
+    "003. Business Requirement Document": { "category": "what-we-build", "artifactType": "BRD", "skillSource": "Skill 03" },
+    "004. System Context Information": { "category": "how-we-build", "artifactType": "System Context", "skillSource": "Skill 04" },
+    "005. Additional System Information": { "category": "how-we-build", "artifactType": "Additional System Info", "skillSource": "Skill 05" },
+    "006. Functional Requirement Document": { "category": "how-we-build", "artifactType": "FRD", "skillSource": "Skill 06" },
+    "007. Additional Functional Information": { "category": "how-we-build", "artifactType": "Additional Functional Info", "skillSource": "Skill 07" },
+    "008. Function Specifications": { "category": "how-we-build", "artifactType": "Function Specifications", "skillSource": "Skill 08" },
+    "009. API Tactic Architecture": { "category": "how-we-build", "artifactType": "Vertical Slices", "skillSource": "Skill 17" },
+    "010. Flow Sequence Architecture": { "category": "how-we-build", "artifactType": "Sequence Diagrams", "skillSource": "Skill 18" },
+    "011. Strategic Architecture": { "category": "how-we-build", "artifactType": "C4 Diagrams", "skillSource": "Skill 16" },
+    "012. UI Component Architecture": { "category": "how-we-build", "artifactType": "Atomic Design", "skillSource": "Skill 15" },
+    "013. Test Cases": { "category": "how-we-test", "artifactType": "Test Cases", "skillSource": "Skill 12" },
+    "014. Test Checklist": { "category": "how-we-test", "artifactType": "Test Checklist", "skillSource": "Skill 11" },
+    "015. Test Impact": { "category": "what-can-break", "artifactType": "Impact Analysis", "skillSource": "Skill 10" },
+    "016. Test Scope": { "category": "how-we-test", "artifactType": "Test Scope", "skillSource": "Skill 09" },
+    "017. Test Steps": { "category": "how-we-test", "artifactType": "Test Steps", "skillSource": "Skill 13" }
+  }
+}

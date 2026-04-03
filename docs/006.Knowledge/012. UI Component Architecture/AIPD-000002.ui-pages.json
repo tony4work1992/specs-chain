@@ -1,0 +1,7 @@
+{
+  "_metadata": { "featureCode": "AIPD-000002", "featureName": "Sales Dashboard", "sourceFile": "003.Software Architecture Workflow/UI Component Architecture.json", "sourceVersion": "2026.04.03 14.29.29" },
+  "id": "SEC-005", "title": "Table 5: Pages",
+  "items": [
+    { "id": "COM_08", "component_name": "IntelligenceCommercePage", "classification": "Smart", "props": "None", "state_bindings": "Context Provider Root for temporalMode", "api_dependency": "None", "dom_hierarchy": "<DashboardLayout><DashboardToolbar /><SalesBoardMetrics /><LoadingOverlay isVisible={isExportingPdf} /></DashboardLayout>" }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "_metadata": { "featureCode": "AIPD-000002", "featureName": "Sales Dashboard", "sourceFile": "003.Testing Requirement Workflow/Test Steps.json", "sourceVersion": "2026.04.03 12.15.34" },
+  "testGroup": "TES-000001", "testCase": "CAS-000002",
+  "steps": [
+    { "id": "22222222-2222-2222-2222-222222222221", "stepNumber": "STE-000004", "description": "[Target Component: React State Context] Interactivity: Select a 366 Days Date Range (e.g. 2024-01-01 to 2025-01-01).", "expectedResults": [{ "id": 1, "description": "Date state updates, BUT Export Button explicitly switches state to `disabled=true` protecting the backend limit." }] },
+    { "id": "22222222-2222-2222-2222-222222222222", "stepNumber": "STE-000005", "description": "[Target Component: POST /api/v1/dashboard/export/pdf Endpoint] Using Postman or API injector, forge a POST request bypassing the UI explicitly using the 366-day JSON payload.", "expectedResults": [{ "id": 1, "description": "Backend validator immediately catches the violation and terminates the request returning exact HTTP 400 Bad Request." }] }
+  ]
+}

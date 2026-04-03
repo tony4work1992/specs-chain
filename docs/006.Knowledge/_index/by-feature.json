@@ -1,0 +1,85 @@
+{
+  "_description": "Feature-to-Files Index — Use this to answer: 'Show me ALL knowledge about feature X'",
+  "_version": "2026.04.03",
+
+  "AIPD-000002": {
+    "name": "Sales Dashboard",
+    "status": "production",
+    "filesByCategory": {
+      "what-we-build": [
+        "001. End User Requirement/AIPD-000002.end-user-requirement.md",
+        "002. End User Information Collection/AIPD-000002.INF-000001.fiscal-calendar-boundaries.json",
+        "002. End User Information Collection/AIPD-000002.INF-000002.timezone-aggregation-standards.json",
+        "002. End User Information Collection/AIPD-000002.INF-000003.subsidiary-metrics-scope.json",
+        "002. End User Information Collection/AIPD-000002.INF-000004.currency-conversion-policy.json",
+        "003. Business Requirement Document/AIPD-000002.brd-scope-and-objectives.md",
+        "003. Business Requirement Document/AIPD-000002.brd-functional-overview.md",
+        "003. Business Requirement Document/AIPD-000002.brd-business-rules.md",
+        "003. Business Requirement Document/AIPD-000002.brd-constraints-assumptions.md"
+      ],
+      "how-we-build": [
+        "004. System Context Information/AIPD-000002.tech-stack.md",
+        "004. System Context Information/AIPD-000002.database-architecture.md",
+        "004. System Context Information/AIPD-000002.system-design-patterns.md",
+        "004. System Context Information/AIPD-000002.infrastructure-deployment.md",
+        "004. System Context Information/AIPD-000002.component-registry.md",
+        "005. Additional System Information/AIPD-000002.ASI-000001.sla-ha-requirements.json",
+        "005. Additional System Information/AIPD-000002.ASI-000002.traffic-load-capacity.json",
+        "005. Additional System Information/AIPD-000002.ASI-000003.idp-jwt-integration.json",
+        "005. Additional System Information/AIPD-000002.ASI-000004.currency-worker-resilience.json",
+        "006. Functional Requirement Document/AIPD-000002.frd-scope-context.md",
+        "006. Functional Requirement Document/AIPD-000002.frd-functional-requirements.md",
+        "006. Functional Requirement Document/AIPD-000002.frd-functional-behavior.md",
+        "006. Functional Requirement Document/AIPD-000002.frd-presentation-constraints.md",
+        "007. Additional Functional Information/AIPD-000002.AFI-000001.cache-stampede-policy.json",
+        "007. Additional Functional Information/AIPD-000002.AFI-000002.exchange-rate-indexing.json",
+        "007. Additional Functional Information/AIPD-000002.AFI-000003.rbac-data-isolation.json",
+        "007. Additional Functional Information/AIPD-000002.AFI-000004.payload-compression.json",
+        "008. Function Specifications/AIPD-000002.function-specifications.md",
+        "008. Function Specifications/AIPD-000002.function-specifications.json",
+        "009. API Tactic Architecture/AIPD-000002.SLICE_01.export-module.json",
+        "009. API Tactic Architecture/AIPD-000002.SLICE_02.dashboard-metrics-module.json",
+        "009. API Tactic Architecture/AIPD-000002.SLICE_03.background-poller-module.json",
+        "010. Flow Sequence Architecture/AIPD-000002.flow-pdf-generation.md",
+        "010. Flow Sequence Architecture/AIPD-000002.flow-background-cache-invalidation.md",
+        "011. Strategic Architecture/AIPD-000002.c4-system-context.md",
+        "011. Strategic Architecture/AIPD-000002.c4-container-diagram.md",
+        "012. UI Component Architecture/AIPD-000002.ui-atoms.json",
+        "012. UI Component Architecture/AIPD-000002.ui-molecules.json",
+        "012. UI Component Architecture/AIPD-000002.ui-organisms.json",
+        "012. UI Component Architecture/AIPD-000002.ui-templates.json",
+        "012. UI Component Architecture/AIPD-000002.ui-pages.json"
+      ],
+      "how-we-test": [
+        "013. Test Cases/AIPD-000002.CAS-000001.temporal-toggle-positive.json",
+        "013. Test Cases/AIPD-000002.CAS-000002.temporal-toggle-negative.json",
+        "013. Test Cases/AIPD-000002.CAS-000003.redis-oom-failover.json",
+        "013. Test Cases/AIPD-000002.CAS-000004.crm-hard-delete-sync.json",
+        "014. Test Checklist/AIPD-000002.CHE-000001.temporal-toggle-verify.json",
+        "014. Test Checklist/AIPD-000002.CHE-000002.kpicard-growth-display.json",
+        "014. Test Checklist/AIPD-000002.CHE-000003.api-load-test.json",
+        "014. Test Checklist/AIPD-000002.CHE-000004.cron-retry-fallback.json",
+        "014. Test Checklist/AIPD-000002.CHE-000005.jwt-auth-region-isolation.json",
+        "014. Test Checklist/AIPD-000002.CHE-000006.legacy-checkout-redis-down.json",
+        "014. Test Checklist/AIPD-000002.CHE-000007.mongodb-concurrent-load.json",
+        "014. Test Checklist/AIPD-000002.CHE-000008.jwks-cache-ddos-prevention.json",
+        "014. Test Checklist/AIPD-000002.CHE-000009.chart-memory-leak.json",
+        "016. Test Scope/AIPD-000002.SCO-000001.temporal-toggle-scope.json",
+        "016. Test Scope/AIPD-000002.SCO-000002.kpi-growth-display-scope.json",
+        "016. Test Scope/AIPD-000002.SCO-000003.api-dashboard-scope.json",
+        "016. Test Scope/AIPD-000002.SCO-000004.cron-exchange-rate-scope.json",
+        "016. Test Scope/AIPD-000002.SCO-000005.jwt-auth-middleware-scope.json",
+        "017. Test Steps/AIPD-000002.TES-000001.CAS-000001.date-range-365.json",
+        "017. Test Steps/AIPD-000002.TES-000001.CAS-000002.date-range-366.json",
+        "017. Test Steps/AIPD-000002.TES-000002.CAS-000003.redis-oom-steps.json",
+        "017. Test Steps/AIPD-000002.TES-000002.CAS-000004.crm-delete-sync-steps.json"
+      ],
+      "what-can-break": [
+        "015. Test Impact/AIPD-000002.IMP-000001.redis-checkout-coupling.json",
+        "015. Test Impact/AIPD-000002.IMP-000002.mongodb-oltp-contention.json",
+        "015. Test Impact/AIPD-000002.IMP-000003.jwks-ddos-risk.json",
+        "015. Test Impact/AIPD-000002.IMP-000004.chart-memory-leak-risk.json"
+      ]
+    }
+  }
+}

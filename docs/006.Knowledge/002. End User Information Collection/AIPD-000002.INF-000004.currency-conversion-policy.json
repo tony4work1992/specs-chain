@@ -1,0 +1,24 @@
+{
+  "_metadata": {
+    "featureCode": "AIPD-000002",
+    "featureName": "Sales Dashboard",
+    "sourceFile": "001.Requirement Development Workflow/Information Collection.json",
+    "sourceVersion": "2026.04.03 16.07.13"
+  },
+  "code": "INF-000004",
+  "index": 4,
+  "criteria": "Clarify currency conversion and formatting policies.",
+  "pass": false,
+  "hint": "If sales are global, how is revenue converted into the macro revenue figure?",
+  "placeholder": "Specify currency policy (e.g., 'Display in USD, convert at daily rate').",
+  "references": [
+    {
+      "info": "Unclear currency handling for the 'Revenue Snapshot Card'",
+      "source": "3.2. Primary KPI Overview"
+    }
+  ],
+  "additional_info": "Impacts DB schema (needs amount and currency) and API DTO.",
+  "requestVersion": "2026.04.03 16.07.13",
+  "version": "2026.04.03 16.07.13",
+  "parentVersion": "2026.04.03 15.57.16"
+}

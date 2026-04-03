@@ -1,0 +1,7 @@
+{
+  "_metadata": { "featureCode": "AIPD-000002", "featureName": "Sales Dashboard", "sourceFile": "003.Software Architecture Workflow/UI Component Architecture.json", "sourceVersion": "2026.04.03 14.29.29" },
+  "id": "SEC-004", "title": "Table 4: Templates",
+  "items": [
+    { "id": "COM_07", "component_name": "DashboardLayout", "classification": "Dumb", "props": "children: ReactNode", "state_bindings": "None", "api_dependency": "None", "dom_hierarchy": "<main><Sidebar /><article>{children}</article></main>" }
+  ]
+}

@@ -1,0 +1,183 @@
+{
+  "_description": "Component-to-Files Index — Use this to answer: 'If component X changes, which knowledge files are affected?'",
+  "_version": "2026.04.03",
+
+  "React Client": {
+    "description": "React-based Sales Dashboard UI application (TypeScript, Material UI, Recharts)",
+    "features": ["AIPD-000002"],
+    "files": [
+      "001. End User Requirement/AIPD-000002.end-user-requirement.md",
+      "003. Business Requirement Document/AIPD-000002.brd-constraints-assumptions.md",
+      "003. Business Requirement Document/AIPD-000002.brd-functional-overview.md",
+      "004. System Context Information/AIPD-000002.component-registry.md",
+      "004. System Context Information/AIPD-000002.tech-stack.md",
+      "006. Functional Requirement Document/AIPD-000002.frd-functional-requirements.md",
+      "006. Functional Requirement Document/AIPD-000002.frd-presentation-constraints.md",
+      "008. Function Specifications/AIPD-000002.function-specifications.json",
+      "008. Function Specifications/AIPD-000002.function-specifications.md",
+      "012. UI Component Architecture/AIPD-000002.ui-atoms.json",
+      "012. UI Component Architecture/AIPD-000002.ui-molecules.json",
+      "012. UI Component Architecture/AIPD-000002.ui-organisms.json",
+      "012. UI Component Architecture/AIPD-000002.ui-templates.json",
+      "012. UI Component Architecture/AIPD-000002.ui-pages.json",
+      "014. Test Checklist/AIPD-000002.CHE-000001.temporal-toggle-verify.json",
+      "014. Test Checklist/AIPD-000002.CHE-000002.kpicard-growth-display.json",
+      "014. Test Checklist/AIPD-000002.CHE-000009.chart-memory-leak.json",
+      "015. Test Impact/AIPD-000002.IMP-000004.chart-memory-leak-risk.json",
+      "016. Test Scope/AIPD-000002.SCO-000001.temporal-toggle-scope.json",
+      "016. Test Scope/AIPD-000002.SCO-000002.kpi-growth-display-scope.json"
+    ]
+  },
+
+  "NestJS API Gateway": {
+    "description": "NestJS REST API exposing secure Aggregation endpoints (CQRS, Repository Pattern)",
+    "features": ["AIPD-000002"],
+    "files": [
+      "004. System Context Information/AIPD-000002.component-registry.md",
+      "004. System Context Information/AIPD-000002.system-design-patterns.md",
+      "004. System Context Information/AIPD-000002.tech-stack.md",
+      "006. Functional Requirement Document/AIPD-000002.frd-functional-requirements.md",
+      "006. Functional Requirement Document/AIPD-000002.frd-presentation-constraints.md",
+      "007. Additional Functional Information/AIPD-000002.AFI-000001.cache-stampede-policy.json",
+      "007. Additional Functional Information/AIPD-000002.AFI-000004.payload-compression.json",
+      "008. Function Specifications/AIPD-000002.function-specifications.json",
+      "008. Function Specifications/AIPD-000002.function-specifications.md",
+      "009. API Tactic Architecture/AIPD-000002.SLICE_01.export-module.json",
+      "009. API Tactic Architecture/AIPD-000002.SLICE_02.dashboard-metrics-module.json",
+      "011. Strategic Architecture/AIPD-000002.c4-container-diagram.md",
+      "014. Test Checklist/AIPD-000002.CHE-000003.api-load-test.json",
+      "016. Test Scope/AIPD-000002.SCO-000003.api-dashboard-scope.json"
+    ]
+  },
+
+  "MongoDB": {
+    "description": "MongoDB 7 instance storing raw and normalized transactions (aggregation pipelines)",
+    "features": ["AIPD-000002"],
+    "files": [
+      "004. System Context Information/AIPD-000002.component-registry.md",
+      "004. System Context Information/AIPD-000002.database-architecture.md",
+      "004. System Context Information/AIPD-000002.infrastructure-deployment.md",
+      "005. Additional System Information/AIPD-000002.ASI-000001.sla-ha-requirements.json",
+      "006. Functional Requirement Document/AIPD-000002.frd-functional-behavior.md",
+      "006. Functional Requirement Document/AIPD-000002.frd-scope-context.md",
+      "007. Additional Functional Information/AIPD-000002.AFI-000002.exchange-rate-indexing.json",
+      "007. Additional Functional Information/AIPD-000002.AFI-000003.rbac-data-isolation.json",
+      "008. Function Specifications/AIPD-000002.function-specifications.json",
+      "009. API Tactic Architecture/AIPD-000002.SLICE_02.dashboard-metrics-module.json",
+      "010. Flow Sequence Architecture/AIPD-000002.flow-background-cache-invalidation.md",
+      "011. Strategic Architecture/AIPD-000002.c4-container-diagram.md",
+      "014. Test Checklist/AIPD-000002.CHE-000004.cron-retry-fallback.json",
+      "014. Test Checklist/AIPD-000002.CHE-000007.mongodb-concurrent-load.json",
+      "015. Test Impact/AIPD-000002.IMP-000002.mongodb-oltp-contention.json",
+      "016. Test Scope/AIPD-000002.SCO-000003.api-dashboard-scope.json",
+      "017. Test Steps/AIPD-000002.TES-000002.CAS-000004.crm-delete-sync-steps.json"
+    ]
+  },
+
+  "Redis Cache": {
+    "description": "Redis instance caching heavy time-series JSON payloads (volatile-lru, PubSub invalidation)",
+    "features": ["AIPD-000002"],
+    "files": [
+      "004. System Context Information/AIPD-000002.component-registry.md",
+      "004. System Context Information/AIPD-000002.database-architecture.md",
+      "004. System Context Information/AIPD-000002.infrastructure-deployment.md",
+      "005. Additional System Information/AIPD-000002.ASI-000001.sla-ha-requirements.json",
+      "005. Additional System Information/AIPD-000002.ASI-000002.traffic-load-capacity.json",
+      "006. Functional Requirement Document/AIPD-000002.frd-functional-behavior.md",
+      "006. Functional Requirement Document/AIPD-000002.frd-presentation-constraints.md",
+      "007. Additional Functional Information/AIPD-000002.AFI-000001.cache-stampede-policy.json",
+      "008. Function Specifications/AIPD-000002.function-specifications.json",
+      "008. Function Specifications/AIPD-000002.function-specifications.md",
+      "009. API Tactic Architecture/AIPD-000002.SLICE_02.dashboard-metrics-module.json",
+      "009. API Tactic Architecture/AIPD-000002.SLICE_03.background-poller-module.json",
+      "010. Flow Sequence Architecture/AIPD-000002.flow-background-cache-invalidation.md",
+      "011. Strategic Architecture/AIPD-000002.c4-container-diagram.md",
+      "013. Test Cases/AIPD-000002.CAS-000003.redis-oom-failover.json",
+      "014. Test Checklist/AIPD-000002.CHE-000006.legacy-checkout-redis-down.json",
+      "015. Test Impact/AIPD-000002.IMP-000001.redis-checkout-coupling.json",
+      "016. Test Scope/AIPD-000002.SCO-000003.api-dashboard-scope.json",
+      "017. Test Steps/AIPD-000002.TES-000002.CAS-000003.redis-oom-steps.json"
+    ]
+  },
+
+  "Cron Worker (Exchange Rate)": {
+    "description": "Currency Exchange Rate Scheduler — daily 00:00 UTC fetch with 3-retry fallback",
+    "features": ["AIPD-000002"],
+    "files": [
+      "004. System Context Information/AIPD-000002.component-registry.md",
+      "004. System Context Information/AIPD-000002.infrastructure-deployment.md",
+      "005. Additional System Information/AIPD-000002.ASI-000004.currency-worker-resilience.json",
+      "006. Functional Requirement Document/AIPD-000002.frd-functional-behavior.md",
+      "008. Function Specifications/AIPD-000002.function-specifications.json",
+      "014. Test Checklist/AIPD-000002.CHE-000004.cron-retry-fallback.json",
+      "016. Test Scope/AIPD-000002.SCO-000004.cron-exchange-rate-scope.json"
+    ]
+  },
+
+  "Cron Worker (CRM Poller)": {
+    "description": "Background worker polling delta CRM data every 5 minutes",
+    "features": ["AIPD-000002"],
+    "files": [
+      "008. Function Specifications/AIPD-000002.function-specifications.md",
+      "009. API Tactic Architecture/AIPD-000002.SLICE_03.background-poller-module.json",
+      "010. Flow Sequence Architecture/AIPD-000002.flow-background-cache-invalidation.md",
+      "011. Strategic Architecture/AIPD-000002.c4-container-diagram.md",
+      "013. Test Cases/AIPD-000002.CAS-000004.crm-hard-delete-sync.json",
+      "017. Test Steps/AIPD-000002.TES-000002.CAS-000004.crm-delete-sync-steps.json"
+    ]
+  },
+
+  "Puppeteer PDF Worker": {
+    "description": "Headless browser rendering raw HTML to PDF, uploading to S3",
+    "features": ["AIPD-000002"],
+    "files": [
+      "008. Function Specifications/AIPD-000002.function-specifications.md",
+      "009. API Tactic Architecture/AIPD-000002.SLICE_01.export-module.json",
+      "010. Flow Sequence Architecture/AIPD-000002.flow-pdf-generation.md",
+      "011. Strategic Architecture/AIPD-000002.c4-container-diagram.md",
+      "017. Test Steps/AIPD-000002.TES-000001.CAS-000001.date-range-365.json"
+    ]
+  },
+
+  "External CRM": {
+    "description": "External source of truth for Sales Bookings (REST API integration)",
+    "features": ["AIPD-000002"],
+    "files": [
+      "008. Function Specifications/AIPD-000002.function-specifications.md",
+      "010. Flow Sequence Architecture/AIPD-000002.flow-background-cache-invalidation.md",
+      "011. Strategic Architecture/AIPD-000002.c4-container-diagram.md",
+      "011. Strategic Architecture/AIPD-000002.c4-system-context.md",
+      "013. Test Cases/AIPD-000002.CAS-000004.crm-hard-delete-sync.json",
+      "017. Test Steps/AIPD-000002.TES-000002.CAS-000004.crm-delete-sync-steps.json"
+    ]
+  },
+
+  "AWS S3": {
+    "description": "Object storage hosting generated PDF reports (presigned URLs)",
+    "features": ["AIPD-000002"],
+    "files": [
+      "010. Flow Sequence Architecture/AIPD-000002.flow-pdf-generation.md",
+      "011. Strategic Architecture/AIPD-000002.c4-container-diagram.md",
+      "011. Strategic Architecture/AIPD-000002.c4-system-context.md",
+      "013. Test Cases/AIPD-000002.CAS-000001.temporal-toggle-positive.json",
+      "017. Test Steps/AIPD-000002.TES-000001.CAS-000001.date-range-365.json"
+    ]
+  },
+
+  "Auth Microservice (JWKS)": {
+    "description": "Internal Auth service providing JWT validation via JWKS endpoint",
+    "features": ["AIPD-000002"],
+    "files": [
+      "004. System Context Information/AIPD-000002.infrastructure-deployment.md",
+      "004. System Context Information/AIPD-000002.system-design-patterns.md",
+      "005. Additional System Information/AIPD-000002.ASI-000003.idp-jwt-integration.json",
+      "007. Additional Functional Information/AIPD-000002.AFI-000003.rbac-data-isolation.json",
+      "008. Function Specifications/AIPD-000002.function-specifications.json",
+      "008. Function Specifications/AIPD-000002.function-specifications.md",
+      "014. Test Checklist/AIPD-000002.CHE-000005.jwt-auth-region-isolation.json",
+      "014. Test Checklist/AIPD-000002.CHE-000008.jwks-cache-ddos-prevention.json",
+      "015. Test Impact/AIPD-000002.IMP-000003.jwks-ddos-risk.json",
+      "016. Test Scope/AIPD-000002.SCO-000005.jwt-auth-middleware-scope.json"
+    ]
+  }
+}
