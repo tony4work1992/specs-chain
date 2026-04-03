@@ -1,6 +1,8 @@
 # Agentic OS: Document Generation & Knowledge Pipeline
 
-This document visualizes the complete end-to-end autonomous documentation pipeline (Agentic OS), illustrating how Agent Skills generate structured artifacts, sync them into a searchable Knowledge Base, and leverage that knowledge for cross-feature impact analysis.
+This document visualizes the complete end-to-end autonomous documentation pipeline (Agentic OS), illustrating how Agent Skills generate structured artifacts (drafts), and how a dedicated Knowledge Sync skill promotes reviewed artifacts into a production-grade, searchable Knowledge Base.
+
+> **Core Principle:** Artifacts (`005.Artifacts`) are **DRAFTS**. Knowledge (`006.Knowledge`) is **PRODUCTION**. Sync only happens when the user explicitly invokes **Skill 19: Knowledge Sync**.
 
 ---
 
@@ -14,6 +16,7 @@ graph TD
     classDef auxiliary fill:#d35400,stroke:#e67e22,stroke-width:2px,color:#fff;
     classDef knowledge fill:#2980b9,stroke:#3498db,stroke-width:2px,color:#fff;
     classDef index fill:#c0392b,stroke:#e74c3c,stroke-width:2px,color:#fff;
+    classDef sync fill:#f39c12,stroke:#e67e22,stroke-width:3px,color:#2c3e50;
 
     Input[("Raw User Request / Context")]:::input
 
@@ -84,9 +87,10 @@ graph TD
         A15 & A18 & A13 --> S00 --> A00
     end
 
-    %% Knowledge Layer
-    subgraph "Phase 6: Knowledge Base"
-        KB[("006.Knowledge")]:::knowledge
+    %% Knowledge Sync (Skill 19 — user-triggered only)
+    subgraph "Phase 6: Knowledge Sync"
+        S19[["⚡ Skill 19: Knowledge Sync"]]:::sync
+        KB[("006.Knowledge — PRODUCTION")]:::knowledge
         IDX["_index/"]:::index
         IDX --> |manifest.json| KB
         IDX --> |by-component.json| KB
@@ -94,25 +98,17 @@ graph TD
         IDX --> |by-keyword.json| KB
     end
 
-    %% Knowledge Sync (all artifacts feed into KB)
-    A01 ==> |SYNC| KB
-    A02 ==> |SYNC| KB
-    A03 ==> |SYNC| KB
-    A08 ==> |SYNC| KB
-    A09 ==> |SYNC| KB
-    A10 ==> |SYNC| KB
-    A13 ==> |SYNC| KB
-    A15 ==> |SYNC| KB
-    A16 ==> |SYNC| KB
-    A17 ==> |SYNC| KB
-    A18 ==> |SYNC| KB
+    %% Skill 19 reads from Artifacts, writes to Knowledge
+    A01 & A03 & A08 & A13 & A15 & A18 -.-> |User triggers| S19
+    S19 ==> |Decompose & SYNC| KB
+    S19 ==> |Update| IDX
 
-    %% Knowledge Reference (KB feeds back into Skills)
-    KB -.-> |REFERENCE| S04
-    KB -.-> |REFERENCE| S09
-    KB -.-> |REFERENCE| S10
-    KB -.-> |REFERENCE| S14
-    KB -.-> |REFERENCE| S16
+    %% Knowledge Reference (KB feeds READ-ONLY context into generation Skills)
+    KB -.-> |READ reference| S04
+    KB -.-> |READ reference| S09
+    KB -.-> |READ reference| S10
+    KB -.-> |READ reference| S14
+    KB -.-> |READ reference| S16
 ```
 
 ---
@@ -124,24 +120,28 @@ graph LR
     classDef store fill:#1a1a2e,stroke:#16213e,color:#e94560;
     classDef process fill:#0f3460,stroke:#533483,color:#e94560;
     classDef output fill:#533483,stroke:#e94560,color:#fff;
+    classDef gate fill:#f39c12,stroke:#e67e22,color:#1a1a2e;
 
     subgraph "Storage Layer"
         T[("001.Artifact Templates")]:::store
         P[("002.LLM Prompts")]:::store
         M[("003.Source Mappings")]:::store
         D[("004.Delivery Requests")]:::store
-        ART[("005.Artifacts")]:::store
-        K[("006.Knowledge")]:::store
+        ART[("005.Artifacts — DRAFT")]:::store
+        K[("006.Knowledge — PROD")]:::store
     end
 
-    subgraph "Execution Layer"
+    subgraph "Generation Skills (01-18)"
         SKILL["AI Agent Skill"]:::process
     end
 
-    subgraph "Output Flow"
+    subgraph "Artifact Output"
         GEN["Generate / Update Artifact"]:::output
         SNAP["Snapshot to 000.Snapshots"]:::output
-        SYNC["SYNC to Knowledge Base"]:::output
+    end
+
+    subgraph "Knowledge Gate"
+        S19[["⚡ Skill 19: Knowledge Sync"]]:::gate
         IDX["Update _index/ Files"]:::output
     end
 
@@ -149,12 +149,14 @@ graph LR
     P --> SKILL
     M --> SKILL
     D --> SKILL
-    K -.-> |REFERENCE| SKILL
+    K -.-> |READ reference| SKILL
 
     SKILL --> GEN --> ART
     GEN --> SNAP
-    GEN --> SYNC --> K
-    SYNC --> IDX
+
+    ART -.-> |User triggers Skill 19| S19
+    S19 ==> K
+    S19 ==> IDX
 ```
 
 ---
@@ -209,14 +211,40 @@ graph TD
 
 ---
 
-## 4. AI Agent Impact Analysis Flow
+## 4. Artifact vs Knowledge Lifecycle
+
+```mermaid
+stateDiagram-v2
+    [*] --> Draft: Skill 01-18 generates artifact
+
+    state "005.Artifacts (DRAFT)" as Draft {
+        [*] --> Generated
+        Generated --> Reviewed: User reviews & iterates
+        Reviewed --> Refined: Skill 14 patches gaps
+        Refined --> Approved: User approves
+    }
+
+    state "006.Knowledge (PRODUCTION)" as Prod {
+        [*] --> Decomposed: Split into granular files
+        Decomposed --> Indexed: _index/ files updated
+        Indexed --> Searchable: Available for AI queries
+    }
+
+    Approved --> Skill19: User triggers Skill 19
+    Skill19 --> Prod: Knowledge Sync
+
+    Prod --> Draft: READ reference (consistency check)
+```
+
+---
+
+## 5. AI Agent Query Flow (Impact Analysis)
 
 ```mermaid
 sequenceDiagram
     participant Agent as AI Agent
     participant IDX as _index/
-    participant KB as Knowledge Files
-    participant ART as Artifacts
+    participant KB as Knowledge Files (PROD)
 
     Agent->>IDX: 1. Read manifest.json (5KB)
     IDX-->>Agent: Feature landscape, component list, folder registry
@@ -230,18 +258,14 @@ sequenceDiagram
     Agent->>KB: 4. Read ONLY 25 targeted files
     KB-->>Agent: Full impact context (specs, tests, risks)
 
-    Note over Agent: 5. Execute task with full awareness
-
-    Agent->>ART: 6. Update artifact in 005.Artifacts
-    Agent->>KB: 7. SYNC changes to 006.Knowledge
-    Agent->>IDX: 8. Update _index/ files
+    Note over Agent: 5. Execute task with full<br/>production knowledge awareness
 ```
 
 ---
 
-## 5. Skill-to-Knowledge Folder Mapping
+## 6. Skill-to-Knowledge Folder Mapping
 
-Every Skill generates artifacts that are then decomposed and synced into specific Knowledge folders:
+Skill 19 uses this mapping table to decompose artifacts into knowledge files:
 
 | Skill | Artifact Output | Knowledge Folder | Decomposition Strategy |
 |---|---|---|---|
@@ -258,7 +282,6 @@ Every Skill generates artifacts that are then decomposed and synced into specifi
 | Skill 11 | `Test Checklist.json` | `014. Test Checklist` | Each JSON array item → 1 file |
 | Skill 12 | `Test Cases.json` | `013. Test Cases` | Each JSON array item → 1 file |
 | Skill 13 | `Test Steps.json` | `017. Test Steps` | Each TES-CAS group → 1 file |
-| Skill 14 | *(patches existing docs)* | *(re-syncs affected folder)* | Re-generate affected knowledge files |
 | Skill 15 | `UI Component Architecture.json` | `012. UI Component Architecture` | Split by Atomic level → 5 files |
 | Skill 16 | `Strategic Architecture.md` | `011. Strategic Architecture` | Split by C4 level → 2 files |
 | Skill 17 | `API Tactic Architecture.json` | `009. API Tactic Architecture` | Each Vertical Slice → 1 file |
@@ -266,7 +289,7 @@ Every Skill generates artifacts that are then decomposed and synced into specifi
 
 ---
 
-## 6. Component Pipeline Detailing
+## 7. Component Pipeline Detailing
 
 ### 🟢 Phase 1: Requirement Development
 Translates abstract user intents into formalized, validated Business rules.
@@ -276,7 +299,7 @@ Translates abstract user intents into formalized, validated Business rules.
 
 ### 🔵 Phase 2: Technical Requirement
 Converts Business Rules into flat, actionable Technical components and restrictions.
-- **Skill 04 `[System Context Generation]`**: Defines Database schema patterns, Infrastructure SLA, and Architectural patterns (`System Context Information.md`).
+- **Skill 04 `[System Context Generation]`**: Defines Database schema patterns, Infrastructure SLA, and Architectural patterns. References `006.Knowledge/_index/by-component.json` for cross-feature component awareness.
 - **Skill 05 `[Additional System Information Generation]`**: Finds Non-Functional Requirement gaps (`Additional System Information.json`).
 - **Skill 06 `[Functional Requirement Document Generation]`**: Translates features into specific System Behaviors (`Functional Requirement Document.md`).
 - **Skill 07 `[Additional Functional Information Generation]`**: Finds edge-cases in data isolation, race conditions, and payloads (`Additional Functional Information.json`).
@@ -284,8 +307,8 @@ Converts Business Rules into flat, actionable Technical components and restricti
 
 ### 🟠 Phase 3: Testing Requirement
 Generates absolute automated testing boundaries mirroring the Functional Specifications.
-- **Skill 09 `[Test Scope Generation]`**: Establishes In-Scope constraints across UI, API, worker modules (`Test Scope.json`).
-- **Skill 10 `[Test Impact Generation]`**: Identifies Legacy impact risks (`Test Impact.json`). Reads `by-component.json` for cross-feature risk correlation.
+- **Skill 09 `[Test Scope Generation]`**: Establishes In-Scope constraints across UI, API, worker modules. References `by-component.json` to ensure test scope covers all registered components.
+- **Skill 10 `[Test Impact Generation]`**: Identifies Legacy impact risks. References `by-component.json` + `by-keyword.json` for cross-feature risk correlation.
 - **Skill 11 `[Test Checklist Generation]`**: Translates Scopes + Impacts into specific testable action tasks (`Test Checklist.json`).
 - **Skill 12 `[Test Cases Generation]`**: Expands the checklist into structural cases with Mocks (`Test Cases.json`).
 - **Skill 13 `[Test Steps Generation]`**: Finalizes the steps to execute QA validation (`Test Steps.json`).
@@ -293,42 +316,35 @@ Generates absolute automated testing boundaries mirroring the Functional Specifi
 ### 🟣 Phase 4: Architecture Generation
 Draws specific architectural boundaries utilizing Mermaid flows.
 - **Skill 15 `[UI Component Architecture Generation]`**: Builds Atomic component structures (Atoms → Molecules → Organisms → Templates → Pages).
-- **Skill 16 `[Strategic Architecture Generation]`**: Builds High-level C4 Contexts (Level 1: System Context, Level 2: Container Diagram).
+- **Skill 16 `[Strategic Architecture Generation]`**: Builds High-level C4 Contexts. References `by-component.json` for full system component landscape.
 - **Skill 17 `[Tactic Architecture Generation]`**: Drills down into Vertical Slices (module → controller → handler → repository).
 - **Skill 18 `[Flow Sequence Generation]`**: Emits cross-component interaction logic (Mermaid Sequence Diagrams).
 
 ### 🔨 Phase 5: Cross-Cutting / Refinement
-- **Skill 14 `[Technical Document Refinement]`**: The "Surgeon" skill. Evaluates any "Additional Information .json" file and permanently patches the underlying markdown document to eliminate gaps. After patching, re-syncs affected Knowledge files.
+- **Skill 14 `[Technical Document Refinement]`**: The "Surgeon" skill. Evaluates any "Additional Information .json" file and permanently patches the underlying markdown document to eliminate gaps. References `by-feature.json` to identify which knowledge files were derived from the target document.
 - **Skill 00 `[Implementation Roadmap]`**: The ultimate downstream consumer that orchestrates actual `.js / .ts / .go` generation based on all preceding architectural artifacts.
 
-### 🧠 Phase 6: Knowledge Base (NEW)
-The production-ready, searchable knowledge layer that accumulates and indexes all artifacts for AI-powered impact analysis.
+### ⚡ Phase 6: Knowledge Sync (Skill 19)
+The **deliberate**, user-triggered promotion of reviewed artifacts into the production Knowledge Base.
 
-**Bidirectional Flow:**
-- **KNOWLEDGE SYNC** (Artifact → Knowledge): After every Skill generates an artifact, the output is decomposed into granular, searchable files in `006.Knowledge/`.
-- **KNOWLEDGE REFERENCE** (Knowledge → Skill): Before generating, Skills consult `_index/` files to ensure consistency with existing knowledge across all features.
+**Why not automatic?**
+- Artifacts are **iterative drafts** — they may contain errors, placeholders, or unreviewed content.
+- Knowledge is the **source of truth** for AI impact analysis — only approved, production-quality content should live here.
+- Separating sync from generation allows **review gates** — the user decides when artifacts are ready for promotion.
 
-**Index Layer (`_index/`):**
-| Index File | Purpose | Query Example |
-|---|---|---|
-| `manifest.json` | Master entry point — feature registry, categories, folder map | *"What features exist? What components?"* |
-| `by-component.json` | Component → file paths mapping (10 components) | *"If Redis changes, what files are affected?"* → 19 files |
-| `by-feature.json` | Feature → categorized file listing | *"Show all AIPD-000002 knowledge"* → 66 files |
-| `by-keyword.json` | Keyword → file paths with semantic aliases (13 groups) | *"cache invalidation"* → 6 files (also matches "SCAN UNLINK", "eviction") |
-
-**Knowledge Categories:**
-| Category | Question it Answers | Folders | Files |
-|---|---|---|---|
-| `what-we-build` | WHY & WHAT | 001 – 003 | 9 |
-| `how-we-build` | HOW | 004 – 012 | 35 |
-| `how-we-test` | HOW TO VERIFY | 013, 014, 016, 017 | 22 |
-| `what-can-break` | WHAT IF | 015 | 4 |
+**What Skill 19 does:**
+1. Scans ALL artifacts under `005.Develop.002.Artifacts/${REQUEST CODE}/`
+2. Decomposes each artifact into granular knowledge files using the mapping table (§6)
+3. Applies naming conventions: `${FEATURE_CODE}.${ARTIFACT_CODE}.${descriptive-slug}.{json|md}`
+4. Adds metadata headers (Feature-Code, Source-File, Source-Version)
+5. Updates all `006.Knowledge/_index/` files (manifest, component, feature, keyword)
+6. Verifies file count and searchability
 
 ---
 
-## 7. File Naming Conventions
+## 8. File Naming Conventions
 
-### Artifacts (`005.Develop.002.Artifacts`)
+### Artifacts (`005.Develop.002.Artifacts`) — DRAFT
 ```
 ${REQUEST CODE}/
 ├── 001.Requirement Development Workflow/
@@ -344,7 +360,7 @@ ${REQUEST CODE}/
     └── ...
 ```
 
-### Knowledge Files (`006.Knowledge`)
+### Knowledge Files (`006.Knowledge`) — PRODUCTION
 ```
 006.Knowledge/
 ├── _index/                      ← AI Agent reads FIRST
@@ -371,30 +387,70 @@ ${REQUEST CODE}/
 
 ---
 
-## 8. Execution Protocol
+## 9. Execution Protocols
 
-When an AI Agent receives a task, it follows this protocol:
+### Protocol A: Generation (Skills 01-18)
 
 ```
 1. RECEIVE task from user
 2. READ Source Mapping Instructions (003.Setup.003)
    ├── Understand INPUT SOURCE FILES
    ├── Understand GENERATION RULES
-   ├── Understand KNOWLEDGE REFERENCE    ← NEW
-   └── Understand KNOWLEDGE SYNC RULES   ← NEW
+   └── Understand KNOWLEDGE REFERENCE (read-only)
 3. READ LLM Prompt Template (002.Setup.002)
    ├── Adopt persona (Product Owner, Architect, QA Engineer, etc.)
-   └── Knowledge Base Awareness section  ← NEW
-4. REFERENCE Knowledge Base (006.Knowledge/_index/)
+   └── Knowledge Base Awareness (for consistency, NOT for sync)
+4. REFERENCE Knowledge Base — READ ONLY (006.Knowledge/_index/)
    ├── manifest.json → landscape awareness
    ├── by-component.json → component consistency
    └── by-keyword.json → semantic consistency
-5. GENERATE artifact in 005.Develop.002.Artifacts
+5. GENERATE artifact in 005.Develop.002.Artifacts (DRAFT)
    ├── Snapshot previous version to 000.Snapshots/
    └── Write new versioned artifact
-6. SYNC to Knowledge Base (006.Knowledge/)
-   ├── Decompose artifact into granular knowledge files
-   ├── Apply naming convention & metadata headers
-   └── Update _index/ files (manifest, component, feature, keyword)
-7. REPORT completion
+6. REPORT completion
+   └── ⚠️ NO automatic sync to Knowledge
 ```
+
+### Protocol B: Knowledge Sync (Skill 19 — user-triggered)
+
+```
+1. RECEIVE Request Code from user
+2. READ Source Mapping Instructions (003.Setup.003/020. Knowledge Sync.md)
+   ├── Understand ARTIFACT-TO-KNOWLEDGE FOLDER MAPPING
+   ├── Understand FILE NAMING CONVENTION
+   ├── Understand METADATA HEADERS
+   └── Understand INDEX UPDATE RULES
+3. SCAN all artifacts under 005.Develop.002.Artifacts/${REQUEST CODE}/
+4. DECOMPOSE each artifact into granular knowledge files
+5. WRITE knowledge files to 006.Knowledge/ (PRODUCTION)
+6. UPDATE _index/ files (manifest, component, feature, keyword)
+7. VERIFY file count and searchability
+8. REPORT completion with stats
+```
+
+---
+
+## 10. Complete Skill Registry
+
+| # | Skill Name | Phase | Output Layer | Knowledge Action |
+|---|---|---|---|---|
+| 00 | Implementation Roadmap | 5: Implementation | Code | — |
+| 01 | End User Requirement Gen | 1: Requirement | 005.Artifacts (DRAFT) | READ reference |
+| 02 | Additional Information Gen | 1: Requirement | 005.Artifacts (DRAFT) | READ reference |
+| 03 | BRD Generation | 1: Requirement | 005.Artifacts (DRAFT) | READ reference |
+| 04 | System Context Gen | 2: Technical | 005.Artifacts (DRAFT) | READ reference |
+| 05 | Additional System Info Gen | 2: Technical | 005.Artifacts (DRAFT) | READ reference |
+| 06 | FRD Generation | 2: Technical | 005.Artifacts (DRAFT) | READ reference |
+| 07 | Additional Functional Info Gen | 2: Technical | 005.Artifacts (DRAFT) | READ reference |
+| 08 | Functional Specifications Gen | 2: Technical | 005.Artifacts (DRAFT) | READ reference |
+| 09 | Test Scope Gen | 3: Testing | 005.Artifacts (DRAFT) | READ reference |
+| 10 | Test Impact Gen | 3: Testing | 005.Artifacts (DRAFT) | READ reference |
+| 11 | Test Checklist Gen | 3: Testing | 005.Artifacts (DRAFT) | READ reference |
+| 12 | Test Cases Gen | 3: Testing | 005.Artifacts (DRAFT) | READ reference |
+| 13 | Test Steps Gen | 3: Testing | 005.Artifacts (DRAFT) | READ reference |
+| 14 | Technical Doc Refinement | Cross-cutting | 005.Artifacts (DRAFT) | READ reference |
+| 15 | UI Component Arch Gen | 4: Architecture | 005.Artifacts (DRAFT) | READ reference |
+| 16 | Strategic Arch Gen | 4: Architecture | 005.Artifacts (DRAFT) | READ reference |
+| 17 | Tactic Arch Gen | 4: Architecture | 005.Artifacts (DRAFT) | READ reference |
+| 18 | Flow Sequence Gen | 4: Architecture | 005.Artifacts (DRAFT) | READ reference |
+| **19** | **Knowledge Sync** | **6: Knowledge** | **006.Knowledge (PROD)** | **WRITE sync** |
