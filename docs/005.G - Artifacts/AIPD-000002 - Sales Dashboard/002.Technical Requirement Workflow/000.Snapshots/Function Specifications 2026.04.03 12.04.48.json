@@ -1,0 +1,87 @@
+[
+  {
+    "id": "SEC-001",
+    "title": "UI Temporal Controls & Actions",
+    "theme": "indigo",
+    "requestVersion": "2026.04.03 11.16.09",
+    "version": "2026.04.03 11.16.09",
+    "parentVersion": "2026.04.03 10.57.45",
+    "items": [
+      {
+        "element": "Time-Slice Toggle",
+        "type": "Dropdown/ButtonGroup",
+        "options": "Weekly, Monthly, Quarterly, Annually",
+        "logic": "Upon selection, sets local React state for Temporal boundaries normalized to exact UTC 00:00:00Z. For 'Monthly', the boundary is strictly Day 1 00:00:00Z to Last Day 23:59:59Z UTC.",
+        "behavior": "Triggers asynchronous refetch to GET /api/v1/dashboard/metrics without page reload. Caches last selected toggle in LocalStorage."
+      },
+      {
+        "element": "Export PDF Action",
+        "type": "Button",
+        "state_validation": "Must evaluate active Time-Slice Toggle. IF (BoundarySpan > 365 Days) THEN set `disabled=true` and display tooltip 'Export limited to 12-month span'.",
+        "execution_logic": "ON_CLICK: Triggers POST /api/v1/dashboard/export/pdf payload with current query parameters. UI visually transitions to disabled/loading state until the 24-hour expiration token/URI is returned from AWS S3, or gracefully catches HTTP 429 Too Many Requests if user spam clicks."
+      }
+    ]
+  },
+  {
+    "id": "SEC-002",
+    "title": "UI Metrics & Visualizations",
+    "theme": "emerald",
+    "requestVersion": "2026.04.03 11.16.09",
+    "version": "2026.04.03 11.16.09",
+    "parentVersion": "2026.04.03 10.57.45",
+    "items": [
+      {
+        "element": "Total Revenue Card",
+        "type": "Typography Widget",
+        "format_rule": "Strictly format string to US Locale Currency format: `$#,##0.00`.",
+        "data_source_logic": "Aggregates `booked_revenue` from the metrics payload matching the user's explicit RBAC territory permissions."
+      },
+      {
+        "element": "Growth Indicator Badge",
+        "type": "Badge/Icon",
+        "visual_state": "IF Growth > 0 THEN Color=Green, Icon=ArrowUp. IF Growth < 0 THEN Color=Red, Icon=ArrowDown.",
+        "math_formula": "Calculates (Current Pacing / Historical Calendar Equivalent). E.g. If today is April 5, compares April 1-5 Revenue against strictly March 1-5 Revenue."
+      },
+      {
+        "element": "Temporal Distribution Graph",
+        "type": "Recharts Line Chart",
+        "x_axis_formatting": "Localized formatting String `YYYY-MM-DD` mapping directly to the underlying UTC datapoint to ensure global visual consistency.",
+        "tooltip_behavior": "Hovering over a node MUST display isolated Date (YYYY-MM-DD) and increment revenue amount. No interpolations for missing dates."
+      }
+    ]
+  },
+  {
+    "id": "SEC-003",
+    "title": "Backend API & Data Pipelines",
+    "theme": "slate",
+    "requestVersion": "2026.04.03 11.16.09",
+    "version": "2026.04.03 11.16.09",
+    "parentVersion": "2026.04.03 10.57.45",
+    "items": [
+      {
+        "endpoint": "GET /api/v1/dashboard/metrics",
+        "authorization": "Requires Bearer JWT. Header must contain Role-Based Access Control (RBAC) payload to partition Mongo query.",
+        "caching_strategy": "System queries Redis First. IF Redis is OOM/Crashed (Failover Degradation), bypass cache and query MongoDB directly using Field-Level decryption.",
+        "error_handling": "If failover engaged and latency exceeds 5s, append header `X-Performance-Degraded: true` to trigger UI warning banner."
+      },
+      {
+        "endpoint": "GET /api/v1/dashboard/stream",
+        "protocol": "Server-Sent Events (SSE). Pushes cache invalidation flags.",
+        "thundering_herd_prevention": "Backend MUST stagger outgoing SSE push events randomly across a 0-2000 millisecond jitter specifically to prevent 10,000 active clients from simultaneously HTTP polling right after the DB syncs.",
+        "client_recovery": "If WebSocket / SSE pipeline silently drops, React client must fall back to HTTP Polling every 30 seconds."
+      },
+      {
+        "endpoint": "POST /api/v1/dashboard/export/pdf",
+        "architecture_constraint": "Must run on isolated asynchronous Puppeteer Worker Node (node:alpine) to protect main NestJS event loop.",
+        "validation_rule": "REJECT with HTTP 400 Bad Request IF date parameters > 365 Days.",
+        "s3_retention_policy": "Node service must configure `Expires` property on AWS S3 PutObject to automatically drop file 24 hours after creation. Returns pre-signed URL."
+      },
+      {
+        "background_job": "System Cron Service (CRM Delta Poller)",
+        "frequency": "Cron expression: `*/5 * * * *` (Every 5 minutes).",
+        "hard_delete_sync_logic": "Must poll source CRM for `updated_at > last_sync`. Must ALSO cross-reference deleted CRM Node IDs to hard delete ghost records in Read MongoDB.",
+        "revenue_attribution_lock": "KPI attribution is permanently locked to the Sales Rep ID assigned at the precise millisecond the timestamp closed, surviving any future CRM transfer re-assignments."
+      }
+    ]
+  }
+]

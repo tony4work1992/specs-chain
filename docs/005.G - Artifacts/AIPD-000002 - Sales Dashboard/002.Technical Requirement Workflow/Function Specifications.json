@@ -1,0 +1,90 @@
+[
+  {
+    "id": "SEC-001",
+    "title": "Frontend / Client Layer",
+    "theme": "indigo",
+    "requestVersion": "2026.04.03 12.04.48",
+    "version": "2026.04.03 12.04.48",
+    "parentVersion": "2026.04.03 10.57.45",
+    "items": [
+      {
+        "component": "Temporal Date Toggle",
+        "state_management": "React Context handling current slice. Updates force bounded Date range normalized strictly at UTC 00:00:00Z to 23:59:59Z.",
+        "interaction": "Re-fetches GET /api/v1/dashboard/metrics silently without page refresh."
+      },
+      {
+        "component": "PDF Export Trigger",
+        "validation": "IF (BoundarySpan > 365 Days) THEN disable button and visually render message: 'Export limit 12-months exceeded'.",
+        "error_handling": "Catch HTTP 429 (Spam) or HTTP 400. Mask loading state until S3 Pre-signed URL returns, then initiate window.download."
+      },
+      {
+        "component": "Recharts Area/Funnel Distribution",
+        "formatting": "X-Axis dates localized string `YYYY-MM-DD` mapping tightly to underlying UTC ticks. Tooltip must display explicit date and raw revenue increment.",
+        "fallback": "On WebSocket/SSE network sever, silently engage 30s HTTP Polling interval loop."
+      }
+    ]
+  },
+  {
+    "id": "SEC-002",
+    "title": "Backend / API Layer",
+    "theme": "emerald",
+    "requestVersion": "2026.04.03 12.04.48",
+    "version": "2026.04.03 12.04.48",
+    "parentVersion": "2026.04.03 10.57.45",
+    "items": [
+      {
+        "endpoint": "GET /api/v1/dashboard/metrics",
+        "middleware": "Expects Bearer JWT. Validates RBAC Territory isolation. Injects queried Temporal boundary bounds.",
+        "logic": "Calculates (Current Bound Revenue / Exactly Equivalent Prior Bound Revenue) for Growth %. If Redis Cache crashes, fails over to MongoDB query and forcibly appends Header `X-Performance-Degraded: true`."
+      },
+      {
+        "endpoint": "GET /api/v1/dashboard/stream",
+        "protocol": "Server-Sent Events (SSE).",
+        "logic": "Pushes invalidation `{ event: 'sync_ready', timestamp: <ts> }`. Applies a randomized `0-2000ms` server-side transmission jitter delay per connection to thwart Thundering Herd DdoS onto the GET API."
+      },
+      {
+        "endpoint": "POST /api/v1/dashboard/export/pdf",
+        "logic": "Validates date constraints (<365 days). Drops request with HTTP 429 if client has an active export already compiling. Dispatches buffer-generation payload to Puppeteer queue."
+      }
+    ]
+  },
+  {
+    "id": "SEC-003",
+    "title": "Database & Data Layer",
+    "theme": "amber",
+    "requestVersion": "2026.04.03 12.04.48",
+    "version": "2026.04.03 12.04.48",
+    "parentVersion": "2026.04.03 10.57.45",
+    "items": [
+      {
+        "storage": "MongoDB 7 - `bookings` collection",
+        "schema_rules": "KPI Revenue attribution lock: `owner_id` is permanently anchored to the Sales Rep user at closure timestamp, independently surviving future CRM CRM re-assignments.",
+        "security": "Enforce Transparent Data Encryption (TDE) / Field-Level Encryption explicitly hitting the `booked_revenue` column."
+      },
+      {
+        "storage": "Redis Node Cluster",
+        "caching_strategy": "Caches purely serialized metrics JSON payloads. Purged explicitly by active Cron Upsert Pipeline. OOM Failovers trigger application bypass."
+      }
+    ]
+  },
+  {
+    "id": "SEC-004",
+    "title": "Infrastructure & Integrations",
+    "theme": "slate",
+    "requestVersion": "2026.04.03 12.04.48",
+    "version": "2026.04.03 12.04.48",
+    "parentVersion": "2026.04.03 10.57.45",
+    "items": [
+      {
+        "component": "System Cron Poller",
+        "frequency": "Cron Expression: `*/5 * * * *` (Every 5 minutes).",
+        "logic": "Polls External CRM via REST for `updated_at > last_sync`. MUST intersect diff live IDs with cached IDs to explicitly identify CRM Hard Deletes and actively purge Mongo ghost records."
+      },
+      {
+        "component": "Puppeteer Worker Node",
+        "containerization": "Built on a discrete `node:alpine` Docker stage to isolate hefty Chromium binary memory allocations strictly isolating main NestJS event loops.",
+        "aws_integration": "After PDF buffer serialization, issues PutObject to AWS S3 specifically applying target `Expires` metadata to force auto-deletion strictly after 24 hours. Emits HTTPS Pre-signed URL back to Frontend."
+      }
+    ]
+  }
+]

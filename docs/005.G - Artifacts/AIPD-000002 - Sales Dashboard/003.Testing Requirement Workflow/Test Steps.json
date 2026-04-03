@@ -1,0 +1,92 @@
+{
+  "requestVersion": "2026.04.03 12.15.34",
+  "version": "2026.04.03 12.15.34",
+  "parentVersion": "2026.04.03 12.13.52",
+  "TES-000001": {
+    "CAS-000001": [
+      {
+        "id": "11111111-1111-1111-1111-111111111111",
+        "stepNumber": "STE-000001",
+        "description": "[Target Component: React State Context] Log in user with 'Sales Manager' RBAC role and navigate to Dashboard.",
+        "expectedResults": [
+          { "id": 1, "description": "Dashboard module renders and Temporal Date Toggle component is visible." }
+        ]
+      },
+      {
+        "id": "11111111-1111-1111-1111-111111111112",
+        "stepNumber": "STE-000002",
+        "description": "[Target Component: React State Context] Interactivity: Select an exact 365 Days Date Range (e.g. 2025-01-01 00:00:00Z to 2025-12-31 23:59:59Z).",
+        "expectedResults": [
+          { "id": 1, "description": "Export Button remains in `enabled=true` state." }
+        ]
+      },
+      {
+        "id": "11111111-1111-1111-1111-111111111113",
+        "stepNumber": "STE-000003",
+        "description": "[Target Component: POST /api/v1/dashboard/export/pdf Endpoint] Click the PDF Export Button.",
+        "expectedResults": [
+          { "id": 1, "description": "Target API is triggered without HTTP 429." },
+          { "id": 2, "description": "Puppeteer successfully serializes payload and responds with HTTP 200, returning a valid S3 URL containing +24h `Expires` tag." }
+        ]
+      }
+    ],
+    "CAS-000002": [
+      {
+        "id": "22222222-2222-2222-2222-222222222221",
+        "stepNumber": "STE-000004",
+        "description": "[Target Component: React State Context] Interactivity: Select a 366 Days Date Range (e.g. 2024-01-01 to 2025-01-01).",
+        "expectedResults": [
+          { "id": 1, "description": "Date state updates, BUT Export Button explicitly switches state to `disabled=true` protecting the backend limit." }
+        ]
+      },
+      {
+        "id": "22222222-2222-2222-2222-222222222222",
+        "stepNumber": "STE-000005",
+        "description": "[Target Component: POST /api/v1/dashboard/export/pdf Endpoint] Using Postman or API injector, forge a POST request bypassing the UI explicitly using the 366-day JSON payload.",
+        "expectedResults": [
+          { "id": 1, "description": "Backend validator immediately catches the violation and terminates the request returning exact HTTP 400 Bad Request." }
+        ]
+      }
+    ]
+  },
+  "TES-000002": {
+    "CAS-000003": [
+      {
+        "id": "33333333-3333-3333-3333-333333333331",
+        "stepNumber": "STE-000006",
+        "description": "[Target Component: Redis Cache Policy] Initiate K6 Load-test execution to deliberately spam `GET /api/v1/dashboard/metrics` with arbitrary hashes overriding cache dimensions.",
+        "expectedResults": [
+          { "id": 1, "description": "Redis instances mathematically consume 100% capacity triggering the emergency `volatile-lru` fallback policy." }
+        ]
+      },
+      {
+        "id": "33333333-3333-3333-3333-333333333332",
+        "stepNumber": "STE-000007",
+        "description": "[Target Component: Shared Authentication Service] While OOM is ongoing, verify random global user's Session Token stored in Redis DB(0).",
+        "expectedResults": [
+          { "id": 1, "description": "Auth Tokens definitively persist (zero evictions for critical session keys) and User is NOT falsely kicked." },
+          { "id": 2, "description": "Dashboard queries securely degrade to MongoDB native aggregation returning `X-Performance-Degraded: true`." }
+        ]
+      }
+    ],
+    "CAS-000004": [
+      {
+        "id": "44444444-4444-4444-4444-444444444441",
+        "stepNumber": "STE-000008",
+        "description": "[Target Component: External CRM Integration] Interactivity: Actively force Hard Delete on object instance `Booking_ID: mock-abc-123` inside Mock CRM via REST DELETE.",
+        "expectedResults": [
+          { "id": 1, "description": "Source record is absolutely verified as destroyed from the CRM." }
+        ]
+      },
+      {
+        "id": "44444444-4444-4444-4444-444444444442",
+        "stepNumber": "STE-000009",
+        "description": "[Target Component: MongoDB `bookings` Schema & Cron Job Poller] System Manipulation: Fast-forward internal Node Clock strictly by 5 minutes to jump the Cron frequency condition `*/5 * * * *`.",
+        "expectedResults": [
+          { "id": 1, "description": "Poller recognizes object `mock-abc-123` missing by diffing live Sync and implicitly executes MongoDB `$pull` command." },
+          { "id": 2, "description": "A direct query to MongoDB for `mock-abc-123` returns strictly `null`." }
+        ]
+      }
+    ]
+  }
+}

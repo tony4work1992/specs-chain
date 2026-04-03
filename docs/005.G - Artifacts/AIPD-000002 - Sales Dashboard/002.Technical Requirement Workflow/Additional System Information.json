@@ -1,0 +1,74 @@
+[
+  {
+    "code": "ASI-000001",
+    "index": 1,
+    "criteria": "Definition of Redis Cache Failover and Degradation Strategy.",
+    "pass": false,
+    "hint": "Specify whether the system falls back to querying the primary MongoDB layer (risking heavy query latency) or safely degrades functionality if the Redis cluster drops offline during peak End-of-Month usage.",
+    "placeholder": "Define cache failover logic...",
+    "references": [
+      {
+        "info": "Redis is marked CRITICAL for achieving sub-5-minute data latency metrics and fast UI toggling.",
+        "source": "002.Technical Requirement Workflow/System Context Information.md"
+      }
+    ],
+    "additional_info": "Without a fallback strategy, a Redis OOM (Out of Memory) crash will take down the entire reporting frontend.",
+    "requestVersion": "2026.04.03 10.56.16",
+    "version": "2026.04.03 10.56.16",
+    "parentVersion": "2026.04.03 10.41.26"
+  },
+  {
+    "code": "ASI-000002",
+    "index": 2,
+    "criteria": "Specification of AWS S3 Data Retention and Lifecycle Policies.",
+    "pass": false,
+    "hint": "Determine the exact expiration timeline for temporarily generated PDF/CSV artifacts (e.g., auto-delete after 24 hours vs 7 days) to prevent infinite S3 storage cost ballooning.",
+    "placeholder": "Enter S3 lifecycle expiration rules...",
+    "references": [
+      {
+        "info": "AWS S3 is used for short-lived temporary storage of generated PDF/CSV export snapshots.",
+        "source": "002.Technical Requirement Workflow/System Context Information.md"
+      }
+    ],
+    "additional_info": "Critical for DevOps to configure Terraform/AWS Bucket policies before deployment.",
+    "requestVersion": "2026.04.03 10.56.16",
+    "version": "2026.04.03 10.56.16",
+    "parentVersion": "2026.04.03 10.41.26"
+  },
+  {
+    "code": "ASI-000003",
+    "index": 3,
+    "criteria": "CI/CD Container Optimization for Headless Browser Dependencies.",
+    "pass": false,
+    "hint": "Provide the exact Docker Multi-stage build strategy or Base Image selection (e.g., node:alpine vs ubuntu) given that Puppeteer requires heavy OS-level graphical dependencies.",
+    "placeholder": "Define Docker Image caching and optimization strategy...",
+    "references": [
+      {
+        "info": "Usage of Puppeteer for server-side PDF snapshot rendering combined with Docker Orchestration.",
+        "source": "002.Technical Requirement Workflow/System Context Information.md"
+      }
+    ],
+    "additional_info": "Installing Chromium dependencies directly in a standard Node.js image will drastically increase CI build times and Image sizes if not cached properly.",
+    "requestVersion": "2026.04.03 10.56.16",
+    "version": "2026.04.03 10.56.16",
+    "parentVersion": "2026.04.03 10.41.26"
+  },
+  {
+    "code": "ASI-000004",
+    "index": 4,
+    "criteria": "Data Encryption Strategy 'At Rest' for High-Value Revenue Metrics.",
+    "pass": false,
+    "hint": "Specify whether Field-Level Encryption or simple Transparent Data Encryption (TDE) is required within MongoDB for the fetched CRM revenue nodes.",
+    "placeholder": "Enter Encryption at rest requirements...",
+    "references": [
+      {
+        "info": "System persists massive sets of sales records / Booked-Billed Revenue into MongoDB.",
+        "source": "002.Technical Requirement Workflow/System Context Information.md"
+      }
+    ],
+    "additional_info": "While RBAC protects data in transit and UI, data at rest must be explicitly scoped for compliance (e.g., SOC2).",
+    "requestVersion": "2026.04.03 10.56.16",
+    "version": "2026.04.03 10.56.16",
+    "parentVersion": "2026.04.03 10.41.26"
+  }
+]

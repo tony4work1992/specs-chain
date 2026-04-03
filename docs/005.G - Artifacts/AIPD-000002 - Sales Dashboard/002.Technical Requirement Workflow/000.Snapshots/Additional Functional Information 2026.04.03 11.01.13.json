@@ -1,0 +1,74 @@
+[
+  {
+    "code": "AFI-000001",
+    "index": 1,
+    "criteria": "Definition of exact System State Behavior on WebSocket/SSE disconnections.",
+    "pass": false,
+    "hint": "Specify the user notification payload and the fallback mechanism (e.g., revert to HTTP polling every 10s or halt updates) when the real-time pipeline drops.",
+    "placeholder": "Define disconnection fallback logic...",
+    "references": [
+      {
+        "info": "Real-time updates without page reload architecture via SSE/WebSockets.",
+        "source": "002.Technical Requirement Workflow/System Context Information.md"
+      }
+    ],
+    "additional_info": "Essential to prevent silent UX failures if the network blinks.",
+    "requestVersion": "2026.04.03 10.46.45",
+    "version": "2026.04.03 10.46.45",
+    "parentVersion": "2026.04.03 10.41.26"
+  },
+  {
+    "code": "AFI-000002",
+    "index": 2,
+    "criteria": "Handling of Concurrent PDF Export Invocation (Spamming).",
+    "pass": false,
+    "hint": "Determine if multiple clicks on 'Export' cancel previous ongoing Puppeteer processes, queue them, or block the UI until completion.",
+    "placeholder": "Define rate limiting and concurrency on export...",
+    "references": [
+      {
+        "info": "PDF export constraint capping 12-months data due to memory risks.",
+        "source": "002.Technical Requirement Workflow/System Context Information.md"
+      }
+    ],
+    "additional_info": "Spamming the export button could bypass the 12-month constraint by invoking hundreds of sequential heavy queries.",
+    "requestVersion": "2026.04.03 10.46.45",
+    "version": "2026.04.03 10.46.45",
+    "parentVersion": "2026.04.03 10.41.26"
+  },
+  {
+    "code": "AFI-000003",
+    "index": 3,
+    "criteria": "Global Timezone Normalization rules for Temporal Boundaries.",
+    "pass": false,
+    "hint": "Specify whether purely UTC or User-Local mapping determines when 'Today', 'This Week', or 'This Month' officially ends for Revenue Aggregation.",
+    "placeholder": "Define Timezone standard used for temporal metrics...",
+    "references": [
+      {
+        "info": "Temporal Metric Control Panel manipulating views.",
+        "source": "001.Requirement Development Workflow/Business Requirement Document.md"
+      }
+    ],
+    "additional_info": "Without this, Reps in Asia vs US will see different Daily totals at the exact same instant.",
+    "requestVersion": "2026.04.03 10.46.45",
+    "version": "2026.04.03 10.46.45",
+    "parentVersion": "2026.04.03 10.41.26"
+  },
+  {
+    "code": "AFI-000004",
+    "index": 4,
+    "criteria": "Revenue Attribution Edge Case during mid-period Deal Transfers.",
+    "pass": false,
+    "hint": "If Rep A owns a deal on Monday, and it is transferred to Rep B on Friday, specify who receives the aggregated KPIs for 'Weekly Revenue'.",
+    "placeholder": "Define attribution logic for transferred records...",
+    "references": [
+      {
+        "info": "RBAC and Team Performance Leaderboard dependencies.",
+        "source": "001.Requirement Development Workflow/Business Requirement Document.md"
+      }
+    ],
+    "additional_info": "Will cause the Leaderboard metric math to break strictly if not resolved functionally.",
+    "requestVersion": "2026.04.03 10.46.45",
+    "version": "2026.04.03 10.46.45",
+    "parentVersion": "2026.04.03 10.41.26"
+  }
+]

@@ -1,0 +1,114 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Test Case Schema",
+    "type": "object",
+    "required": [
+        "testcase_id",
+        "group",
+        "suite",
+        "code",
+        "tc_description",
+        "priority",
+        "complexity",
+        "test_type",
+        "core_custom",
+        "requestVersion",
+        "version",
+        "parentVersion"
+    ],
+    "properties": {
+        "testcase_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique ID of the test case (UUID format)"
+        },
+        "group": {
+            "type": "string",
+            "description": "Major functional group (e.g., Artifact Management)"
+        },
+        "suite": {
+            "type": "string",
+            "description": "Specific test suite (e.g., Artifact List, Filters, Create Artifact...)"
+        },
+        "code": {
+            "type": "string",
+            "pattern": "^CAS-\\d{6}$",
+            "description": "Test Case identifier (e.g., CAS-000001)"
+        },
+        "pre_condition": {
+            "type": "string",
+            "description": "Preconditions to execute the test case"
+        },
+        "tc_description": {
+            "type": "string",
+            "description": "Description of the testing objective"
+        },
+        "ticket_code": {
+            "type": "string",
+            "pattern": "^JIRA-\\d+",
+            "description": "Linked ticket code on JIRA"
+        },
+        "priority": {
+            "type": "string",
+            "enum": [
+                "High",
+                "Medium",
+                "Low"
+            ],
+            "description": "Priority level"
+        },
+        "complexity": {
+            "type": "string",
+            "enum": [
+                "High",
+                "Medium",
+                "Low"
+            ],
+            "description": "Complexity level of the test case"
+        },
+        "test_type": {
+            "type": "string",
+            "enum": [
+                "Functional",
+                "Regression",
+                "Smoke"
+            ],
+            "description": "Type of testing"
+        },
+        "core_custom": {
+            "type": "string",
+            "enum": [
+                "Core",
+                "Custom"
+            ],
+            "description": "Classification of core or custom feature"
+        },
+        "note": {
+            "type": "string",
+            "description": "Additional notes"
+        },
+        "reason": {
+            "type": "string",
+            "description": "Reason for creating the test case (e.g., New feature, Bug fix)"
+        },
+        "requestVersion": {
+            "type": "string",
+            "pattern": "^\\d{4}\\.\\d{2}\\.\\d{2} \\d{2}\\.\\d{2}\\.\\d{2}$",
+            "description": "Version of the request (e.g., 2026.04.02 11.30.00)"
+        },
+        "version": {
+            "type": "string",
+            "pattern": "^\\d{4}\\.\\d{2}\\.\\d{2} \\d{2}\\.\\d{2}\\.\\d{2}$",
+            "description": "Version of the test case (e.g., 2026.04.02 11.30.00)"
+        },
+        "parentVersion": {
+            "type": "string",
+            "pattern": "^\\d{4}\\.\\d{2}\\.\\d{2} \\d{2}\\.\\d{2}\\.\\d{2}$",
+            "description": "Version of the parent document used as source (e.g., 2026.04.02 11.30.00)"
+        },
+        "history": {
+            "type": "string",
+            "description": "Update history or creator"
+        }
+    }
+}

@@ -1,0 +1,74 @@
+[
+  {
+    "code": "AFI-000005",
+    "index": 1,
+    "criteria": "Identification of 'Hard Delete' Propagation Strategy from Primary CRM.",
+    "pass": false,
+    "hint": "Specify how the 5-minute `updated_at` delta polling catches records that are physically deleted in the source CRM, not just modified.",
+    "placeholder": "Define strategy for syncing deleted records...",
+    "references": [
+      {
+        "info": "FR-001: CRM Delta Polling Service polling 'updated_at' only.",
+        "source": "002.Technical Requirement Workflow/Functional Requirement Document.md"
+      }
+    ],
+    "additional_info": "If missed, the dashboard will permanently inflate chronological growth with ghost records.",
+    "requestVersion": "2026.04.03 11.04.13",
+    "version": "2026.04.03 11.04.13",
+    "parentVersion": "2026.04.03 10.57.45"
+  },
+  {
+    "code": "AFI-000006",
+    "index": 2,
+    "criteria": "Prevention of the 'Thundering Herd' Problem on SSE Cache Invalidation.",
+    "pass": false,
+    "hint": "Outline how the silent background refetches are staggered when an SSE invalidation payload broadcasts to hundreds of active UI sessions globally at the same instance.",
+    "placeholder": "Define staggering or jitter logic for refetching...",
+    "references": [
+      {
+        "info": "FR-002: Real-time UI Streaming Pipeline causing silent background refetches across active client React components.",
+        "source": "002.Technical Requirement Workflow/Functional Requirement Document.md"
+      }
+    ],
+    "additional_info": "Simultaneous refetch spikes can crash the read nodes instantly.",
+    "requestVersion": "2026.04.03 11.04.13",
+    "version": "2026.04.03 11.04.13",
+    "parentVersion": "2026.04.03 10.57.45"
+  },
+  {
+    "code": "AFI-000007",
+    "index": 3,
+    "criteria": "UI Graceful Handling of AWS S3 Expired Artifacts.",
+    "pass": false,
+    "hint": "Given ASI dictates S3 artifacts expire after 24 hours, determine if users clicking an old export link see a raw AWS XML error or if the application intercepts to display a 'Report Expired' UI.",
+    "placeholder": "Define expired URL user experience...",
+    "references": [
+      {
+        "info": "ASI-000002: AWS S3 Data Retention Policy dictates short-lived artifacts.",
+        "source": "002.Technical Requirement Workflow/Additional System Information.json"
+      }
+    ],
+    "additional_info": "Raw AWS XML errors degrade User Experience (UX) severely.",
+    "requestVersion": "2026.04.03 11.04.13",
+    "version": "2026.04.03 11.04.13",
+    "parentVersion": "2026.04.03 10.57.45"
+  },
+  {
+    "code": "AFI-000008",
+    "index": 4,
+    "criteria": "UX Indication for Redis Degradation Fallback (Slow Queries).",
+    "pass": false,
+    "hint": "If the system triggers the 'Failover Degradation' hitting MongoDB directly due to a Redis OOM, does the UI show a 'Performance Degraded' warning, or does it silently spin a loader for 20 seconds?",
+    "placeholder": "Specify UI state during degraded backend performance...",
+    "references": [
+      {
+        "info": "FR-007: Redis Cache Failover Degradation bypassing cache during crashes.",
+        "source": "002.Technical Requirement Workflow/Functional Requirement Document.md"
+      }
+    ],
+    "additional_info": "Without a visual warning, Users will assume the application froze and will repeatedly refresh, worsening the DB crash.",
+    "requestVersion": "2026.04.03 11.04.13",
+    "version": "2026.04.03 11.04.13",
+    "parentVersion": "2026.04.03 10.57.45"
+  }
+]
