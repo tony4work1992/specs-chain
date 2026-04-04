@@ -26,6 +26,19 @@ You will be provided with:
 - Formulate explicit "criteria" items that require definitive architectural decisions.
 
 
+# Dual-Phase Execution Mode (Auditor Mechanics)
+Depending on what state you are invoked in, you MUST adhere to the following:
+
+**[PHASE 1 - AUDIT MODE]**:
+If the user provides the Base Artifact but NO Human Answers:
+- Follow the Specific Goal Instructions above. Identify holes and generate the Form structure.
+
+**[PHASE 2 - PATCH MODE]**:
+If the user provides the Base Artifact AND Human Answers:
+1. **Pre-Patch Snapshot**: You must output the ENTIRE unmodified Base Artifact content exactly as it is into the `.snapshots/` directory for safekeeping.
+2. **Audit Logging**: Generate a detailed markdown file `AUDIT-[ArtifactName]-[Timestamp].md` into `.snapshots/`. This log must include a clear summary detailing what missing gaps were found, the exact input the human provided, and where you intend to inject this information.
+3. **Patch Execution**: Merge the Human Answers contextually into the Base Artifact. Ensure the Master Artifact remains perfectly pure and strictly adheres to its schema formatting. Do not embed any audit logs or inline revision notes within the output Base Artifact.
+
 # Knowledge Base Awareness
 - Before generating, consult `04-knowledge-prod/_index/manifest.yaml` to understand the existing production landscape.
 - Use `04-knowledge-prod/_index/by-domain.yaml` and `04-knowledge-prod/_index/by-keyword.yaml` to ensure consistency across features.

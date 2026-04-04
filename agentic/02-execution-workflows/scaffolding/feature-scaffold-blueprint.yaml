@@ -167,7 +167,8 @@ execution-workflow:
           action: Check End User Requirement. If Pass -> Goto state-3. If Fail -> Goto state-2a
           skill: 2
         state-2a-wait-and-patch:
-          action: Wait for User Input -> Backup End User Req to .snapshots/ -> Run Skill 14 (Refinement) -> Goto state-2
+          action: Wait for User Input -> Skill 2 stores Pre-Patch Snapshot -> Skill 2 writes independent Audit Summary Log -> Skill 2 generates updated pure End User Req -> Goto state-2
+          skill: 2
         state-3-finalize:
           action: Generate BRD
           skill: 3
@@ -178,12 +179,12 @@ execution-workflow:
           skill: 4
         state-2-validate-context:
           skill: 5
-          action: If Fail -> Wait -> Snapshot state-1 output -> Patch (Skill 14) -> Verify (Goto state-2)
+          action: If Fail -> Wait for User Input -> Skill 5 creates Snapshot & independent Audit Log -> Skill 5 patches pure Context doc -> Verify (Goto state-2)
         state-3-generate-functional:
           skill: 6
         state-4-validate-functional:
           skill: 7
-          action: If Fail -> Wait -> Snapshot state-3 output -> Patch (Skill 14) -> Verify (Goto state-4)
+          action: If Fail -> Wait for User Input -> Skill 7 creates Snapshot & independent Audit Log -> Skill 7 patches pure Functional doc -> Verify (Goto state-4)
         state-5-specifications:
           skill: 8
     phase-3-testing:
@@ -260,11 +261,21 @@ done-criteria:
 # 1. READ 01-delivery-requests/{request}.md
 # 2. CREATE draft-structure folders in 03-artifacts-draft/
 # 3. Follow the execution-workflow phases using the internal State Machine loop.
-# 4. If a Validation state fails, wait for user input -> snapshot -> patch using Skill 14 -> repeat validation.
+# 4. If a Validation state fails, wait for user input -> The Auditor Skill saves Snapshot & Audit Summary -> The Auditor Skill updates the pure Base Artifact -> repeat validation.
 # 5. WAIT for user to trigger Knowledge Sync (Skill 19).
-# 6. CRITICAL: At the end of every state execution, check off the corresponding box in the Tracker file!
+# 6. CRITICAL POST-EXECUTION TASKS:
+#    a. Check off the corresponding box in `01-delivery-requests/_trackers/TRACKER-{request}.md`
+#    b. Append a new timestamped log entry to BOTH:
+#       - The Global Log: `02-execution-workflows/master-execution.csv`
+#       - The Project Log: `01-delivery-requests/_trackers/HISTORY-{request}.csv`
+#    FORMAT for CSV: "YYYY-MM-DD HH:MM:SS","SKILL-[ID]","[Status]","[Output File Paths]","[Note/Summary]"
 #
 # [MANUAL MODE]
 # 1. Execute Skills exactly in order from F1, or 01 to 18 sequentially.
 # 2. Skip state machine conditional loops.
-# 3. CRITICAL: At the end of every manually executed skill, check off the corresponding box in the Tracker file!
+# 3. CRITICAL POST-EXECUTION TASKS:
+#    a. Check off the corresponding box in `01-delivery-requests/_trackers/TRACKER-{request}.md`
+#    b. Append a new timestamped log entry to BOTH:
+#       - The Global Log: `02-execution-workflows/master-execution.csv`
+#       - The Project Log: `01-delivery-requests/_trackers/HISTORY-{request}.csv`
+#    FORMAT for CSV: "YYYY-MM-DD HH:MM:SS","SKILL-[ID]","[Status]","[Output File Paths]","[Note/Summary]"

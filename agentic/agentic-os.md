@@ -40,6 +40,23 @@ Each layer has a clear boundary. Layers must not overlap.
 - Knowledge is clean, decomposed, indexed, and AI-owned. AI Agents read exclusively from here.
 - Promotion from Draft → Production only happens when a human explicitly triggers **Skill 19: Knowledge Sync**.
 
+### 1.4 The Registry Rule
+
+> **Whenever the system adds, modifies, or deletes a Domain, Layer, or Skill, the AI Agent MUST update `agentic/00-system-rules/_index/os-registry.yaml` FIRST.**
+
+This central YAML file serves as the system's runtime self-awareness database. Without this, the AI will suffer from "blind spots" during cross-referencing and drift out of alignment with the true file structure.
+
+### 1.5 The Explicit Audit Snapshot Rule
+
+When an Auditor Skill (e.g. 02, 05, 07) detects holes and receives human input:
+> **The original Artifact MUST remain pure. The Auditor MUST save an independent Audit Log within the `.snapshots/` folder documenting its execution trace, and explicitly store the Pre-Patch baseline alongside its Audit Summary.**
+
+### 1.6 The Execution Chronicle Rule
+
+Hệ thống Agentic OS được trang bị cơ chế Giám sát Vận hành (Observability) khép kín. Bất luận là chu trình Tự động (Autonomous) hay Kích hoạt chéo (Manual), các AI Agent đều bị ép buộc tuân thủ quy trình Ghi Sổ Kép (Double-Logging):
+> 1. **Global Mastery Log:** Lưu vết tập trung mọi thao tác trên toàn Hệ Sinh Thái để phục vụ đo lường KPI Đội ngũ AI (`master-execution.csv`).
+> 2. **Project History Log:** Bám sát từng Delivery Request để cung cấp Audit Trail minh bạch cho đội ngũ Phát triển (`HISTORY-{request}.csv`).
+
 ---
 
 ## 2. Folder Structure
@@ -130,7 +147,7 @@ Inside `01-delivery-requests/_trackers/`, every active pipeline request has a `T
 **Agent Behavior:** At the end of ANY skill execution, you MUST check off your corresponding task on this tracker to preserve Operator visibility.
 
 **AI Agent behavior:** Read a delivery request to understand the raw user intent. This is the seed that flows through Skills 01–18.
-> **Skill 00 (Front Door):** Use `.agents/skills/delivery-request-generation/SKILL.md` to automatically generate Request files and Trackers interactively.
+> **Skill 00 (Front Door):** Use `.agents/skills/00-delivery-request-generation/SKILL.md` to automatically generate Request files and Trackers interactively.
 
 ---
 
@@ -279,8 +296,8 @@ Step 6: NEVER read from 03-artifacts-draft/ for context
 
 Before building features, the System Architecture must be established so downstream AI Agents are not flying blind.
 
-**Step 1:** Trigger Skill 00 from `.agents/skills/delivery-request-generation/SKILL.md`. The AI will ask for your inputs and bootstrap the Dashboard and Request files.
-**Step 2:** Open `.agents/skills/project-foundation-generation/SKILL.md` and trigger Skill F1. Answer the chat interview.
+**Step 1:** Trigger Skill 00 from `.agents/skills/00-delivery-request-generation/SKILL.md`. The AI will ask for your inputs and bootstrap the Dashboard and Request files.
+**Step 2:** Open `.agents/skills/f1-project-foundation-generation/SKILL.md` and trigger Skill F1. Answer the chat interview.
 **Step 3:** The AI outputs 9 system drafts into `03-artifacts-draft/{request-code}/00-project-foundation/`.
 **Step 4:** Trigger Skill 19 (`knowledge-sync`) to push the drafts to `04-knowledge-prod/domain-architecture/_system/`.
 
@@ -292,7 +309,7 @@ For a dedicated guide, refer to: `.agents/workflows/01-init-foundation.md`
 
 The Agentic OS is driven by an autonomous **Orchestrator State Machine**. The exact states, loops, and routing logic are defined in `02-execution-workflows/scaffolding/feature-scaffold-blueprint.yaml`.
 
-Do not assume a linear execution order. The Orchestrator engine evaluates conditional boundaries (e.g. `If Fail -> Wait for User -> Backup to .snapshots/ -> Patch using Skill 14 -> Loop back to Validate`).
+Do not assume a linear execution order. The Orchestrator engine evaluates conditional boundaries (e.g. `If Fail -> Wait for User -> Auditor captures Pre-Patch Snapshot -> Auditor updates Base Artifact -> Loop back to Validate`).
 Reference the `execution-workflow` block inside the blueprint YAML to understand the precise lifecycle.
 
 ---
@@ -346,7 +363,7 @@ The Engine strictly follows two execution modes defined in the Blueprint:
    - If a Validation Skill (e.g. 02, 05, 07) fails, HALT.
    - Wait for User Input.
    - Backup active draft into `.snapshots/`.
-   - Run Skill 14 (Refinement) to patch the baseline document.
+   - The Auditor Skill triggers the **Self-Reflecting Patch** (captures Pre-Patch snapshot, writes Audit Summary log to the snapshot, and patches the pure baseline Document).
    - Return to Validation.
 4. PRODUCE exactly 18 standard artifacts in `03-artifacts-draft/`
 ```

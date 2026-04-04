@@ -1,5 +1,5 @@
-_description: System Mapping for Skill 00 — Implementation Roadmap
-skill-id: '00'
+_description: System Mapping for Skill 20 — Implementation Roadmap
+skill-id: '20'
 name: Implementation Roadmap
 inputs:
   rules:
@@ -7,7 +7,7 @@ inputs:
   blueprints:
     - 02-execution-workflows/scaffolding/feature-scaffold-blueprint.yaml
   prompts:
-    - 00-system-rules/02-prompt-templates/skill-00-implementation-roadmap.md
+    - 00-system-rules/02-prompt-templates/skill-20-implementation-roadmap.md
   knowledge:
     - 04-knowledge-prod/_index/manifest.yaml
 output:
