@@ -15,7 +15,7 @@ inputs:
   blueprints:
     - 02-execution-workflows/scaffolding/feature-scaffold-blueprint.yaml
   prompts:
-    - 00-system-rules/02-prompt-templates/skill-15-ui-component-architecture.md
+    - 00-system-rules/02-prompt-templates/skill-16-ui-component-architecture.md
   knowledge:
     - 04-knowledge-prod/_index/manifest.yaml
     - 04-knowledge-prod/_index/by-domain.yaml

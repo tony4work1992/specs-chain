@@ -95,6 +95,17 @@ skills:
     name: "Implementation Roadmap"
     path: ".agents/skills/21-implementation-roadmap/SKILL.md"
 
+  # Execution Phase
+  - id: "22"
+    name: "Install Framework Plugin"
+    path: ".agents/skills/22-install-framework-plugin/SKILL.md"
+  - id: "23"
+    name: "Autonomous Code Generation"
+    path: ".agents/skills/23-autonomous-code-generation/SKILL.md"
+  - id: "24"
+    name: "Code Reflection Auditor"
+    path: ".agents/skills/24-code-reflection-auditor/SKILL.md"
+
   # Meta Skills
   - id: "99"
     name: "System OS Evolution"

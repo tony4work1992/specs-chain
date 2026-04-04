@@ -13,7 +13,7 @@ inputs:
   blueprints:
     - 02-execution-workflows/scaffolding/feature-scaffold-blueprint.yaml
   prompts:
-    - 00-system-rules/02-prompt-templates/skill-02-end-user-requirement-auditor.md
+    - 00-system-rules/02-prompt-templates/skill-04-end-user-requirement-auditor.md
   knowledge:
     - 04-knowledge-prod/_index/manifest.yaml
     - 04-knowledge-prod/_index/by-domain.yaml

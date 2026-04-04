@@ -1,0 +1,24 @@
+# Phase 2 Framework-Specific Orchestration (The Boundaries Layer)
+# This file tells the Agentic OS where to physically place generated code based on the Knowledge Base.
+
+framework: "react-nestjs-v1"
+
+frontend_routing:
+  # Map UI Components from architecture specs to physical React paths
+  - source_knowledge: "04-knowledge-prod/domain-architecture/{feature-slug}/frontend/ui-component-architecture.yaml"
+    target_code_dir: "client/src/features/{feature-slug}/ui/components/"
+    file_extension: ".tsx"
+    template: "frontend-react.template.tsx"
+
+backend_routing:
+  # Map Database Entities to NestJS entities
+  - source_knowledge: "04-knowledge-prod/domain-model/{feature-slug}/entities/*"
+    target_code_dir: "server/src/modules/{feature-slug}/entities/"
+    file_extension: ".entity.ts"
+    template: "backend-nestjs.template.ts"
+
+  # Map API Specs to NestJS Controllers
+  - source_knowledge: "04-knowledge-prod/domain-architecture/{feature-slug}/backend/api-tactic-architecture.yaml"
+    target_code_dir: "server/src/modules/{feature-slug}/controllers/"
+    file_extension: ".controller.ts"
+    template: "backend-nestjs.template.ts"

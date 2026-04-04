@@ -14,7 +14,7 @@ inputs:
   blueprints:
     - 02-execution-workflows/scaffolding/feature-scaffold-blueprint.yaml
   prompts:
-    - 00-system-rules/02-prompt-templates/skill-06-functional-requirement-document.md
+    - 00-system-rules/02-prompt-templates/skill-08-functional-requirement-document.md
   knowledge:
     - 04-knowledge-prod/_index/manifest.yaml
     - 04-knowledge-prod/_index/by-domain.yaml

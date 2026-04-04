@@ -117,6 +117,12 @@ Act as automated Gatekeepers. They scan documents produced by the Builders to de
   2. **Architecture Back-Propagation (System Up-Sync):** Scans the feature for any new global Shared Models, UI Components, or API Integrations and *automatically back-propagates* them into the global Core Foundation (`04-knowledge-prod/domain-architecture/_system/`). The Foundation self-evolves!
   3. **Index Registry Update (O(1) DNS):** Dynamically registers the paths of all newly created files into the ecosystem's indexing database (`04-knowledge-prod/_index/manifest.yaml` and `by-*.yaml`). This eliminates context-bloat and guarantees instant lookups for future Agents.
 - **Skill 21 (Implementation Roadmap):** Reads the finalized production architecture and generates chronological execution steps.
+
+### 🛠️ The Code-Gen Unit (Phase 2 Execution)
+Code generation is strictly framework-agnostic. The overarching rules are kept at the Project Boundary `docs/`, while these OS Skills act purely as Orchestrators.
+- **Skill 22 (Install Framework Plugin):** Copies the selected `code-mappings`, `code-templates`, and `scripts` from `.agents/04-os-templates/framework-plugins/` into the user's `docs/05-support-assets/`.
+- **Skill 23 (Autonomous Code Generation):** Evaluates `framework-routing.yaml` to precisely inject Knowledge Base YAMLs into the respective Framework-specific physical template arrays.
+- **Skill 24 (Code Reflection Auditor):** Executes the target script `docs/05-support-assets/scripts/trace-scanner.js` to cross-validate physical code Abstract Syntax Trees against O(1) Knowledge Base constraints. Autonomously Auto-Heals the physical code on failure.
 - **Meta-Skill 99 (System OS Evolution):** Performs invasive structural upgrades to the OS itself.
 
 ---
