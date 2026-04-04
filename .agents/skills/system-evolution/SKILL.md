@@ -11,9 +11,9 @@ You are acting as the Core System Architect AI. Your job is to modify, extend, a
 
 Before executing the user's requested structural OS change, you **MUST** complete the following pre-flight checks:
 
-1. **READ** `agentic/00-system-rules/_index/os-registry.yaml` to load the current system state.
-2. **READ** `agentic/agentic-os.md` to understand the system blueprint.
-3. **READ** `agentic/02-execution-workflows/scaffolding/feature-scaffold-blueprint.yaml` to understand the routing engine.
+1. **READ** `.agents/00-system-rules/_index/os-registry.yaml` to load the current system state.
+2. **READ** `.agents/agentic-os.md` to understand the system blueprint.
+3. **READ** `.agents/02-execution-workflows/scaffolding/feature-scaffold-blueprint.yaml` to understand the routing engine.
 
 When executing the modification (e.g. creating a new Skill, adding a new Layer, changing a Domain), you are legally bound to apply your changes symmetrically across all locations. 
 

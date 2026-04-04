@@ -18,8 +18,8 @@ When the user executes this skill, you must ask the user:
 Once you have collected the data, execute file creation tools to output the exact structures:
 
    **A. Scaffold the Delivery Request:**
-   If Foundation: Create `agentic/01-delivery-requests/FOUNDATION-REQUEST.md`.
-   If Feature: Create `agentic/01-delivery-requests/FEA-[ID]-[Slug].md`.
+   If Foundation: Create `docs/01-delivery-requests/FOUNDATION-REQUEST.md`.
+   If Feature: Create `docs/01-delivery-requests/FEA-[ID]-[Slug].md`.
    Fill it with this exact template structure:
    ```md
    # Request: [Name]
@@ -35,9 +35,9 @@ Once you have collected the data, execute file creation tools to output the exac
    ```
 
    **B. Scaffold the Execution Tracker:**
-   Depending on the Request Type, copy the corresponding tracker template from `agentic/00-system-rules/04-artifact-templates/01-execution-trackers/`:
-   - For Foundation: Copy `foundation-tracker-template.md` -> Save as `agentic/01-delivery-requests/_trackers/FOUNDATION-TRACKER.md`.
-   - For Feature `FEA`: Copy `fea-tracker-template.md` -> Save as `agentic/01-delivery-requests/_trackers/TRACKER-FEA-[ID].md`.
+   Depending on the Request Type, copy the corresponding tracker template from `.agents/00-system-rules/04-artifact-templates/01-execution-trackers/`:
+   - For Foundation: Copy `foundation-tracker-template.md` -> Save as `docs/01-delivery-requests/_trackers/FOUNDATION-TRACKER.md`.
+   - For Feature `FEA`: Copy `fea-tracker-template.md` -> Save as `docs/01-delivery-requests/_trackers/TRACKER-FEA-[ID].md`.
    
    Check off `[x] Skill 00` in the newly created tracker.
 

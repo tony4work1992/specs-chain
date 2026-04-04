@@ -9,7 +9,7 @@ naming:
   knowledge-file: '{request-code}-{artifact-code}-{slug}.{yaml|md}'
   snapshot-file: '{artifact-name}-{YYYY-MM-DD-HH-mm-ss}.{yaml|md}'
 draft-structure:
-  root: 03-artifacts-draft/{folder-name}/
+  root: docs/03-artifacts-draft/{folder-name}/
   layers:
     00-project-foundation:
       description: SYSTEM BASE — Architectural constraints and rules
@@ -111,31 +111,31 @@ draft-structure:
           required: true
 knowledge-structure:
   domain-business:
-    path: 04-knowledge-prod/domain-business/{feature-slug}/
+    path: docs/04-knowledge-prod/domain-business/{feature-slug}/
     sub-folders:
       - requirements
       - rules
       - user-stories
   domain-technical:
-    path: 04-knowledge-prod/domain-technical/{feature-slug}/
+    path: docs/04-knowledge-prod/domain-technical/{feature-slug}/
     sub-folders:
       - api-specs
       - system-context
       - functional-specs
   domain-model:
-    path: 04-knowledge-prod/domain-model/{feature-slug}/
+    path: docs/04-knowledge-prod/domain-model/{feature-slug}/
     sub-folders:
       - entities
       - invariants
       - queries
   domain-architecture:
-    path: 04-knowledge-prod/domain-architecture/{feature-slug}/
+    path: docs/04-knowledge-prod/domain-architecture/{feature-slug}/
     sub-folders:
       - frontend
       - backend
       - flows
   domain-testing:
-    path: 04-knowledge-prod/domain-testing/{feature-slug}/
+    path: docs/04-knowledge-prod/domain-testing/{feature-slug}/
     sub-folders:
       - cases
       - checklist
@@ -257,8 +257,8 @@ done-criteria:
 # [PRE-FLIGHT GUARDRAIL]
 # 0. STRICT DEPENDENCY DUAL-INTERLOCK: 
 #    -> GLOBAL: Before executing ANY Feature Skill (01 to 19), the AI MUST verify that Project Foundation (`03-artifacts-draft/00-project-foundation/`) exists via `FOUNDATION-TRACKER.md`. If missing, HALT.
-#    -> LOCAL: Before executing ANY Skill, the AI MUST read `agentic/01-delivery-requests/_trackers/TRACKER-FEA-{request}.md` (or `FOUNDATION-TRACKER.md`). If the sequentially preceding Skill is NOT checked off `[x]`, the AI MUST refuse execution, HALT the pipeline.
-#    -> If Tracker is missing, copy `foundation-tracker-template.md` (for Foundation) or `fea-tracker-template.md` (for FEA request) from `agentic/00-system-rules/04-artifact-templates/01-execution-trackers/`.
+#    -> LOCAL: Before executing ANY Skill, the AI MUST read `docs/01-delivery-requests/_trackers/TRACKER-FEA-{request}.md` (or `FOUNDATION-TRACKER.md`). If the sequentially preceding Skill is NOT checked off `[x]`, the AI MUST refuse execution, HALT the pipeline.
+#    -> If Tracker is missing, copy `foundation-tracker-template.md` (for Foundation) or `fea-tracker-template.md` (for FEA request) from `.agents/00-system-rules/04-artifact-templates/01-execution-trackers/`.
 # [AUTONOMOUS MODE]
 # 1. READ 01-delivery-requests/{request}.md
 # 2. CREATE draft-structure folders in 03-artifacts-draft/
@@ -267,7 +267,7 @@ done-criteria:
 # 5. WAIT for user to trigger Knowledge Sync (Skill 19).
 # 6. CRITICAL POST-EXECUTION TASKS:
 #    a. Check off the corresponding box in `01-delivery-requests/_trackers/TRACKER-{request}.md`
-#    b. Create an Execution Summary `.md` at: `agentic/02-execution-workflows/execution-summaries/YYYY-MM-DD-SKILL-[ID]-[request].md` (Report Input Traces, Output Traces, Effort).
+#    b. Create an Execution Summary `.md` at: `.agents/02-execution-workflows/execution-summaries/YYYY-MM-DD-SKILL-[ID]-[request].md` (Report Input Traces, Output Traces, Effort).
 #    c. Append a new timestamped log entry to BOTH CSV Logs (Global and Project).
 #    FORMAT for CSV: "YYYY-MM-DD HH:MM:SS","SKILL-[ID]","[Status]","[Output File Paths]","[Path/To/The/Generated/Summary.md]"
 #    DO NOT dump raw summary text into the CSV! Only provide the URL/Path.
@@ -277,7 +277,7 @@ done-criteria:
 # 2. Skip state machine conditional loops.
 # 3. CRITICAL POST-EXECUTION TASKS:
 #    a. Check off the corresponding box in `01-delivery-requests/_trackers/TRACKER-{request}.md`
-#    b. Create an Execution Summary `.md` at: `agentic/02-execution-workflows/execution-summaries/YYYY-MM-DD-SKILL-[ID]-[request].md` (Report Input Traces, Output Traces, Effort).
+#    b. Create an Execution Summary `.md` at: `.agents/02-execution-workflows/execution-summaries/YYYY-MM-DD-SKILL-[ID]-[request].md` (Report Input Traces, Output Traces, Effort).
 #    c. Append a new timestamped log entry to BOTH CSV Logs (Global and Project).
 #    FORMAT for CSV: "YYYY-MM-DD HH:MM:SS","SKILL-[ID]","[Status]","[Output File Paths]","[Path/To/The/Generated/Summary.md]"
 #    DO NOT dump raw summary text into the CSV! Only provide the URL/Path.
