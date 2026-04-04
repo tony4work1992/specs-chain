@@ -2,6 +2,9 @@ _description: System Mapping for Skill 01 — End User Requirement Generation
 skill-id: '01'
 name: End User Requirement Generation
 inputs:
+  foundation:
+    - 03-artifacts-draft/00-project-foundation/01-business-and-constraints.md
+    - 03-artifacts-draft/00-project-foundation/07-cost-management.md
   rules:
     - 00-system-rules/01-architecture-tactics/00-governance/output-quality-rules.md
     - 00-system-rules/01-architecture-tactics/00-governance/naming-conventions.md
@@ -14,7 +17,7 @@ inputs:
     - 04-knowledge-prod/_index/manifest.yaml
     - 04-knowledge-prod/_index/by-domain.yaml
   templates:
-    - 00-system-rules/04-artifact-templates/.../end-user-requirement.md
+    - 00-system-rules/04-artifact-templates/01-requirement-development/01-end-user-requirement-template.md
 output:
   draft: 03-artifacts-draft/{request-code}/01-business-layer/end-user-requirement.md
   snapshot: 03-artifacts-draft/{request-code}/01-business-layer/.snapshots/

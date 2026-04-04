@@ -1,25 +1,24 @@
-# System Execution Tracker
-_This file tracks the autonomous completion state of the Agentic OS Pipeline._
+# Feature Execution Tracker
+_This file tracks the autonomous completion state of a Feature._
 
 ## Project Context
-- **Target Request:** `[FEA-001 or SYS-001]`
+- **Target Request:** `[FEA-001]`
 - **Status:** `[In Progress / Completed]`
 - **Last Updated:** `[YYYY-MM-DD]`
 
-## 0. Project Foundation
-_Must be run once per system._
-- [ ] **Skill F1:** Foundation Scaffolding Generation
+## 00. Request Initialization
+- [ ] **Skill 00:** Delivery Request Generation (Front Door)
 
 ## 1. Business Layer (WHY & WHAT)
 - [ ] **Skill 01:** End User Requirement
-- [ ] **Skill 02:** Additional Information Generation
+- [ ] **Skill 02:** End User Requirement Auditor
 - [ ] **Skill 03:** BRD Generation
 
 ## 2. Technical Layer (HOW)
 - [ ] **Skill 04:** System Context Generation
-- [ ] **Skill 05:** Additional System Information
+- [ ] **Skill 05:** System Context Auditor
 - [ ] **Skill 06:** FRD Generation
-- [ ] **Skill 07:** Additional Functional Information
+- [ ] **Skill 07:** Functional Requirement Auditor
 - [ ] **Skill 08:** Functional Specifications Generation
 
 ## 3. Testing Layer (VERIFY)

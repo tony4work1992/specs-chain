@@ -2,6 +2,10 @@ _description: System Mapping for Skill 08 — Functional Specifications Generati
 skill-id: '08'
 name: Functional Specifications Generation
 inputs:
+  foundation:
+    - 03-artifacts-draft/00-project-foundation/02-architecture-patterns.md
+    - 03-artifacts-draft/00-project-foundation/03-technology-stack.md
+    - 03-artifacts-draft/00-project-foundation/06-networking-and-security.md
   rules:
     - 00-system-rules/01-architecture-tactics/00-governance/output-quality-rules.md
     - 00-system-rules/01-architecture-tactics/00-governance/naming-conventions.md

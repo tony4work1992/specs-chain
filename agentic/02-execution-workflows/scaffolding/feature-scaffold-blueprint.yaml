@@ -49,7 +49,7 @@ draft-structure:
         - name: end-user-requirement.md
           skill: 1
           required: true
-        - name: information-collection.yaml
+        - name: end-user-requirement-auditor.md
           skill: 2
           required: true
         - name: business-requirement-document.md
@@ -62,13 +62,13 @@ draft-structure:
         - name: system-context-information.md
           skill: 4
           required: true
-        - name: additional-system-information.yaml
+        - name: system-context-auditor.md
           skill: 5
           required: true
         - name: functional-requirement-document.md
           skill: 6
           required: true
-        - name: additional-functional-information.yaml
+        - name: functional-requirement-auditor.md
           skill: 7
           required: true
         - name: function-specifications.yaml
@@ -240,9 +240,9 @@ done-criteria:
     description: Complete feature documentation
     required-files:
       - all implementation-ready files
-      - 01-business-layer/information-collection.yaml
-      - 02-technical-layer/additional-system-information.yaml
-      - 02-technical-layer/additional-functional-information.yaml
+      - 01-business-layer/end-user-requirement-auditor.md
+      - 02-technical-layer/system-context-auditor.md
+      - 02-technical-layer/functional-requirement-auditor.md
       - 03-testing-layer/test-scope.yaml
       - 03-testing-layer/test-impact.yaml
       - 03-testing-layer/test-checklist.yaml
@@ -254,9 +254,11 @@ done-criteria:
 # ─── QUICK START CHECKLIST ────────────────────────────────────────
 # When Agent receives a new delivery request:
 # 
-# [INITIALIZATION STAGE]
-# 0. Check if `agentic/01-delivery-requests/_trackers/TRACKER-{request}.md` exists. If not, copy it from `agentic/00-system-rules/04-artifact-templates/01-execution-trackers/tracker-template.md`.
-#
+# [PRE-FLIGHT GUARDRAIL]
+# 0. STRICT DEPENDENCY DUAL-INTERLOCK: 
+#    -> GLOBAL: Before executing ANY Feature Skill (01 to 19), the AI MUST verify that Project Foundation (`03-artifacts-draft/00-project-foundation/`) exists via `FOUNDATION-TRACKER.md`. If missing, HALT.
+#    -> LOCAL: Before executing ANY Skill, the AI MUST read `agentic/01-delivery-requests/_trackers/TRACKER-FEA-{request}.md` (or `FOUNDATION-TRACKER.md`). If the sequentially preceding Skill is NOT checked off `[x]`, the AI MUST refuse execution, HALT the pipeline.
+#    -> If Tracker is missing, copy `foundation-tracker-template.md` (for Foundation) or `fea-tracker-template.md` (for FEA request) from `agentic/00-system-rules/04-artifact-templates/01-execution-trackers/`.
 # [AUTONOMOUS MODE]
 # 1. READ 01-delivery-requests/{request}.md
 # 2. CREATE draft-structure folders in 03-artifacts-draft/
@@ -265,17 +267,17 @@ done-criteria:
 # 5. WAIT for user to trigger Knowledge Sync (Skill 19).
 # 6. CRITICAL POST-EXECUTION TASKS:
 #    a. Check off the corresponding box in `01-delivery-requests/_trackers/TRACKER-{request}.md`
-#    b. Append a new timestamped log entry to BOTH:
-#       - The Global Log: `02-execution-workflows/master-execution.csv`
-#       - The Project Log: `01-delivery-requests/_trackers/HISTORY-{request}.csv`
-#    FORMAT for CSV: "YYYY-MM-DD HH:MM:SS","SKILL-[ID]","[Status]","[Output File Paths]","[Note/Summary]"
+#    b. Create an Execution Summary `.md` at: `agentic/02-execution-workflows/execution-summaries/YYYY-MM-DD-SKILL-[ID]-[request].md` (Report Input Traces, Output Traces, Effort).
+#    c. Append a new timestamped log entry to BOTH CSV Logs (Global and Project).
+#    FORMAT for CSV: "YYYY-MM-DD HH:MM:SS","SKILL-[ID]","[Status]","[Output File Paths]","[Path/To/The/Generated/Summary.md]"
+#    DO NOT dump raw summary text into the CSV! Only provide the URL/Path.
 #
 # [MANUAL MODE]
 # 1. Execute Skills exactly in order from F1, or 01 to 18 sequentially.
 # 2. Skip state machine conditional loops.
 # 3. CRITICAL POST-EXECUTION TASKS:
 #    a. Check off the corresponding box in `01-delivery-requests/_trackers/TRACKER-{request}.md`
-#    b. Append a new timestamped log entry to BOTH:
-#       - The Global Log: `02-execution-workflows/master-execution.csv`
-#       - The Project Log: `01-delivery-requests/_trackers/HISTORY-{request}.csv`
-#    FORMAT for CSV: "YYYY-MM-DD HH:MM:SS","SKILL-[ID]","[Status]","[Output File Paths]","[Note/Summary]"
+#    b. Create an Execution Summary `.md` at: `agentic/02-execution-workflows/execution-summaries/YYYY-MM-DD-SKILL-[ID]-[request].md` (Report Input Traces, Output Traces, Effort).
+#    c. Append a new timestamped log entry to BOTH CSV Logs (Global and Project).
+#    FORMAT for CSV: "YYYY-MM-DD HH:MM:SS","SKILL-[ID]","[Status]","[Output File Paths]","[Path/To/The/Generated/Summary.md]"
+#    DO NOT dump raw summary text into the CSV! Only provide the URL/Path.

@@ -1,6 +1,6 @@
 ---
-name: 18. Flow Sequence Generation
-description: Trigger workflow for Flow Sequence (Mermaid Dynamic Path) Generation
+name: 07. Functional Requirement Auditor
+description: Trigger workflow for Functional Requirement Auditor
 ---
 # Instruction
 
@@ -9,7 +9,7 @@ Whenever this skill ingests external artifacts, upstream variables, or `[Human I
 
 When the user runs this SKILL, you MUST use the file viewer tool to read the precise YAML mapping instructions at the path below:
 
-`./agentic/00-system-rules/03-system-mappings/skill-18-flow-sequence-architecture.yaml`
+`./agentic/00-system-rules/03-system-mappings/skill-07-functional-requirement-auditor.yaml`
 
 Additionally, you MUST strictly adhere to the execution loops and conditions explicitly defined in the State Machine Orchestrator at:
 `./agentic/02-execution-workflows/scaffolding/feature-scaffold-blueprint.yaml`

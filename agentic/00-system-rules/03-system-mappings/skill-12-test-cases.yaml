@@ -2,6 +2,9 @@ _description: System Mapping for Skill 12 — Test Cases Generation
 skill-id: '12'
 name: Test Cases Generation
 inputs:
+  foundation:
+    - 03-artifacts-draft/00-project-foundation/05-infrastructure-and-cicd.md
+    - 03-artifacts-draft/00-project-foundation/09-observability-and-monitoring.md
   rules:
     - 00-system-rules/01-architecture-tactics/00-governance/output-quality-rules.md
     - 00-system-rules/01-architecture-tactics/00-governance/naming-conventions.md
