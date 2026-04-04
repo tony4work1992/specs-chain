@@ -112,7 +112,10 @@ Act as automated Gatekeepers. They scan documents produced by the Builders to de
 *(Note: These Auditors trigger the Snapshot mechanics defined in **Rule 2.3**).*
 
 ### 🚚 The Logistics Unit
-- **Skill 20 (Knowledge Sync):** The most critical agent. Triggered strictly by Human approval. It shreds monolithic markdown drafts from `03-artifacts-draft/` into hundreds of granular, hyper-targeted knowledge files inside `04-knowledge-prod/` and dynamically updates the `_index`.
+- **Skill 20 (Knowledge Sync):** The most critical agent. Triggered strictly by Human approval. It performs three monumental tasks:
+  1. **Feature Fragmentation:** Shreds monolithic markdown drafts from `03-artifacts-draft/` into hundreds of granular, hyper-targeted knowledge files inside `04-knowledge-prod/{feature-slug}/`.
+  2. **Architecture Back-Propagation (System Up-Sync):** Scans the feature for any new global Shared Models, UI Components, or API Integrations and *automatically back-propagates* them into the global Core Foundation (`04-knowledge-prod/domain-architecture/_system/`). The Foundation self-evolves!
+  3. **Index Registry Update (O(1) DNS):** Dynamically registers the paths of all newly created files into the ecosystem's indexing database (`04-knowledge-prod/_index/manifest.yaml` and `by-*.yaml`). This eliminates context-bloat and guarantees instant lookups for future Agents.
 - **Skill 21 (Implementation Roadmap):** Reads the finalized production architecture and generates chronological execution steps.
 - **Meta-Skill 99 (System OS Evolution):** Performs invasive structural upgrades to the OS itself.
 
