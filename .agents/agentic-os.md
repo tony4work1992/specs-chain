@@ -128,6 +128,12 @@ Code generation is strictly framework-agnostic. The overarching rules are kept a
 - **Skill 23 (Autonomous Code Generation):** Evaluates `framework-routing.yaml` to precisely inject Knowledge Base YAMLs into the respective Framework-specific physical template arrays.
 - **Skill 24 (Code Reflection Auditor):** Executes the target script `docs/05-support-assets/scripts/trace-scanner.js` to cross-validate physical code Abstract Syntax Trees against O(1) Knowledge Base constraints. Autonomously Auto-Heals the physical code on failure.
 - **Skill 25 (Autonomous Test Generation):** The TDD Execution Engine. Evaluates `test_routing` and translates Knowledge Base Test Cases into physical `.spec.ts` test files BEFORE domain code generation.
+
+### 🧟 The Legacy Ingestion Unit (Brownfield Reverse Engineering)
+Executed exclusively for existing projects to populate the `04-knowledge-prod` SSOT before normal forward-generation resumes. To prevent Context Window Exhaustion, this unit operates using Gamified Chunking via an `INGESTION-COVERAGE-TRACKER`.
+- **Skill 26 (Legacy Discovery Scanner):** Blindly globs the legacy workspace using textual footprints to output a `legacy-discovery-report.yaml` AND initializes the `INGESTION-COVERAGE-TRACKER.md`. A Human Architect reviews the report to perform **Domain Boundary Refactoring**—grouping chaotic physical legacy paths into clean DDD `{feature-slug}` structures within `framework-ingestion.yaml`.
+- **Skill 27 (AST Reverse Engineer):** The Ingestion Agent. Receives an isolated `--target_node` from the Coverage Tracker, reads the physical legacy code via AST parsing, reconstructs pristine architectural YAML files into the Knowledge Base, and checks off `[x]` on the Tracker to mark progress.
+- **Skill 28 (Business Rule Extractor):** Evaluates complex logic spanning across targeted legacy Controllers/Helpers and back-propagates unspoken implicit rules into `03-artifacts-draft/BRD.md` for human review.
 - **Meta-Skill 99 (System OS Evolution):** Performs invasive structural upgrades to the OS itself.
 
 ---

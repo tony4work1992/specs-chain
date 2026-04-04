@@ -109,6 +109,17 @@ skills:
     name: "Autonomous Test Generation"
     path: ".agents/skills/25-autonomous-test-generation/SKILL.md"
 
+  # Legacy Ingestion Phase
+  - id: "26"
+    name: "Legacy Discovery Scanner"
+    path: ".agents/skills/26-legacy-discovery-scanner/SKILL.md"
+  - id: "27"
+    name: "AST Reverse Engineer"
+    path: ".agents/skills/27-ast-reverse-engineer/SKILL.md"
+  - id: "28"
+    name: "Business Rule Extractor"
+    path: ".agents/skills/28-business-rule-extractor/SKILL.md"
+
   # Meta Skills
   - id: "99"
     name: "System OS Evolution"

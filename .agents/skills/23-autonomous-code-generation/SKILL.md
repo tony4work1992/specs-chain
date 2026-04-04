@@ -29,5 +29,10 @@ You are STRICTLY FORBIDDEN from guessing where to write code.
 ## 4. Execution Action
 Create or modify the physical file at the `target_code_dir` using safe file modification tools. Do not skip any non-functional requirements (authorization, logging, transactions) denoted in the Knowledge base.
 
-## 5. Handoff
+## 5. The Batch-Processing Interlock (Chunking Rule)
+Do **NOT** attempt to generate the entire system codebase at once.
+When this Skill is invoked, you **MUST** require the user to provide a specific `--feature_target` or `FEATURE_SLUG` parameter (e.g., `payment`, `auth`).
+You must strictly replace the `{feature-slug}` variable in the `framework-routing.yaml` mapping with this target, and ONLY generate physical code for that specific isolated domain boundary. If the user doesn't provide it, you must pause and ask them.
+
+## 6. Handoff
 Once complete, explicitly instruct the user to execute **Skill 24 (Code Reflection Auditor)** to verify your work.
