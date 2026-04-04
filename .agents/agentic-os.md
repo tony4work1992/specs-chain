@@ -51,7 +51,7 @@ These four mandates are hardcoded into the OS execution layer. All AI Agents mus
 > [!CAUTION]
 > **Rule 2.6: The Strict Sequential Dual-Interlock (Anti-Hallucination Guardrail)**
 > AI Agents are **STRICTLY FORBIDDEN** from executing Skills out of order. This rule operates via two locked gates:
-> 1. **Global Interlock:** Before executing ANY Feature-level Skill (01 to 19), the AI MUST verify that the System Foundation exists (`FOUNDATION-TRACKER.md` checked). Do not build features without a foundation.
+> 1. **Global Interlock:** Before executing ANY Feature-level Skill (03 to 21), the AI MUST verify that the System Foundation exists (`FOUNDATION-TRACKER.md` checked). Do not build features without a foundation.
 > 2. **Local Interlock:** Before running ANY Skill, the AI MUST evaluate the active feature `TRACKER-FEA-{request}.md` (or `FOUNDATION-TRACKER.md`). If the sequentially preceding Skill is not checked off `[x]`, the AI MUST refuse execution and HALT the pipeline.
 
 > [!CAUTION]
@@ -92,26 +92,27 @@ Config → Input → Engine → Draft → Knowledge → Support → Archive
 The OS organizes its AI Agents into specialized **"Skills"**. Each skill holds strict boundaries over a specific architectural layer.
 
 ### 🚪 The Front-Door Unit
-- **Skill 00 (Delivery Request Generation):** Interactively interviews product owners to create initial Delivery Requests.
-- **Skill F1 (Project Foundation):** Establishes the 9 core Architectural Foundations before any feature work begins.
+- **Skill 00 (Init OS Workspace):** Scaffolds the fundamental folder paths for the OS workspace via bash.
+- **Skill 01 (Delivery Request Generation):** Interactively interviews product owners to create initial Delivery Requests.
+- **Skill 02 (Project Foundation Generation):** Establishes the 9 core Architectural Foundations before any feature work begins.
 
 ### 🏗️ The Builders (Iterative Generation)
 Generate raw requirements across the domain layers:
-- **Business Layer:** Skill 01 (End User Req), Skill 03 (BRD).
-- **Technical Layer:** Skill 04 (System Context), Skill 06 (FRD), Skill 08 (Functional Specs).
-- **Testing Layer:** Skill 09 to 13 (Scope, Impact, Checklists, Cases, Steps).
-- **Architecture Layer:** Skill 15 to 18 (UI, Strategic C4, Tactic Slices, Flow Sequences).
+- **Business Layer:** Skill 03 (End User Req), Skill 05 (BRD).
+- **Technical Layer:** Skill 06 (System Context), Skill 08 (FRD), Skill 10 (Functional Specs).
+- **Testing Layer:** Skill 11 to 15 (Scope, Impact, Checklists, Cases, Steps).
+- **Architecture Layer:** Skill 16 to 19 (UI, Strategic C4, Tactic Slices, Flow Sequences).
 
 ### 🔍 The Auditors (QA & Self-Reflection)
 Act as automated Gatekeepers. They scan documents produced by the Builders to detect vagueness, missing non-functional rules, or edge cases.
-- **Skill 02:** Edits Business Rules.
-- **Skill 05:** Edits System Architecture Rules.
-- **Skill 07:** Edits Functional Constraints.
+- **Skill 04:** Edits Business Rules.
+- **Skill 07:** Edits System Architecture Rules.
+- **Skill 09:** Edits Functional Constraints.
 *(Note: These Auditors trigger the Snapshot mechanics defined in **Rule 2.3**).*
 
 ### 🚚 The Logistics Unit
-- **Skill 19 (Knowledge Sync):** The most critical agent. Triggered strictly by Human approval. It shreds monolithic markdown drafts from `03-artifacts-draft/` into hundreds of granular, hyper-targeted knowledge files inside `04-knowledge-prod/` and dynamically updates the `_index`.
-- **Skill 20 (Implementation Roadmap):** Reads the finalized production architecture and generates chronological execution steps.
+- **Skill 20 (Knowledge Sync):** The most critical agent. Triggered strictly by Human approval. It shreds monolithic markdown drafts from `03-artifacts-draft/` into hundreds of granular, hyper-targeted knowledge files inside `04-knowledge-prod/` and dynamically updates the `_index`.
+- **Skill 21 (Implementation Roadmap):** Reads the finalized production architecture and generates chronological execution steps.
 - **Meta-Skill 99 (System OS Evolution):** Performs invasive structural upgrades to the OS itself.
 
 ---
@@ -131,7 +132,7 @@ The core workflow for Feature execution.
 > The workflow halts deliberately before **Knowledge Sync**. The Human must explicitly verify the drafts before allowing the pipeline to contaminate Production Knowledge.
 
 ### Protocol B: Manual Sequential Override
-Allows operators to bypass the State Machine feedback loops and force the execution of Skills sequentially (e.g., from 01 to 18) for batch processing or isolated testing.
+Allows operators to bypass the State Machine feedback loops and force the execution of Skills sequentially (e.g., from 00 to 21) for batch processing or isolated testing.
 
 ---
 

@@ -47,67 +47,67 @@ draft-structure:
       snapshots: true
       files:
         - name: end-user-requirement.md
-          skill: 1
+          skill: 3
           required: true
         - name: end-user-requirement-auditor.md
-          skill: 2
+          skill: 4
           required: true
         - name: business-requirement-document.md
-          skill: 3
+          skill: 5
           required: true
     02-technical-layer:
       description: HOW — Technical specifications and system design
       snapshots: true
       files:
         - name: system-context-information.md
-          skill: 4
-          required: true
-        - name: system-context-auditor.md
-          skill: 5
-          required: true
-        - name: functional-requirement-document.md
           skill: 6
           required: true
-        - name: functional-requirement-auditor.md
+        - name: system-context-auditor.md
           skill: 7
           required: true
-        - name: function-specifications.yaml
+        - name: functional-requirement-document.md
           skill: 8
+          required: true
+        - name: functional-requirement-auditor.md
+          skill: 9
+          required: true
+        - name: function-specifications.yaml
+          skill: 10
           required: true
     03-testing-layer:
       description: VERIFY — Test strategy and execution specs
       snapshots: true
       files:
         - name: test-scope.yaml
-          skill: 9
-          required: true
-        - name: test-impact.yaml
-          skill: 10
-          required: true
-        - name: test-checklist.yaml
           skill: 11
           required: true
-        - name: test-cases.yaml
+        - name: test-impact.yaml
           skill: 12
           required: true
-        - name: test-steps.yaml
+        - name: test-checklist.yaml
           skill: 13
+          required: true
+        - name: test-cases.yaml
+          skill: 14
+          required: true
+        - name: test-steps.yaml
+          skill: 15
           required: true
     04-architecture-layer:
       description: STRUCTURE — Software architecture and design
       snapshots: true
       files:
         - name: ui-component-architecture.yaml
-          skill: 15
+          skill: 17
           required: false
         - name: strategic-architecture.md
-          skill: 16
+          skill: 18
           required: true
         - name: api-tactic-architecture.yaml
-          skill: 17
+          skill: 19
           required: true
         - name: flow-sequence-architecture.md
-          skill: 18
+          skill: 20
           required: true
 knowledge-structure:
   domain-business:
@@ -162,61 +162,61 @@ execution-workflow:
       states:
         state-1-generate:
           action: Generate End User Requirement
-          skill: 1
+          skill: 3
         state-2-validate:
           action: Check End User Requirement. If Pass -> Goto state-3. If Fail -> Goto state-2a
-          skill: 2
+          skill: 4
         state-2a-wait-and-patch:
           action: Wait for User Input -> Skill 2 stores Pre-Patch Snapshot -> Skill 2 writes independent Audit Summary Log -> Skill 2 generates updated pure End User Req -> Goto state-2
-          skill: 2
+          skill: 4
         state-3-finalize:
           action: Generate BRD
-          skill: 3
+          skill: 5
     phase-2-technical:
       description: Define HOW with validation gating
       states:
         state-1-generate-context:
-          skill: 4
+          skill: 6
         state-2-validate-context:
-          skill: 5
+          skill: 7
           action: If Fail -> Wait for User Input -> Skill 5 creates Snapshot & independent Audit Log -> Skill 5 patches pure Context doc -> Verify (Goto state-2)
         state-3-generate-functional:
-          skill: 6
+          skill: 8
         state-4-validate-functional:
-          skill: 7
+          skill: 9
           action: If Fail -> Wait for User Input -> Skill 7 creates Snapshot & independent Audit Log -> Skill 7 patches pure Functional doc -> Verify (Goto state-4)
         state-5-specifications:
-          skill: 8
+          skill: 10
     phase-3-testing:
       description: Define HOW TO VERIFY (Sequential)
       states:
         state-1:
-          skill: 9
-        state-2:
-          skill: 10
-        state-3:
           skill: 11
-        state-4:
+        state-2:
           skill: 12
-        state-5:
+        state-3:
           skill: 13
+        state-4:
+          skill: 14
+        state-5:
+          skill: 15
     phase-4-architecture:
       description: Define STRUCTURE (Sequential)
       states:
         state-1:
-          skill: 15
-        state-2:
-          skill: 16
-        state-3:
           skill: 17
-        state-4:
+        state-2:
           skill: 18
+        state-3:
+          skill: 19
+        state-4:
+          skill: 20
     phase-5-knowledge-sync:
       description: Promote approved drafts to production knowledge
       trigger: USER MUST explicitly request this
       states:
         state-1-sync:
-          skill: 19
+          skill: 20
 done-criteria:
   minimum-viable:
     description: Enough to start implementation (MVP)

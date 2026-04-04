@@ -1,0 +1,28 @@
+_description: System Mapping for Skill 05 — System Context Auditor
+skill-id: '07'
+name: System Context Auditor
+inputs:
+  foundation:
+    - 03-artifacts-draft/00-project-foundation/02-architecture-patterns.md
+    - 03-artifacts-draft/00-project-foundation/03-technology-stack.md
+    - 03-artifacts-draft/00-project-foundation/06-networking-and-security.md
+  rules:
+    - 00-system-rules/01-architecture-tactics/00-governance/output-quality-rules.md
+    - 00-system-rules/01-architecture-tactics/00-governance/naming-conventions.md
+    - 00-system-rules/01-architecture-tactics/00-governance/anti-patterns.md
+  blueprints:
+    - 02-execution-workflows/scaffolding/feature-scaffold-blueprint.yaml
+  prompts:
+    - 00-system-rules/02-prompt-templates/skill-05-system-context-auditor.md
+  knowledge:
+    - 04-knowledge-prod/_index/manifest.yaml
+    - 04-knowledge-prod/_index/by-domain.yaml
+  templates:
+    - 00-system-rules/04-artifact-templates/02-technical-requirement/02-system-context-auditor-template.md
+output:
+  draft: 03-artifacts-draft/{request-code}/02-technical-layer/system-context-auditor.md
+  base_artifact_target: 03-artifacts-draft/{request-code}/02-technical-layer/system-context-information.md
+  snapshot_dir: 03-artifacts-draft/{request-code}/02-technical-layer/.snapshots/
+execution_rule: |
+  phase_1_audit: Identify holes in base_artifact_target and output questions to draft.
+  phase_2_patch: Once human provides input, capture base_artifact_target to snapshot_dir, write an independent AUDIT-[name]-[timestamp].md to snapshot_dir, and output the cleanly patched base_artifact_target.
