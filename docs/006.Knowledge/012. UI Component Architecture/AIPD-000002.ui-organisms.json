@@ -1,8 +1,0 @@
-{
-  "_metadata": { "featureCode": "AIPD-000002", "featureName": "Sales Dashboard", "sourceFile": "003.Software Architecture Workflow/UI Component Architecture.json", "sourceVersion": "2026.04.03 14.29.29" },
-  "id": "SEC-003", "title": "Table 3: Organisms",
-  "items": [
-    { "id": "COM_05", "component_name": "SalesLineChart", "classification": "Dumb", "props": "data: ChartDataPoint[]", "state_bindings": "None", "api_dependency": "None", "dom_hierarchy": "<ResponsiveContainer><LineChart><Line dataKey='amount_cents' /></LineChart></ResponsiveContainer>" },
-    { "id": "COM_06", "component_name": "SalesBoardMetrics", "classification": "Smart", "props": "None", "state_bindings": "UI_STATE_01 (temporalMode triggers re-fetch)", "api_dependency": "API_03 (GET /metrics)", "dom_hierarchy": "<section><SalesLineChart data={apiData} /></section>" }
-  ]
-}

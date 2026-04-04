@@ -1,7 +1,0 @@
-{
-  "_metadata": { "featureCode": "AIPD-000002", "featureName": "Sales Dashboard", "sourceFile": "003.Software Architecture Workflow/UI Component Architecture.json", "sourceVersion": "2026.04.03 14.29.29" },
-  "id": "SEC-002", "title": "Table 2: Molecules",
-  "items": [
-    { "id": "COM_04", "component_name": "DashboardToolbar", "classification": "Smart", "props": "None", "state_bindings": "UI_STATE_01 (temporalMode), UI_STATE_02 (isExportingPdf)", "api_dependency": "API_01 (Trigger PDF Export)", "dom_hierarchy": "<header><TemporalSelect /><ExportButton /></header>" }
-  ]
-}

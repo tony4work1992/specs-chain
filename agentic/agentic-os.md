@@ -66,6 +66,7 @@ agentic/
 │
 ├── 03-artifacts-draft/             📝  Human workspace — iterative drafts
 │   └── ${request-code}/
+│       ├── 00-project-foundation/  Architecture baseline & constraints
 │       ├── 01-business-layer/      BRD, End User Req, Info Collection
 │       ├── 02-technical-layer/     FRD, System Context, Func Specs
 │       ├── 03-testing-layer/       Test Scope, Impact, Cases, Steps
@@ -81,6 +82,8 @@ agentic/
 │   ├── domain-business/           WHY & WHAT knowledge
 │   │   └── ${feature}/
 │   ├── domain-technical/          HOW knowledge
+│   │   └── ${feature}/
+│   ├── domain-model/              CORE structures, entities, invariants
 │   │   └── ${feature}/
 │   ├── domain-architecture/       STRUCTURE knowledge
 │   │   └── ${feature}/
@@ -127,6 +130,7 @@ Inside `01-delivery-requests/_trackers/`, every active pipeline request has a `T
 **Agent Behavior:** At the end of ANY skill execution, you MUST check off your corresponding task on this tracker to preserve Operator visibility.
 
 **AI Agent behavior:** Read a delivery request to understand the raw user intent. This is the seed that flows through Skills 01–18.
+> **Skill 00 (Front Door):** Use `.agents/skills/delivery-request-generation/SKILL.md` to automatically generate Request files and Trackers interactively.
 
 ---
 
@@ -144,6 +148,7 @@ The working area for iterative artifact generation. Organized by request code, t
 
 | Layer | Skills | Key Artifacts |
 |---|---|---|
+| `00-project-foundation` | Skill F1 | 9 System Foundation Architecture files |
 | `01-business-layer` | Skill 01, 02, 03 | End User Requirement, Information Collection, BRD |
 | `02-technical-layer` | Skill 04, 05, 06, 07, 08 | System Context, FRD, Function Specifications |
 | `03-testing-layer` | Skill 09, 10, 11, 12, 13 | Test Scope, Impact, Checklist, Cases, Steps |
@@ -185,7 +190,8 @@ Knowledge files are organized by **domain** (from the DDD taxonomy), not by docu
 |---|---|---|
 | `domain-business/` | WHY & WHAT | End User Req, Info Collection, BRD |
 | `domain-technical/` | HOW | System Context, FRD, Function Specs, ASI, AFI |
-| `domain-architecture/` | STRUCTURE | UI, C4 Strategic, Tactic Slices, Flow Sequences |
+| `domain-model/` | CORE | Entities, Invariants, Queries |
+| `domain-architecture/` | STRUCTURE | Foundation Maps, UI, C4 Strategic, Tactic Slices, Flow Sequences |
 | `domain-testing/` | VERIFY | Test Scope, Impact, Checklist, Cases, Steps |
 
 Within each domain, files are grouped by feature: `domain-business/{feature-slug}/`, `domain-technical/{feature-slug}/`, etc.
@@ -312,6 +318,7 @@ Skill 19 is the deliberate, user-triggered promotion gate between Draft and Prod
 
 | Skill Source | Knowledge Domain | Strategy |
 |---|---|---|
+| Skill F1 (Foundation) | `domain-architecture/` | 9 System Architecture files mapping |
 | Skill 01 (End User Req) | `domain-business/` | 1 file (whole document) |
 | Skill 02 (Info Collection) | `domain-business/` | Each YAML array item → 1 file |
 | Skill 03 (BRD) | `domain-business/` | Split by section → 4 files |

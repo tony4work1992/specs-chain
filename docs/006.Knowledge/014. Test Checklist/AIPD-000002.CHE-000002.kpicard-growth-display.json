@@ -1,6 +1,0 @@
-{
-  "_metadata": { "featureCode": "AIPD-000002", "featureName": "Sales Dashboard", "sourceFile": "003.Testing Requirement Workflow/Test Checklist.json", "sourceVersion": "2026.04.03 16.31.34" },
-  "code": "CHE-000002", "type": "Scope", "item": "SCO-000002",
-  "description": "Component: Frontend Client / KPICard. Action: Inject mock growth values. Verify 15.2% shows in Green (#4CAF50) with '+15.2%'. Verify -4.1% shows in Red (#F44336) with '-4.1%'. Verify $1,500,000 renders exactly as '$1.5M'.",
-  "requestVersion": "2026.04.03 16.31.34", "version": "2026.04.03 16.31.34", "parentVersion": "2026.04.03 16.30.22"
-}

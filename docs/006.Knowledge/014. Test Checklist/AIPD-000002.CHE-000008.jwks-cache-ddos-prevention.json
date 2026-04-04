@@ -1,6 +1,0 @@
-{
-  "_metadata": { "featureCode": "AIPD-000002", "featureName": "Sales Dashboard", "sourceFile": "003.Testing Requirement Workflow/Test Checklist.json", "sourceVersion": "2026.04.03 16.31.34" },
-  "code": "CHE-000008", "type": "Impact", "item": "IMP-000003",
-  "description": "Component: Internal Auth Microservice. Action: Execute 1,000 Dashboard API requests simultaneously. Monitor the physical traffic logs inside the Auth Microservice. The JWKS request count should equal 1 (from local cache bootstrap), NOT 1,000.",
-  "requestVersion": "2026.04.03 16.31.34", "version": "2026.04.03 16.31.34", "parentVersion": "2026.04.03 16.30.22"
-}

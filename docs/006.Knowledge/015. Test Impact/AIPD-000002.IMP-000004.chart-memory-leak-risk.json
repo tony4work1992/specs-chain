@@ -1,6 +1,0 @@
-{
-  "_metadata": { "featureCode": "AIPD-000002", "featureName": "Sales Dashboard", "sourceFile": "003.Testing Requirement Workflow/Test Impact.json", "sourceVersion": "2026.04.03 16.30.22" },
-  "code": "IMP-000004", "systemName": "Frontend React Client", "componentName": "UI Item", "elementName": "RevenueChart DOM Node",
-  "description": "RISK: Rapidly toggling between Weekly/Monthly scopes forces the DOM to frequently recalculate SVG nodes. If previous instances of chart components are not cleanly unmounted (mem-leaks), the client browser will inevitably freeze during prolonged session usage.",
-  "requestVersion": "2026.04.03 16.30.22", "version": "2026.04.03 16.30.22", "parentVersion": "2026.04.03 16.28.47"
-}

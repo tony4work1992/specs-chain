@@ -1,1 +1,0 @@
-Create a Sales Dashboard with Weekly, Monthly, Quarterly, Annually metrics

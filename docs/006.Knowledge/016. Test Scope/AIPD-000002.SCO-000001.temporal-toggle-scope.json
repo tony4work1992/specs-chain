@@ -1,6 +1,0 @@
-{
-  "_metadata": { "featureCode": "AIPD-000002", "featureName": "Sales Dashboard", "sourceFile": "003.Testing Requirement Workflow/Test Scope.json", "sourceVersion": "2026.04.03 16.28.47" },
-  "code": "SCO-000001", "systemName": "Frontend React Client", "componentName": "UI Item", "elementName": "TemporalToggle",
-  "description": "IN-SCOPE: Must verify 4 toggle states (Weekly, Monthly, Quarterly, Annually). Must default to 'Monthly'. Must immediately trigger API refetch upon change. OUT-OF-SCOPE: Exporting data to CSV/PDF from this toggle.",
-  "requestVersion": "2026.04.03 16.28.47", "version": "2026.04.03 16.28.47", "parentVersion": "2026.04.03 16.25.13"
-}
