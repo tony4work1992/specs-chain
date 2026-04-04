@@ -1,0 +1,18 @@
+{
+  "module": "order",
+  "domain_name": "Order",
+  "aggregate": "Order",
+  "summary": "Domain truths that must always hold for the Order aggregate and its child items.",
+  "invariants": [
+    "Every order must belong to exactly one active project.",
+    "An order must contain at least one order item.",
+    "All order items in one order must use the same currency.",
+    "Paid amount must equal the order total; partial payment is out of scope for this release.",
+    "Cancellation requires a human-readable reason with at least 10 characters."
+  ],
+  "constraint_implications": [
+    "Order total must be recalculated from item line totals before persistence.",
+    "State-changing methods must reject invalid payment and cancellation attempts.",
+    "Repository and database constraints should support uniqueness and aggregate integrity."
+  ]
+}

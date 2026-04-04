@@ -1,0 +1,21 @@
+_description: System Mapping for Skill 11 — Test Checklist Generation
+skill-id: '11'
+name: Test Checklist Generation
+inputs:
+  rules:
+    - 00-system-rules/01-architecture-tactics/00-governance/output-quality-rules.md
+    - 00-system-rules/01-architecture-tactics/00-governance/naming-conventions.md
+    - 00-system-rules/01-architecture-tactics/00-governance/anti-patterns.md
+  blueprints:
+    - 02-execution-workflows/scaffolding/feature-scaffold-blueprint.yaml
+  prompts:
+    - 00-system-rules/02-prompt-templates/skill-11-test-checklist.md
+  knowledge:
+    - 04-knowledge-prod/_index/manifest.yaml
+    - 04-knowledge-prod/_index/by-domain.yaml
+  templates:
+    - 00-system-rules/04-artifact-templates/.../test-checklist.yaml
+output:
+  draft: 03-artifacts-draft/{request-code}/03-testing-layer/test-checklist.yaml
+  snapshot: 03-artifacts-draft/{request-code}/03-testing-layer/.snapshots/
+execution_rule: Generate draft artifact based on inputs, template, and prompt. If exists, copy old version to .snapshots.

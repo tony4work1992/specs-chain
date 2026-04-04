@@ -1,0 +1,15 @@
+_metadata:
+  featureCode: AIPD-000002
+  featureName: Sales Dashboard
+  sourceFile: 003.Testing Requirement Workflow/Test Checklist.json
+  sourceVersion: 2026.04.03 16.31.34
+code: CHE-000006
+type: Impact
+item: IMP-000001
+description: >-
+  Component: Legacy Checkout API. Action: Manually shutdown the Redis Cache container. Perform a standard legacy
+  Checkout operation. The Checkout MUST succeed within < 2 seconds regardless of the Redis eviction event failing
+  asynchronously.
+requestVersion: 2026.04.03 16.31.34
+version: 2026.04.03 16.31.34
+parentVersion: 2026.04.03 16.30.22

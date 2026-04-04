@@ -1,0 +1,22 @@
+{
+  "spec_id": "TEMPLATE-TEST",
+  "level": "unit",
+  "module": "sample",
+  "feature": "sample-feature",
+  "references": {
+    "frd": "path/to/feature.feature.md",
+    "api": "path/to/feature.api.yaml"
+  },
+  "test_cases": [
+    {
+      "code": "SAMPLE_001",
+      "description": "Describe the behavior being verified.",
+      "input": {
+        "example": "payload"
+      },
+      "expected": {
+        "result": "observable outcome"
+      }
+    }
+  ]
+}

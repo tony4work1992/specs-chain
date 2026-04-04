@@ -1,0 +1,16 @@
+_metadata:
+  featureCode: AIPD-000002
+  featureName: Sales Dashboard
+  sourceFile: 003.Testing Requirement Workflow/Test Impact.json
+  sourceVersion: 2026.04.03 16.30.22
+code: IMP-000003
+systemName: Internal Auth Microservice
+componentName: API
+elementName: JWKS Endpoint Fetcher
+description: >-
+  RISK: If the NestJS Sales Dashboard Backend recursively fetches the JWKS public keys from the Auth Microservice for
+  every single incoming request without utilizing JWKS caching, the dashboard traffic will act as a DDoS vector against
+  the central Auth IdP. JWT Validation must be explicitly verified to be cached.
+requestVersion: 2026.04.03 16.30.22
+version: 2026.04.03 16.30.22
+parentVersion: 2026.04.03 16.28.47

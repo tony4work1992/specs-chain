@@ -1,0 +1,21 @@
+{
+  "module": "order",
+  "seed_data": {
+    "ids": {
+      "orderId": "ord_001",
+      "projectId": "prj_001",
+      "userId": "usr_001"
+    },
+    "statuses": [
+      "PENDING_PAYMENT",
+      "PAID",
+      "CANCELLED"
+    ]
+  },
+  "sample_payloads": [
+    "create-order",
+    "cancel-order",
+    "get-order-detail",
+    "pay-order"
+  ]
+}

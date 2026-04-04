@@ -1,0 +1,14 @@
+_metadata:
+  featureCode: AIPD-000002
+  featureName: Sales Dashboard
+  sourceFile: 003.Testing Requirement Workflow/Test Checklist.json
+  sourceVersion: 2026.04.03 16.31.34
+code: CHE-000007
+type: Impact
+item: IMP-000002
+description: >-
+  Component: Database Component. Action: Simulate maximum aggregation queries on MongoDB (Annual Scope loops).
+  Concurrently trigger 10 new Cart Write requests. Verify Cart logic saves to DB sequentially without timeout lockups.
+requestVersion: 2026.04.03 16.31.34
+version: 2026.04.03 16.31.34
+parentVersion: 2026.04.03 16.30.22

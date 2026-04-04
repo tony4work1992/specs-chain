@@ -1,0 +1,230 @@
+- id: SEC-001
+  title: 'Table 1: Database Collections'
+  theme: emerald
+  requestVersion: 2026.04.03 16.25.13
+  version: 2026.04.03 16.25.13
+  parentVersion: 2026.04.03 16.24.10
+  items:
+    - table_id: DB_COLL_01
+      name: transactions
+      description: Stores pure transactional sales data
+    - table_id: DB_COLL_02
+      name: exchange_rates
+      description: Stores daily USD exchange rates fetched from 3rd party API
+- id: SEC-002
+  title: 'Table 2: Database Columns'
+  theme: amber
+  requestVersion: 2026.04.03 16.25.13
+  version: 2026.04.03 16.25.13
+  parentVersion: 2026.04.03 16.24.10
+  items:
+    - col_id: COL_01
+      table_ref: DB_COLL_01
+      name: transaction_id
+      type: String
+      required: true
+    - col_id: COL_02
+      table_ref: DB_COLL_01
+      name: transaction_amount
+      type: Number
+      required: true
+    - col_id: COL_03
+      table_ref: DB_COLL_01
+      name: currency_code
+      type: String
+      required: true
+    - col_id: COL_04
+      table_ref: DB_COLL_01
+      name: transaction_date
+      type: Date
+      required: true
+    - col_id: COL_05
+      table_ref: DB_COLL_01
+      name: status
+      type: String
+      required: true
+      default: completed
+    - col_id: COL_06
+      table_ref: DB_COLL_01
+      name: region
+      type: String
+      required: true
+    - col_id: COL_07
+      table_ref: DB_COLL_02
+      name: date
+      type: String
+      required: true
+      description: YYYY-MM-DD
+    - col_id: COL_08
+      table_ref: DB_COLL_02
+      name: currency
+      type: String
+      required: true
+    - col_id: COL_09
+      table_ref: DB_COLL_02
+      name: rate_to_usd
+      type: Number
+      required: true
+- id: SEC-003
+  title: 'Table 3: MongoDB Indexes'
+  theme: indigo
+  requestVersion: 2026.04.03 16.25.13
+  version: 2026.04.03 16.25.13
+  parentVersion: 2026.04.03 16.24.10
+  items:
+    - idx_id: IDX_01
+      table_ref: DB_COLL_01
+      fields: transaction_date_1_status_1
+      unique: false
+      notes: Optimizes aggregation match
+    - idx_id: IDX_02
+      table_ref: DB_COLL_02
+      fields: date_1_currency_1
+      unique: true
+      notes: Compound index for rapid lookup and deduplicator
+- id: SEC-004
+  title: 'Table 4: Redis Cache Keys'
+  theme: red
+  requestVersion: 2026.04.03 16.25.13
+  version: 2026.04.03 16.25.13
+  parentVersion: 2026.04.03 16.24.10
+  items:
+    - cache_id: RED_01
+      key_pattern: dashboard:sales:annually:{year}:{region}
+      ttl: 24h
+      invalidation_rule: Throttled max 1 per 60s on write
+    - cache_id: RED_02
+      key_pattern: dashboard:sales:quarterly:{quarter}:{region}
+      ttl: 24h
+      invalidation_rule: Throttled max 1 per 60s on write
+- id: SEC-005
+  title: 'Table 5: API Endpoints'
+  theme: blue
+  requestVersion: 2026.04.03 16.25.13
+  version: 2026.04.03 16.25.13
+  parentVersion: 2026.04.03 16.24.10
+  items:
+    - api_id: API_01
+      method: GET
+      path: /api/v1/dashboard/sales
+      controller: DashboardController
+      auth: JWT JWKS
+      rate_limit: 100 QPS
+- id: SEC-006
+  title: 'Table 6: API Payloads and Headers'
+  theme: cyan
+  requestVersion: 2026.04.03 16.25.13
+  version: 2026.04.03 16.25.13
+  parentVersion: 2026.04.03 16.24.10
+  items:
+    - payload_id: PL_01
+      api_ref: API_01
+      type: Header
+      key: X-Timezone-Offset
+      data_type: String
+      required: true
+    - payload_id: PL_02
+      api_ref: API_01
+      type: Query
+      key: scope
+      data_type: String
+      required: true
+      notes: 'Enum: Weekly, Monthly, Quarterly, Annually'
+    - payload_id: PL_03
+      api_ref: API_01
+      type: Response
+      key: currentPeriodRevenue
+      data_type: Number
+      required: true
+    - payload_id: PL_04
+      api_ref: API_01
+      type: Response
+      key: growthPercentage
+      data_type: Number
+      required: true
+    - payload_id: PL_05
+      api_ref: API_01
+      type: Response
+      key: chartData
+      data_type: Array
+      required: true
+      notes: 'Array of { label: String, value: Number }'
+- id: SEC-007
+  title: 'Table 7: React UI Components'
+  theme: fuchsia
+  requestVersion: 2026.04.03 16.25.13
+  version: 2026.04.03 16.25.13
+  parentVersion: 2026.04.03 16.24.10
+  items:
+    - cmp_id: UI_01
+      name: SalesDashboardContainer
+      type: Page
+      children: UI_02, UI_03
+    - cmp_id: UI_02
+      name: TemporalToggle
+      type: Molecule
+      props: activeScope, onChange
+    - cmp_id: UI_03
+      name: RevenueChart
+      type: Organism
+      props: data, error, isLoading
+    - cmp_id: UI_04
+      name: KPICard
+      type: Molecule
+      props: title, value, growthPercentage
+- id: SEC-008
+  title: 'Table 8: State Management & UX Rules'
+  theme: purple
+  requestVersion: 2026.04.03 16.25.13
+  version: 2026.04.03 16.25.13
+  parentVersion: 2026.04.03 16.24.10
+  items:
+    - rule_id: UX_01
+      cmp_ref: UI_02
+      state_variable: scope
+      default_value: Monthly
+      trigger: onChange triggers API_01 fetch
+    - rule_id: UX_02
+      cmp_ref: UI_04
+      logic: 'If growthPercentage > 0 apply + and #4CAF50, else - and #F44336'
+    - rule_id: UX_03
+      cmp_ref: UI_04
+      logic: Format values over 1M with M abbreviation
+- id: SEC-009
+  title: 'Table 9: Cron Background Jobs'
+  theme: gray
+  requestVersion: 2026.04.03 16.25.13
+  version: 2026.04.03 16.25.13
+  parentVersion: 2026.04.03 16.24.10
+  items:
+    - cron_id: JOB_01
+      job_name: FetchExchangeRates
+      schedule: 0 0 * * *
+      action: Fetch from 3rd Party, insert to DB_COLL_02
+      retry_policy: 3 retries, 1-hour interval
+      fallback: Use yesterday's rate from DB_COLL_02
+- id: SEC-010
+  title: 'Table 10: Environment Variables'
+  theme: teal
+  requestVersion: 2026.04.03 16.25.13
+  version: 2026.04.03 16.25.13
+  parentVersion: 2026.04.03 16.24.10
+  items:
+    - env_id: ENV_01
+      key: MONGO_URI
+      target: Backend
+    - env_id: ENV_02
+      key: REDIS_URI
+      target: Backend
+    - env_id: ENV_03
+      key: EXCHANGE_RATE_API_URL
+      target: Backend
+    - env_id: ENV_04
+      key: EXCHANGE_RATE_API_KEY
+      target: Backend
+    - env_id: ENV_05
+      key: AUTH_JWKS_URL
+      target: Backend
+    - env_id: ENV_06
+      key: REDUX_STORE_INITIAL_STATE
+      target: Frontend

@@ -1,0 +1,15 @@
+_metadata:
+  featureCode: AIPD-000002
+  featureName: Sales Dashboard
+  sourceFile: 003.Testing Requirement Workflow/Test Checklist.json
+  sourceVersion: 2026.04.03 16.31.34
+code: CHE-000009
+type: Impact
+item: IMP-000004
+description: >-
+  Component: Frontend Client / RevenueChart. Action: Run Chrome DevTools Memory Profiler. Toggle between Weekly and
+  Annually 50 times sequentially. Verify the JavaScript heap footprint remains flat and SVG nodes are definitively
+  garbage collected.
+requestVersion: 2026.04.03 16.31.34
+version: 2026.04.03 16.31.34
+parentVersion: 2026.04.03 16.30.22

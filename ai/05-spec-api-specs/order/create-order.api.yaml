@@ -1,0 +1,241 @@
+{
+  "api_spec": {
+    "id": "ORD-F001",
+    "api_name": "CreateOrder",
+    "module": "order",
+    "feature": "create-order",
+    "api_type": "command",
+    "summary": "Create a new order for an active project.",
+    "endpoint": {
+      "method": "POST",
+      "path": "/api/orders"
+    },
+    "ownership": {
+      "owner_module": "order",
+      "related_modules": [
+        "project",
+        "user"
+      ]
+    },
+    "authentication": {
+      "required": true,
+      "type": "bearer",
+      "permissions": [
+        "SALES_OPERATOR"
+      ]
+    },
+    "request": {
+      "path_params": [],
+      "query_params": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "type": "string",
+          "required": true,
+          "description": "Bearer token representing the authenticated actor."
+        }
+      ],
+      "body": {
+        "projectId": "string",
+        "requestedByUserId": "string",
+        "currency": "CurrencyCode",
+        "items": "array<OrderItemInput>",
+        "note": "string?"
+      }
+    },
+    "request_schema": {
+      "fields": [
+        {
+          "name": "projectId",
+          "type": "string",
+          "description": "Target project identifier."
+        },
+        {
+          "name": "requestedByUserId",
+          "type": "string",
+          "description": "User requesting the order."
+        },
+        {
+          "name": "currency",
+          "type": "CurrencyCode",
+          "description": "Commercial currency for the order."
+        },
+        {
+          "name": "items",
+          "type": "array<OrderItemInput>",
+          "description": "Line items with sku, name, quantity, and unit price."
+        },
+        {
+          "name": "note",
+          "type": "string?",
+          "description": "Optional commercial note."
+        }
+      ]
+    },
+    "response": {
+      "success": {
+        "status_code": 201,
+        "body": {
+          "orderId": "string",
+          "orderNumber": "string",
+          "status": "OrderStatus",
+          "totalAmount": "Money",
+          "createdAt": "datetime"
+        }
+      },
+      "errors": [
+        {
+          "code": "PROJECT_NOT_FOUND",
+          "http_status": 404
+        },
+        {
+          "code": "USER_NOT_FOUND",
+          "http_status": 404
+        },
+        {
+          "code": "INVALID_ORDER_ITEM",
+          "http_status": 422
+        }
+      ]
+    },
+    "response_schema": {
+      "fields": [
+        {
+          "name": "orderId",
+          "type": "string",
+          "description": "Generated aggregate identifier."
+        },
+        {
+          "name": "orderNumber",
+          "type": "string",
+          "description": "Generated business number."
+        },
+        {
+          "name": "status",
+          "type": "OrderStatus",
+          "description": "Initial lifecycle state PENDING_PAYMENT."
+        },
+        {
+          "name": "totalAmount",
+          "type": "Money",
+          "description": "Calculated total amount."
+        },
+        {
+          "name": "createdAt",
+          "type": "datetime",
+          "description": "Creation timestamp."
+        }
+      ]
+    },
+    "business_goal": {
+      "primary_actor": "Sales Operator",
+      "goal": "Create a valid order under an active project so downstream payment and fulfillment flows can start from a trusted record."
+    },
+    "validation_rules": [
+      "projectId and requestedByUserId are required.",
+      "items must contain at least one element.",
+      "quantity must be an integer greater than zero.",
+      "unitPrice.amountMinor must be greater than zero.",
+      "All items must use the same currency as the order currency."
+    ],
+    "business_rules": [
+      "Order total is derived from item quantities and unit prices.",
+      "The requester must be an ACTIVE user.",
+      "The project must allow commercial ordering."
+    ],
+    "process_flow": [
+      "Validate request payload and normalize money fields.",
+      "Presentation delegates to CreateOrderUseCase as the single application entry point.",
+      "Read project and user context via ProjectReaderPort and UserReaderPort.",
+      "Instantiate Order aggregate with calculated totals.",
+      "Persist through the order repository contract and return the created summary."
+    ],
+    "architectural_constraints": [
+      "Controller or presentation adapter must not access TypeORM directly.",
+      "Use case depends on repository and port contracts, not implementations.",
+      "Cross-module access uses named tokens for reader ports."
+    ],
+    "cross_module_interactions": [
+      {
+        "contract": "ProjectReaderPort",
+        "target": "project",
+        "purpose": "Validate project existence and status."
+      },
+      {
+        "contract": "UserReaderPort",
+        "target": "user",
+        "purpose": "Validate requester existence and status."
+      }
+    ],
+    "data_access": {
+      "main_entity": "Order",
+      "aggregate_root": "Order",
+      "read_entities": [
+        "Order",
+        "Project summary via ProjectReaderPort",
+        "User summary via UserReaderPort"
+      ],
+      "write_entities": [
+        "Order",
+        "OrderItem"
+      ]
+    },
+    "transaction": {
+      "required": true,
+      "boundary": "single-module"
+    },
+    "events": {
+      "publish": [
+        "OrderCreated"
+      ],
+      "consume": []
+    },
+    "audit_logging": {
+      "required": true,
+      "action": "CREATE_ORDER"
+    },
+    "idempotency": {
+      "required": false,
+      "strategy": "Not required in the current draft; duplicate prevention relies on user intent and standard validation, not a dedicated idempotency key."
+    },
+    "errors": [
+      {
+        "code": "PROJECT_NOT_FOUND",
+        "http_status": "404",
+        "meaning": "Project does not exist."
+      },
+      {
+        "code": "USER_NOT_FOUND",
+        "http_status": "404",
+        "meaning": "Requester does not exist."
+      },
+      {
+        "code": "INVALID_ORDER_ITEM",
+        "http_status": "422",
+        "meaning": "One or more line items violate quantity or price rules."
+      }
+    ],
+    "notes": [
+      "This API is owned by the order module; project and user modules collaborate through reader ports only.",
+      "The API defines behavior and validation explicitly but does not replace A4 domain ownership.",
+      "Controller, use case, repository contract, repository implementation, mapper, and provider wiring may all be generated from this specification together with A1 and A2."
+    ],
+    "expected_generated_files": [
+      "presentation/http/controllers/order.controller.ts",
+      "presentation/http/requests/create-order.request.ts",
+      "presentation/http/responses/order-response.ts",
+      "application/use-cases/create-order.use-case.ts",
+      "application/dto/create-order.dto.ts",
+      "application/commands/create-order.command.ts",
+      "application/mappers/order-application.mapper.ts",
+      "domain/repositories/order.repository.interface.ts",
+      "infrastructure/persistence/typeorm/repositories/order.repository.impl.ts",
+      "infrastructure/providers/order.providers.ts"
+    ],
+    "test_coverage": [
+      "06-spec-testing/01-unit-tests/order/create-order.unit-test.yaml",
+      "06-spec-testing/02-integration-tests/order/create-order.integration-test.yaml",
+      "06-spec-testing/03-end-to-end-tests/order/create-order.e2e-test.yaml"
+    ]
+  }
+}

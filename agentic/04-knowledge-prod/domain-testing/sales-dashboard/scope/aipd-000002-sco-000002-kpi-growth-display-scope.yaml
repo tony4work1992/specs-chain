@@ -1,0 +1,15 @@
+_metadata:
+  featureCode: AIPD-000002
+  featureName: Sales Dashboard
+  sourceFile: 003.Testing Requirement Workflow/Test Scope.json
+  sourceVersion: 2026.04.03 16.28.47
+code: SCO-000002
+systemName: Frontend React Client
+componentName: UI Validation rules
+elementName: KPICard Growth Percentage
+description: >-
+  IN-SCOPE: Verify positive growth shows '+' and text color #4CAF50. Verify negative growth shows '-' and text color
+  #F44336. Values > 1,000,000 must render with 'M'.
+requestVersion: 2026.04.03 16.28.47
+version: 2026.04.03 16.28.47
+parentVersion: 2026.04.03 16.25.13

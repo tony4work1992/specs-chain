@@ -1,0 +1,56 @@
+- code: INF-000001
+  index: 1
+  criteria: Define fiscal year boundaries versus calendar year for Annually/Quarterly metrics.
+  pass: false
+  hint: >-
+    Specify whether the company uses a standard Jan-Dec calendar year or a custom fiscal calendar (e.g., Apr-Mar) for
+    temporal aggregation.
+  placeholder: Enter fiscal calendar rules...
+  references:
+    - info: Requires clarification on 'Quarterly, Annually viewpoints'
+      source: '2. User Expectations: Temporal Agility and Control'
+  additional_info: Fundamentally alters how the DB and Backend groups data by date.
+  requestVersion: 2026.04.03 16.07.13
+  version: 2026.04.03 16.07.13
+  parentVersion: 2026.04.03 15.57.16
+- code: INF-000002
+  index: 2
+  criteria: Clarify timezone standards for Revenue & Transaction Volume aggregation.
+  pass: false
+  hint: Sales span multiple zones. Should metrics be standardized to UTC or localized to the viewing User's timezone?
+  placeholder: Specify timezone handling (e.g., 'All metrics in UTC' or 'Local timezone based on browser').
+  references:
+    - info: Lack of timezone tracking context for daily/weekly boundaries
+      source: 3.1. Temporal Filtering Controller
+  additional_info: Highly critical for Weekly and Monthly bucket aggregation to prevent data skew.
+  requestVersion: 2026.04.03 16.07.13
+  version: 2026.04.03 16.07.13
+  parentVersion: 2026.04.03 15.57.16
+- code: INF-000003
+  index: 3
+  criteria: Determine scope of subsidiary metrics (Top-Selling Items, Conversion Rates).
+  pass: false
+  hint: >-
+    The document references 'top-selling items lists, or conversion rates' but does not declare them as Component
+    Requirements. Confirm if these are in Phase 1 scope.
+  placeholder: Confirm 'Yes, include Top-Selling Items component' or 'No, out of scope for Phase 1'.
+  references:
+    - info: Inconsistency between expectations and defined UI components
+      source: '2. User Expectations: Actionable Metrics Consistency'
+  additional_info: Saves unnecessary API/UI implementation if these are reserved for Phase 2.
+  requestVersion: 2026.04.03 16.07.13
+  version: 2026.04.03 16.07.13
+  parentVersion: 2026.04.03 15.57.16
+- code: INF-000004
+  index: 4
+  criteria: Clarify currency conversion and formatting policies.
+  pass: false
+  hint: If sales are global, how is revenue converted into the macro revenue figure?
+  placeholder: Specify currency policy (e.g., 'Display in USD, convert at daily rate').
+  references:
+    - info: Unclear currency handling for the 'Revenue Snapshot Card'
+      source: 3.2. Primary KPI Overview
+  additional_info: Impacts DB schema (needs amount and currency) and API DTO.
+  requestVersion: 2026.04.03 16.07.13
+  version: 2026.04.03 16.07.13
+  parentVersion: 2026.04.03 15.57.16

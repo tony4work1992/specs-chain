@@ -1,0 +1,20 @@
+_metadata:
+  featureCode: AIPD-000002
+  featureName: Sales Dashboard
+  sourceFile: 002.Technical Requirement Workflow/Additional Functional Information.json
+  sourceVersion: 2026.04.03 16.21.08
+code: AFI-000001
+index: 1
+criteria: Define Debouncing/Throttling policy for Redis Cache Invalidation to prevent Cache Stampede.
+pass: false
+hint: >-
+  High transaction volume will trigger constant invalidations. Should we batch cache invalidation events (e.g.,
+  invalidate merely every 30 seconds) rather than per-transaction?
+placeholder: Specify 'Throttle cache eviction to max 1 per 60 seconds'.
+references:
+  - info: Risk of Redis cache churn and DB overload during peak write times.
+    source: '6.2. Caching Strategy: FR-000006'
+additional_info: Essential background processing mechanism to stabilize CQRS read operations.
+requestVersion: 2026.04.03 16.21.08
+version: 2026.04.03 16.21.08
+parentVersion: 2026.04.03 16.18.42

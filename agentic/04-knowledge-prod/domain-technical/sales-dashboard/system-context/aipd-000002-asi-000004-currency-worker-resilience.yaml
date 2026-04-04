@@ -1,0 +1,18 @@
+_metadata:
+  featureCode: AIPD-000002
+  featureName: Sales Dashboard
+  sourceFile: 002.Technical Requirement Workflow/Additional System Information.json
+  sourceVersion: 2026.04.03 16.16.41
+code: ASI-000004
+index: 4
+criteria: Determine resilience/fallback policy for the Currency Exchange Worker.
+pass: false
+hint: If the 3rd-party exchange API is down at 00:00 UTC, what is the exact fallback rule?
+placeholder: Specify 'Retry after 1 hour, fallback to yesterday's rate after 3 failures'.
+references:
+  - info: Lack of error handling definition for critical external dependency.
+    source: '7. Key Technical Mechanisms: Background Processing & Cron Jobs'
+additional_info: Determines the failure logic in the Node.js Background worker to prevent dashboard calculation crashes.
+requestVersion: 2026.04.03 16.16.41
+version: 2026.04.03 16.16.41
+parentVersion: 2026.04.03 16.11.51

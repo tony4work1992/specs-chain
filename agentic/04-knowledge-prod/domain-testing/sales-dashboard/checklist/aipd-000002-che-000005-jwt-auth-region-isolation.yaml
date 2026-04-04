@@ -1,0 +1,15 @@
+_metadata:
+  featureCode: AIPD-000002
+  featureName: Sales Dashboard
+  sourceFile: 003.Testing Requirement Workflow/Test Checklist.json
+  sourceVersion: 2026.04.03 16.31.34
+code: CHE-000005
+type: Scope
+item: SCO-000005
+description: >-
+  Component: Backend Component / Security. Action: Fire API request with missing/expired JWT; verify 401 response. Login
+  as User with 'Region_ID: EU'. Intercept payload; assure data solely returns EU transactions and no globally scoped
+  data.
+requestVersion: 2026.04.03 16.31.34
+version: 2026.04.03 16.31.34
+parentVersion: 2026.04.03 16.30.22

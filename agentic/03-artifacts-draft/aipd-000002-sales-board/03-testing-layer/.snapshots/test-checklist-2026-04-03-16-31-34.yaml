@@ -1,0 +1,54 @@
+- code: CHE-000001
+  type: Scope
+  item: SCO-000002
+  description: >-
+    [Frontend Layer] Validate Temporal boundary > 365 days; Assert the UI Export Button switches strictly to
+    `disabled=true` and HTTP 400 is gracefully caught without unhandled exceptions.
+  requestVersion: 2026.04.03 12.12.19
+  version: 2026.04.03 12.12.19
+  parentVersion: 2026.04.03 12.07.41
+- code: CHE-000002
+  type: Scope
+  item: SCO-000005
+  description: >-
+    [Infrastructure Layer] Validate asynchronous PDF Puppeteer Generation; Assert AWS S3 PutObject metadata receives
+    exact `Expires` tag evaluated to current time + 24 hours.
+  requestVersion: 2026.04.03 12.12.19
+  version: 2026.04.03 12.12.19
+  parentVersion: 2026.04.03 12.07.41
+- code: CHE-000003
+  type: Scope
+  item: SCO-000004
+  description: >-
+    [Backend Layer] Execute Dashboard initial load; Assert `/api/v1/dashboard/stream` pushes SSE `{event: 'sync_ready'}`
+    and trace timestamps to verify randomized transmission jitter sits exactly between 0ms and 2000ms.
+  requestVersion: 2026.04.03 12.12.19
+  version: 2026.04.03 12.12.19
+  parentVersion: 2026.04.03 12.07.41
+- code: CHE-000004
+  type: Impact
+  item: IMP-000004
+  description: >-
+    [Persistence Layer] Force Redis cluster to hit Memory Capacity (OOM); Validate `volatile-lru` triggers but existing
+    global JWT Auth Session tokens remain intact and unevicted.
+  requestVersion: 2026.04.03 12.12.19
+  version: 2026.04.03 12.12.19
+  parentVersion: 2026.04.03 12.09.06
+- code: CHE-000005
+  type: Impact
+  item: IMP-000002
+  description: >-
+    [Infrastructure Layer] Load testing: Hold 10,000 concurrent SSE WebSocket connections; Assert secondary REST queries
+    (e.g. legacy Billing endpoints) execute concurrently resolving HTTP 200 without Nginx 502 Bad Gateway timeouts.
+  requestVersion: 2026.04.03 12.12.19
+  version: 2026.04.03 12.12.19
+  parentVersion: 2026.04.03 12.09.06
+- code: CHE-000006
+  type: Scope
+  item: SCO-000006
+  description: >-
+    [Backend/DB Layer] Emulate CRM Source Hard Delete; Fast-forward 5 minutes to trigger Cron poller; Assert exact Mongo
+    Document ID corresponding to deleted record is effectively purged (`$pull`) from the system.
+  requestVersion: 2026.04.03 12.12.19
+  version: 2026.04.03 12.12.19
+  parentVersion: 2026.04.03 12.07.41

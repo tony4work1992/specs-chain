@@ -1,0 +1,75 @@
+- testcase_id: a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d
+  group: Frontend Controls
+  suite: Temporal Date Toggle
+  code: CAS-000001
+  pre_condition: User has 'Sales Manager' RBAC role. Dashboard is loaded.
+  tc_description: >-
+    Positive Path: Select Date Range mapping to exactly 365 Days. Verify UI Export Button remains enabled and forcing
+    HTTP POST /api/v1/dashboard/export/pdf returns a valid S3 URL.
+  ticket_code: JIRA-AIPD-02
+  priority: High
+  complexity: Low
+  test_type: Functional
+  core_custom: Core
+  note: 'Serves Checklist ID: CHE-000001'
+  reason: Validate exact maximum allowed date threshold.
+  requestVersion: 2026.04.03 12.13.52
+  version: 2026.04.03 12.13.52
+  parentVersion: 2026.04.03 12.12.19
+- testcase_id: b2c3d4e5-f6a7-8b9c-0d1e-2f3a4b5c6d7e
+  group: Frontend Controls
+  suite: Temporal Date Toggle
+  code: CAS-000002
+  pre_condition: User has 'Sales Manager' RBAC role. Dashboard is loaded.
+  tc_description: >-
+    Negative Path (Edge Case): Select Date Range mapping to exactly 366 Days (1 day over limit). Verify UI Export Button
+    switches state to disabled=true and intercepting automated API call returns HTTP 400 without crashing the main React
+    Error Boundary.
+  ticket_code: JIRA-AIPD-02
+  priority: High
+  complexity: Medium
+  test_type: Functional
+  core_custom: Core
+  note: 'Serves Checklist ID: CHE-000001'
+  reason: Enforce backend PDF generation timeout protection from the UI layer.
+  requestVersion: 2026.04.03 12.13.52
+  version: 2026.04.03 12.13.52
+  parentVersion: 2026.04.03 12.12.19
+- testcase_id: c3d4e5f6-a7b8-9c0d-1e2f-3a4b5c6d7e8f
+  group: Persistence Layer
+  suite: Redis Caching
+  code: CAS-000003
+  pre_condition: Redis cluster running. K6 Load Test script configured to drop 500MB payloads.
+  tc_description: >-
+    Negative Path (Failover): Bombard Redis with 500MB JSON string sizes to force intentional Out of Memory (OOM)
+    capacity strike. Verify volatile-lru triggers but global Auth Session JSON tokens remain completely unevicted and
+    intact.
+  ticket_code: JIRA-AIPD-02
+  priority: High
+  complexity: High
+  test_type: Regression
+  core_custom: Core
+  note: 'Serves Checklist ID: CHE-000004'
+  reason: Ensure Dashboard Cache size limits do not nuke System Auth Sessions.
+  requestVersion: 2026.04.03 12.13.52
+  version: 2026.04.03 12.13.52
+  parentVersion: 2026.04.03 12.12.19
+- testcase_id: d4e5f6a7-b8c9-0d1e-2f3a-4b5c6d7e8f9a
+  group: Infrastructure Layer
+  suite: Cron Poller
+  code: CAS-000004
+  pre_condition: 'Mock CRM REST Server configured on background process holding Object ID: ''mock-abc-123''.'
+  tc_description: >-
+    Positive Path: Simulate CRM Hard Delete directly on Object ID 'mock-abc-123'. Force fast-forward System Time by 5
+    minutes to trigger NestJS Cron poller. Query Mongo DB and assert Object ID 'mock-abc-123' returns null (effectively
+    purged via $pull).
+  ticket_code: JIRA-AIPD-02
+  priority: Medium
+  complexity: High
+  test_type: Functional
+  core_custom: Core
+  note: 'Serves Checklist ID: CHE-000006'
+  reason: Secure cross-database data coherence by removing CRM Ghost records.
+  requestVersion: 2026.04.03 12.13.52
+  version: 2026.04.03 12.13.52
+  parentVersion: 2026.04.03 12.12.19

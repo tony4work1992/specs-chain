@@ -1,0 +1,151 @@
+_description: Feature → File paths across all domains
+_version: '2026-04-04'
+features:
+  _system:
+    domains:
+      - domain-architecture
+      - domain-model
+    files:
+      - domain-architecture/_system/01-system-context/c4-container-diagram.md
+      - domain-architecture/_system/01-system-context/c4-system-context.md
+      - domain-architecture/_system/01-system-context/cross-feature-flows.md
+      - domain-architecture/_system/02-frontend/design-system.md
+      - domain-architecture/_system/02-frontend/routing.md
+      - domain-architecture/_system/02-frontend/state-management.md
+      - domain-architecture/_system/03-backend/event-driven.md
+      - domain-architecture/_system/03-backend/module-structure.md
+      - domain-architecture/_system/03-backend/shared-libraries.md
+      - domain-architecture/_system/04-data/backup-restore.md
+      - domain-architecture/_system/04-data/migration-strategy.md
+      - domain-architecture/_system/05-infrastructure/ci-cd-pipeline.md
+      - domain-architecture/_system/05-infrastructure/container-orchestration.md
+      - domain-architecture/_system/05-infrastructure/environment-config.md
+      - domain-architecture/_system/06-networking/api-gateway.md
+      - domain-architecture/_system/06-networking/cdn-config.md
+      - domain-architecture/_system/06-networking/load-balancing.md
+      - domain-architecture/_system/07-security/auth-authz.md
+      - domain-architecture/_system/07-security/compliance.md
+      - domain-architecture/_system/07-security/encryption.md
+      - domain-architecture/_system/08-observability/logging.md
+      - domain-architecture/_system/08-observability/metrics.md
+      - domain-architecture/_system/08-observability/tracing.md
+      - domain-model/_system/shared-schemas.md
+  sales-dashboard:
+    domains:
+      - domain-architecture
+      - domain-business
+      - domain-model
+      - domain-technical
+      - domain-testing
+    files:
+      - domain-architecture/sales-dashboard/backend/aipd-000002-slice-01-export-module.yaml
+      - domain-architecture/sales-dashboard/backend/aipd-000002-slice-02-dashboard-metrics-module.yaml
+      - domain-architecture/sales-dashboard/backend/aipd-000002-slice-03-background-poller-module.yaml
+      - domain-architecture/sales-dashboard/flows/aipd-000002-flow-background-cache-invalidation.md
+      - domain-architecture/sales-dashboard/flows/aipd-000002-flow-pdf-generation.md
+      - domain-architecture/sales-dashboard/frontend/aipd-000002-ui-atoms.yaml
+      - domain-architecture/sales-dashboard/frontend/aipd-000002-ui-molecules.yaml
+      - domain-architecture/sales-dashboard/frontend/aipd-000002-ui-organisms.yaml
+      - domain-architecture/sales-dashboard/frontend/aipd-000002-ui-pages.yaml
+      - domain-architecture/sales-dashboard/frontend/aipd-000002-ui-templates.yaml
+      - domain-business/sales-dashboard/requirements/aipd-000002-brd-business-rules.md
+      - domain-business/sales-dashboard/requirements/aipd-000002-brd-constraints-assumptions.md
+      - domain-business/sales-dashboard/requirements/aipd-000002-brd-functional-overview.md
+      - domain-business/sales-dashboard/requirements/aipd-000002-brd-scope-and-objectives.md
+      - domain-business/sales-dashboard/requirements/aipd-000002-end-user-requirement.md
+      - domain-business/sales-dashboard/requirements/aipd-000002-inf-000001-fiscal-calendar-boundaries.yaml
+      - domain-business/sales-dashboard/requirements/aipd-000002-inf-000002-timezone-aggregation-standards.yaml
+      - domain-business/sales-dashboard/requirements/aipd-000002-inf-000003-subsidiary-metrics-scope.yaml
+      - domain-business/sales-dashboard/requirements/aipd-000002-inf-000004-currency-conversion-policy.yaml
+      - domain-model/sales-dashboard/entities/aipd-000002-database-architecture.md
+      - domain-technical/sales-dashboard/functional-specs/aipd-000002-afi-000001-cache-stampede-policy.yaml
+      - domain-technical/sales-dashboard/functional-specs/aipd-000002-afi-000002-exchange-rate-indexing.yaml
+      - domain-technical/sales-dashboard/functional-specs/aipd-000002-afi-000003-rbac-data-isolation.yaml
+      - domain-technical/sales-dashboard/functional-specs/aipd-000002-afi-000004-payload-compression.yaml
+      - domain-technical/sales-dashboard/functional-specs/aipd-000002-frd-functional-behavior.md
+      - domain-technical/sales-dashboard/functional-specs/aipd-000002-frd-functional-requirements.md
+      - domain-technical/sales-dashboard/functional-specs/aipd-000002-frd-presentation-constraints.md
+      - domain-technical/sales-dashboard/functional-specs/aipd-000002-frd-scope-context.md
+      - domain-technical/sales-dashboard/functional-specs/aipd-000002-function-specifications.md
+      - domain-technical/sales-dashboard/functional-specs/aipd-000002-function-specifications.yaml
+      - domain-technical/sales-dashboard/system-context/aipd-000002-asi-000001-sla-ha-requirements.yaml
+      - domain-technical/sales-dashboard/system-context/aipd-000002-asi-000002-traffic-load-capacity.yaml
+      - domain-technical/sales-dashboard/system-context/aipd-000002-asi-000003-idp-jwt-integration.yaml
+      - domain-technical/sales-dashboard/system-context/aipd-000002-asi-000004-currency-worker-resilience.yaml
+      - domain-technical/sales-dashboard/system-context/aipd-000002-component-registry.md
+      - domain-technical/sales-dashboard/system-context/aipd-000002-infrastructure-deployment.md
+      - domain-technical/sales-dashboard/system-context/aipd-000002-system-design-patterns.md
+      - domain-technical/sales-dashboard/system-context/aipd-000002-tech-stack.md
+      - domain-testing/sales-dashboard/cases/aipd-000002-cas-000001-temporal-toggle-positive.yaml
+      - domain-testing/sales-dashboard/cases/aipd-000002-cas-000002-temporal-toggle-negative.yaml
+      - domain-testing/sales-dashboard/cases/aipd-000002-cas-000003-redis-oom-failover.yaml
+      - domain-testing/sales-dashboard/cases/aipd-000002-cas-000004-crm-hard-delete-sync.yaml
+      - domain-testing/sales-dashboard/cases/aipd-000002-tes-000001-cas-000001-date-range-365.yaml
+      - domain-testing/sales-dashboard/cases/aipd-000002-tes-000001-cas-000002-date-range-366.yaml
+      - domain-testing/sales-dashboard/cases/aipd-000002-tes-000002-cas-000003-redis-oom-steps.yaml
+      - domain-testing/sales-dashboard/cases/aipd-000002-tes-000002-cas-000004-crm-delete-sync-steps.yaml
+      - domain-testing/sales-dashboard/checklist/aipd-000002-che-000001-temporal-toggle-verify.yaml
+      - domain-testing/sales-dashboard/checklist/aipd-000002-che-000002-kpicard-growth-display.yaml
+      - domain-testing/sales-dashboard/checklist/aipd-000002-che-000003-api-load-test.yaml
+      - domain-testing/sales-dashboard/checklist/aipd-000002-che-000004-cron-retry-fallback.yaml
+      - domain-testing/sales-dashboard/checklist/aipd-000002-che-000005-jwt-auth-region-isolation.yaml
+      - domain-testing/sales-dashboard/checklist/aipd-000002-che-000006-legacy-checkout-redis-down.yaml
+      - domain-testing/sales-dashboard/checklist/aipd-000002-che-000007-mongodb-concurrent-load.yaml
+      - domain-testing/sales-dashboard/checklist/aipd-000002-che-000008-jwks-cache-ddos-prevention.yaml
+      - domain-testing/sales-dashboard/checklist/aipd-000002-che-000009-chart-memory-leak.yaml
+      - domain-testing/sales-dashboard/impact/aipd-000002-imp-000001-redis-checkout-coupling.yaml
+      - domain-testing/sales-dashboard/impact/aipd-000002-imp-000002-mongodb-oltp-contention.yaml
+      - domain-testing/sales-dashboard/impact/aipd-000002-imp-000003-jwks-ddos-risk.yaml
+      - domain-testing/sales-dashboard/impact/aipd-000002-imp-000004-chart-memory-leak-risk.yaml
+      - domain-testing/sales-dashboard/scope/aipd-000002-sco-000001-temporal-toggle-scope.yaml
+      - domain-testing/sales-dashboard/scope/aipd-000002-sco-000002-kpi-growth-display-scope.yaml
+      - domain-testing/sales-dashboard/scope/aipd-000002-sco-000003-api-dashboard-scope.yaml
+      - domain-testing/sales-dashboard/scope/aipd-000002-sco-000004-cron-exchange-rate-scope.yaml
+      - domain-testing/sales-dashboard/scope/aipd-000002-sco-000005-jwt-auth-middleware-scope.yaml
+  order:
+    domains:
+      - domain-business
+      - domain-model
+      - domain-technical
+      - domain-testing
+    files:
+      - domain-business/order/readme.md
+      - domain-business/order/requirements/create-order.feature.md
+      - domain-business/order/requirements/order-management.brd.md
+      - domain-business/order/requirements/order.frd.md
+      - domain-business/order/rules/global-business-rules.md
+      - domain-business/order/rules/order-business-rules.md
+      - domain-business/order/user-stories/order-user-stories.md
+      - domain-model/order/entities/a4-domain-data-model-spec-template.md
+      - domain-model/order/entities/order-item.domain.yaml
+      - domain-model/order/entities/order.domain.yaml
+      - domain-model/order/invariants/order-invariants.yaml
+      - domain-model/order/invariants/order-lifecycle.yaml
+      - domain-model/order/queries/order-query-patterns.yaml
+      - domain-technical/order/api-specs/a3-api-generation-spec-template.md
+      - domain-technical/order/api-specs/create-order.api.yaml
+      - domain-technical/order/readme.md
+      - domain-testing/order/e2e/create-order.e2e-test.yaml
+      - domain-testing/order/e2e/order-lifecycle.e2e-test.yaml
+      - domain-testing/order/integration/create-order.integration-test.yaml
+      - domain-testing/order/regression/critical-flows.regression.yaml
+      - domain-testing/order/regression/smoke.regression.yaml
+      - domain-testing/order/unit/cancel-order.unit-test.yaml
+      - domain-testing/order/unit/create-order.unit-test.yaml
+      - domain-testing/order/unit/pay-order.unit-test.yaml
+  project:
+    domains:
+      - domain-testing
+    files:
+      - domain-testing/project/unit/create-project.unit-test.yaml
+  user:
+    domains:
+      - domain-testing
+    files:
+      - domain-testing/user/unit/create-user.unit-test.yaml
+  workflow:
+    domains:
+      - domain-testing
+    files:
+      - domain-testing/workflow/unit/create-workflow.unit-test.yaml
+      - domain-testing/workflow/unit/update-workflow.unit-test.yaml

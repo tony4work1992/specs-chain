@@ -1,0 +1,18 @@
+_description: System Mapping for Skill 14 — Technical Document Refinement
+skill-id: '14'
+name: Technical Document Refinement
+inputs:
+  rules:
+    - 00-system-rules/01-architecture-tactics/00-governance/output-quality-rules.md
+    - 00-system-rules/01-architecture-tactics/00-governance/naming-conventions.md
+    - 00-system-rules/01-architecture-tactics/00-governance/anti-patterns.md
+  blueprints:
+    - 02-execution-workflows/scaffolding/feature-scaffold-blueprint.yaml
+  prompts:
+    - 00-system-rules/02-prompt-templates/skill-14-technical-document-refinement.md
+  knowledge:
+    - 04-knowledge-prod/_index/manifest.yaml
+    - 04-knowledge-prod/_index/by-domain.yaml
+output:
+  draft: 03-artifacts-draft/{request-code}/*
+execution_rule: Audit generated documents across layers and perform patching/refinement based on discovered information.

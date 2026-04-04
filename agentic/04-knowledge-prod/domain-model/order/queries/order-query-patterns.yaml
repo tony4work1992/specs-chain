@@ -1,0 +1,18 @@
+{
+  "module": "order",
+  "domain_name": "Order",
+  "query_patterns": [
+    "Find order by orderId for command rehydration and detail query.",
+    "List orders by projectId, status, date range, and requester.",
+    "Search unpaid orders by projectId for finance follow-up."
+  ],
+  "index_hints": [
+    "Support order detail lookup by orderId.",
+    "Support list queries by projectId + status + createdAt.",
+    "Support finance follow-up queries by status + projectId."
+  ],
+  "visibility_notes": [
+    "Query responses should expose module-owned fields only.",
+    "Cross-module details should be resolved through ports or dedicated read models when needed."
+  ]
+}

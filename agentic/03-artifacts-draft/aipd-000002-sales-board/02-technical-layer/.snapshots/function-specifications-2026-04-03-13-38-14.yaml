@@ -1,0 +1,125 @@
+- id: SEC-001
+  title: 'Component 1: React Client Dashboard'
+  theme: blue
+  requestVersion: 2026.04.03 13.38.14
+  version: 2026.04.03 13.38.14
+  parentVersion: 2026.04.03 13.34.31
+  items:
+    - FR-001 (Global Temporal Context Switching): >-
+        Strictly dispatch React Context state via isolated context Provider. Emits XHR requests without
+        `window.location.reload()`.
+      FR-010 (UI Race Condition & State Locking): >-
+        Injects `z-index: 9999` blocking overlay upon 'Export PDF' click. Timeout hardcoded via `AbortController(15000)`
+        forcing failure if RPC does not resolve.
+      FR-005 (Time-Series Line Graphs): >-
+        Utilize Recharts `ResponsiveContainer`. Renders SVG paths purely from API-provided aggregated buckets to avoid
+        heavy browser DOM manipulation.
+      FR-009 (Growth Color Context): 'Ternary evaluation mapping: `metric > 0 ? ''#4CAF50'' : ''#F44336''` baked directly into Component style props.'
+- id: SEC-002
+  title: 'Component 2: NestJS REST API Gateway'
+  theme: red
+  requestVersion: 2026.04.03 13.38.14
+  version: 2026.04.03 13.38.14
+  parentVersion: 2026.04.03 13.34.31
+  items:
+    - FR-006 (RBAC Payload Injection): >-
+        Guards endpoints with `@UseGuards(JwtAuthGuard, RolesGuard)`. Parses JWT payload injecting `req.user.id`
+        implicitly into MongoDB Service layer parameter structures.
+      FR-002 (PDF Snapshot Generation): >-
+        HTTP POST endpoint `POST /api/v1/export/pdf`. Serializes parsed Query params and relays them safely via
+        gRPC/HTTP to the Puppeteer Worker architecture.
+      FR-007 (12-Month Hard Limit on Puppeteer): >-
+        Middleware or ValidationPipe evaluation throwing `new BadRequestException('Temporal span exceeds 365-day safety
+        limit')` if `endDate - startDate > 31536000000ms`.
+      FR-011 (DOM Density Bucket Aggregation): >-
+        Controller determines mathematical bucket thresholds (e.g. `$dateTrunc` to Month if range == Annually). Client
+        explicitly sends `'X-Timezone-Offset'` headers applied to MongoDB queries to prevent cross-region visual
+        distortion.
+      FR-008 (Currency Serialization): >-
+        Response DTOs natively apply `Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val)`
+        before emitting JSON.
+      NFR (API Throttling): 'Uses `@nestjs/throttler` strictly enforcing `ttl: 60, limit: 100` to prevent Thundering Herd exhaustion.'
+- id: SEC-003
+  title: 'Component 3: NestJS Background Cron Poller'
+  theme: green
+  requestVersion: 2026.04.03 13.38.14
+  version: 2026.04.03 13.38.14
+  parentVersion: 2026.04.03 13.34.31
+  items:
+    - Background CRM Polling: >-
+        Executes on Schedule `*/5 * * * *`. Hits external CRM via authenticated WebHook/REST capturing Delta objects
+        where `updated_at > last_successful_sync`.
+      Cache Invalidation Trigger: >-
+        After confirming `upsertRange` on MongoDB concludes cleanly, broadcasts an explicit `SyncCompleted` EventBus
+        message to force Cache eviction.
+      NFR (DLQ & Fallback Circuit Breaker): >-
+        If External CRM returns HTTP 503 repeatedly, halts immediately utilizing Axios Retries (Max 3). Logs failures
+        natively without crashing the Node Event Loop.
+- id: SEC-004
+  title: 'Component 4: PostgreSQL Database (RBAC)'
+  theme: indigo
+  requestVersion: 2026.04.03 13.38.14
+  version: 2026.04.03 13.38.14
+  parentVersion: 2026.04.03 13.34.31
+  items:
+    - FR-006 (Role Distribution Data Model): >-
+        Maintains Relational structure identifying hierarchal boundaries (e.g., `role = 'Account Executive'` maps to
+        strictly `owner_id`), completely segregating Security isolation from transient unstructured Sales data in Mongo.
+- id: SEC-005
+  title: 'Component 5: MongoDB 7 (Bookings Collection)'
+  theme: emerald
+  requestVersion: 2026.04.03 13.38.14
+  version: 2026.04.03 13.38.14
+  parentVersion: 2026.04.03 13.34.31
+  items:
+    - FR-003 & 004 (Aggregations): >-
+        Denormalizes financial streams into Flat Documents natively mapped for ultra-fast Read. Evaluates `<user_id>`
+        restrictions inherently injected by NestJS CQRS.
+      FR-011 (Bucket Aggregation DB Level): >-
+        Integrates `$dateTrunc` native stages applying dynamic Timezone adjustments parsing UTC `booked_date` strictly
+        according to the requestor's Geo-location.
+- id: SEC-006
+  title: 'Component 6: Redis Cache Cluster'
+  theme: rose
+  requestVersion: 2026.04.03 13.38.14
+  version: 2026.04.03 13.38.14
+  parentVersion: 2026.04.03 13.34.31
+  items:
+    - FR-001 (High-Speed Reads): >-
+        Maps explicit JSON response payloads into `sales:aggregate:yearly:{user_id}`. Enforces sub-50ms responsiveness
+        allowing the UI to instantly flick across modes.
+      Cache Invalidation Procedure: >-
+        Subscribes natively to the EventBus. Natively runs non-blocking `SCAN 0 MATCH sales:aggregate:* COUNT 100` piped
+        immediately into `UNLINK` batches defending against Single-Thread lockup.
+- id: SEC-007
+  title: 'Component 7: External CRM Integration'
+  theme: amber
+  requestVersion: 2026.04.03 13.38.14
+  version: 2026.04.03 13.38.14
+  parentVersion: 2026.04.03 13.34.31
+  items:
+    - Delta Provisioning: >-
+        Source of truth for financial dimensions. Requires exposing stable `/api/delta` paths allowing our Cron Poller
+        to scrape incrementally updated instances without invoking massive Data Lake dumps.
+- id: SEC-008
+  title: 'Component 8: Puppeteer PDF Worker'
+  theme: purple
+  requestVersion: 2026.04.03 13.38.14
+  version: 2026.04.03 13.38.14
+  parentVersion: 2026.04.03 13.34.31
+  items:
+    - FR-002 (PDF Snapshot): Accepts strictly serialized metrics via RPC. Boots Headless Chrome in strict `--no-sandbox` isolated contexts.
+      NFR (Resource Limitation): >-
+        Pod constrained to strict 2GB Memory/CPU boundaries mapped via Kubernetes. Session caps rigidly enforced max 5
+        concurrent rendering jobs to stop End of Month runaway leaks.
+- id: SEC-009
+  title: 'Component 9: AWS S3 Object Storage'
+  theme: sky
+  requestVersion: 2026.04.03 13.38.14
+  version: 2026.04.03 13.38.14
+  parentVersion: 2026.04.03 13.34.31
+  items:
+    - FR-002 (Export Link Provisioning): Worker transmits Blob to S3. Gateway responds with a temporary securely signed `Presigned URL`.
+      NFR (Object Lifecycle): >-
+        Explicitly configured Bucket Policies instantly executing secure auto-deletion exactly `24 hours` from file
+        origination to satisfy strict PII Data governance frameworks.

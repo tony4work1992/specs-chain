@@ -1,0 +1,41 @@
+$schema: http://json-schema.org/draft-07/schema#
+type: array
+description: List of Vertical Slice Directories and Files
+items:
+  type: object
+  properties:
+    id:
+      type: string
+      description: Slice identifier (e.g., SLICE_01)
+    module_name:
+      type: string
+      description: Name of the bounded module (e.g., Export Module)
+    requestVersion:
+      type: string
+    version:
+      type: string
+    parentVersion:
+      type: string
+    items:
+      type: array
+      description: List of architectural layers for this vertical slice
+      items:
+        type: object
+        properties:
+          layer:
+            type: string
+            description: e.g., Presentation (Controller), Application (UseCase), Infrastructure (Repository)
+          file_name:
+            type: string
+            description: Expected generated file name (e.g., export.controller.ts)
+          responsibility:
+            type: string
+            description: What this exact file does.
+          dependencies:
+            type: string
+            description: Which other layers this file injects.
+  required:
+    - id
+    - module_name
+    - items
+  additionalProperties: false

@@ -1,0 +1,59 @@
+- code: AFI-000004
+  index: 1
+  criteria: Are Timezone Normalization offsets defined for the Server-side DOM Density Bucketing logic?
+  pass: false
+  hint: >-
+    Specify if the DB aggregations happen in rigid UTC or if the GraphQL/REST payload accepts a Client TZ offset to
+    adjust 'Day' transition boundaries.
+  placeholder: >-
+    e.g., The React UI must append the user's `America/New_York` offset header so MongoDB's `$dateTrunc` accurately
+    splits 'Days' based on the viewer's local midnight instead of UTC midnight.
+  references:
+    - info: >-
+        If the Dashboard groups data by Day (FR-011) strictly using generic UTC on the backend, a sale finalized at
+        22:00 PST on Monday will erroneously display as a Tuesday sale on the React UI.
+      source: 'Functional Requirement Document.md (Section 5.3: FR-011)'
+  additional_info: This is a critical oversight for multi-regional financial dashboards.
+  requestVersion: 2026.04.03 13.36.21
+  version: 2026.04.03 13.36.21
+  parentVersion: 2026.04.03 13.34.31
+- code: AFI-000005
+  index: 2
+  criteria: >-
+    Is the Redis Cache Invalidation query strictly enforced to use `UNLINK` or iterative `SCAN` instead of
+    thread-blocking `DEL / KEYS` commands?
+  pass: false
+  hint: >-
+    Identify the precise Redis invalidation pattern applied by the EventBus to avoid blocking the single-threaded Redis
+    cluster.
+  placeholder: e.g., The Cron Poller must execute `SCAN` with `MATCH sales:aggregate:*` followed by `UNLINK` batches.
+  references:
+    - info: >-
+        FR-012 incorrectly requests `surgically execute DEL sales:aggregate:*`. Redis does not natively support wildcard
+        `DEL` efficiently. Large wildcard evaluations block all incoming read traffic.
+      source: Functional Requirement Document.md (Section 8.2)
+  additional_info: >-
+    If the system accumulates 10,000 aggregates per 5-minute window, issuing a massive blocking wildcard cache wipe will
+    immediately spike API latency to thousands of seconds.
+  requestVersion: 2026.04.03 13.36.21
+  version: 2026.04.03 13.36.21
+  parentVersion: 2026.04.03 13.34.31
+- code: AFI-000006
+  index: 3
+  criteria: What is the specific Threshold value for the 'RPC Request Timeout' during the UI Race Condition blocking state?
+  pass: false
+  hint: Provide a hard numerical timeout cap forcing the React UI to unblock if the PDF rendering node goes silent.
+  placeholder: >-
+    e.g., React UI invokes an `AbortController()` resolving state if the RPC promise remains unfulfilled for exactly
+    15,000 ms.
+  references:
+    - info: >-
+        FR-010 states users cannot interact with the Dashboard until the request 'times out'. The duration is completely
+        unspecified, risking infinite UI lock.
+      source: 'Functional Requirement Document.md (Section 5.1: FR-010)'
+  additional_info: >-
+    Absence of client-side timeouts means ghost states block users indefinitely if the Puppeteer worker drops the socket
+    silently.
+  requestVersion: 2026.04.03 13.36.21
+  version: 2026.04.03 13.36.21
+  parentVersion: 2026.04.03 13.34.31

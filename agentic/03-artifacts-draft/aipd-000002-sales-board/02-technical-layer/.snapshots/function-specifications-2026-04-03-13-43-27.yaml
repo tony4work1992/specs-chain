@@ -1,0 +1,151 @@
+- id: SEC-001
+  title: 'Component 1: React Client Dashboard'
+  theme: blue
+  requestVersion: 2026.04.03 13.43.27
+  version: 2026.04.03 13.43.27
+  parentVersion: 2026.04.03 13.36.21
+  items:
+    - FR-001 (Global Temporal Context Switching):
+        React Context State:
+          temporalMode: '''WEEKLY'' | ''MONTHLY'' | ''QUARTERLY'' | ''ANNUALLY'''
+          startDate: ISO String
+          endDate: ISO String
+          clientTimezoneOffset: number (e.g. -420 for PST)
+        Network Constraint: State update internally fires `fetchDashboardData()` without re-rendering outer layouts.
+      FR-010 (UI Race Condition):
+        React State:
+          isExporting: boolean (Locks UI drop-downs)
+          exportTimeout: AbortController (15000ms limit)
+        DOM Constraint: >-
+          Inject `<div id='pdf-loading-overlay' style={{ zIndex: 9999 }}>` blocking all clicks while `isExporting` ==
+          true.
+- id: SEC-002
+  title: 'Component 2: NestJS REST API Gateway'
+  theme: red
+  requestVersion: 2026.04.03 13.43.27
+  version: 2026.04.03 13.43.27
+  parentVersion: 2026.04.03 13.36.21
+  items:
+    - FR-002 (PDF Snapshot Generation):
+        Endpoint URI: /api/v1/export/pdf
+        Method: POST
+        Middleware Protection: ThrottlerGuard (limit 5 per minute), JwtAuthGuard
+        Request Payload DTO:
+          temporalMode: 'string (Enum: WEEKLY, MONTHLY, QUARTERLY, ANNUALLY)'
+          startDate: string (ISO8601 Date format)
+          endDate: string (ISO8601 Date format)
+          timezoneOffset: number (minutes, e.g. -420)
+        Response DTO:
+          success: boolean
+          message: string
+          data:
+            downloadUrl: string (S3 Presigned URL)
+            expiresAt: string (ISO8601)
+      FR-007 (12-Month Hard Limit):
+        Pipe Validation: If `payload.endDate - payload.startDate > 31536000000ms`, throws `BadRequestException` immediately.
+- id: SEC-003
+  title: 'Component 3: NestJS Background Cron Poller'
+  theme: green
+  requestVersion: 2026.04.03 13.43.27
+  version: 2026.04.03 13.43.27
+  parentVersion: 2026.04.03 13.36.21
+  items:
+    - CRM Polling Logic:
+        Execution Schedule: CronCronExpression.EVERY_5_MINUTES
+        External Call Header: 'Authorization: Bearer <CRM_SECRET_KEY>'
+        Query Params DTO:
+          gt_updated_at: Unix Timestamp from last successful MongoDB sync
+      EventBus Output (AFI-000001):
+        Event Pattern: '''sync.completed.invalidate_cache'''
+        Event Payload:
+          keys_to_purge: '[''sales:aggregate:*'']'
+- id: SEC-004
+  title: 'Component 4: PostgreSQL Database (RBAC)'
+  theme: indigo
+  requestVersion: 2026.04.03 13.43.27
+  version: 2026.04.03 13.43.27
+  parentVersion: 2026.04.03 13.36.21
+  items:
+    - FR-006 (Users & Roles Schema):
+        Table Name: users
+        Fields:
+          id: UUID (Primary Key)
+          email: VARCHAR(255) UNIQUE
+          role: 'VARCHAR(50) (Enum: ''Account Executive'', ''Sales Manager'')'
+          active: BOOLEAN DEFAULT true
+        Index Constraint: B-Tree index on (role) to accelerate JWT payload mapping.
+- id: SEC-005
+  title: 'Component 5: MongoDB 7 (Bookings Collection)'
+  theme: emerald
+  requestVersion: 2026.04.03 13.43.27
+  version: 2026.04.03 13.43.27
+  parentVersion: 2026.04.03 13.36.21
+  items:
+    - Bookings Collection Schema:
+        Collection Name: sales_bookings_delta
+        Fields:
+          _id: ObjectId
+          crm_reference_id: String (Unique)
+          owner_id: UUID (Mapped to Postgres User.id limits)
+          amount_cents: NumberLong (To avoid Float precision loss)
+          booked_at: ISODate
+        Index Constraint: 'Compound index on { owner_id: 1, booked_at: -1 }'
+      FR-011 & AFI-000004 (Density & Timezone Matcher):
+        $group Pipeline Logic: >-
+          { _id: { $dateTrunc: { date: '$booked_at', unit: '<MONTH|DAY>', timezone: '<Client Timezone>' } },
+          totalAmount: { $sum: '$amount_cents' } }
+- id: SEC-006
+  title: 'Component 6: Redis Cache Cluster'
+  theme: rose
+  requestVersion: 2026.04.03 13.43.27
+  version: 2026.04.03 13.43.27
+  parentVersion: 2026.04.03 13.36.21
+  items:
+    - FR-001 (Redis Storage Scheme):
+        Key Pattern: sales:aggregate:{temporalMode}:{userId}
+        Data Structure: String (Stores Stringified JSON Array of the precise response payload)
+        TTL: No inherent TTL; destroyed exclusively via EventBus invalidation
+      AFI-000005 (Safe Invalidation Action):
+        Command Pattern execution: SCAN 0 MATCH sales:aggregate:* COUNT 100
+        Clearance execution: UNLINK [discovered_keys...]
+- id: SEC-007
+  title: 'Component 7: External CRM Integration'
+  theme: amber
+  requestVersion: 2026.04.03 13.43.27
+  version: 2026.04.03 13.43.27
+  parentVersion: 2026.04.03 13.36.21
+  items:
+    - Expected Polling DTO:
+        Endpoint URI Format: https://api.crm-provider.com/v1/deals/delta
+        Method: GET
+        Response DTO Items:
+          id: string
+          ownerReference: string
+          closeDate: string
+          dealValue: number
+- id: SEC-008
+  title: 'Component 8: Puppeteer PDF Worker'
+  theme: purple
+  requestVersion: 2026.04.03 13.43.27
+  version: 2026.04.03 13.43.27
+  parentVersion: 2026.04.03 13.36.21
+  items:
+    - RPC Generation Spec:
+        Input Model: '{ temporalMode, dataPoints(JSON), chartType }'
+        Execution Context: >-
+          Browser launch with `--no-sandbox` and `--disable-dev-shm-usage`. Generates HTML explicitly injecting Recharts
+          DOM inside evaluating `page.pdf({ format: 'A4', printBackground: true })`.
+- id: SEC-009
+  title: 'Component 9: AWS S3 Object Storage'
+  theme: sky
+  requestVersion: 2026.04.03 13.43.27
+  version: 2026.04.03 13.43.27
+  parentVersion: 2026.04.03 13.36.21
+  items:
+    - S3 Bucket Schema:
+        Bucket Name: aipd-sales-pdf-exports-prod
+        Lifecycle Rule:
+          ID: AutoDelete24H
+          Prefix: exports/
+          Expiration: 1 Days
+        Presigned Generation Code: 's3Client.send(new GetObjectCommand({ Bucket, Key }), { expiresIn: 3600 })'

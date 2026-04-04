@@ -1,0 +1,71 @@
+_description: Master Knowledge Index — AI Agent reads this file FIRST
+_version: '2026-04-04'
+_structure: agentic/04-knowledge-prod/{domain}/{feature}/{file}
+_usage: 1. Read manifest → landscape. 2. Read by-domain → scoped paths. 3. Read by-keyword → semantic search.
+stats:
+  totalFiles: 116
+  totalDomains: 5
+  totalFeatures: 6
+domains:
+  domain-architecture:
+    fileCount: 33
+    features:
+      - _system
+      - sales-dashboard
+  domain-business:
+    fileCount: 16
+    features:
+      - order
+      - sales-dashboard
+  domain-model:
+    fileCount: 8
+    features:
+      - _system
+      - order
+      - sales-dashboard
+  domain-technical:
+    fileCount: 21
+    features:
+      - order
+      - sales-dashboard
+  domain-testing:
+    fileCount: 38
+    features:
+      - order
+      - project
+      - sales-dashboard
+      - user
+      - workflow
+features:
+  _system:
+    fileCount: 24
+    domains:
+      - domain-architecture
+      - domain-model
+  sales-dashboard:
+    fileCount: 64
+    domains:
+      - domain-architecture
+      - domain-business
+      - domain-model
+      - domain-technical
+      - domain-testing
+  order:
+    fileCount: 24
+    domains:
+      - domain-business
+      - domain-model
+      - domain-technical
+      - domain-testing
+  project:
+    fileCount: 1
+    domains:
+      - domain-testing
+  user:
+    fileCount: 1
+    domains:
+      - domain-testing
+  workflow:
+    fileCount: 2
+    domains:
+      - domain-testing

@@ -1,0 +1,87 @@
+- code: CHE-000001
+  type: Scope
+  item: SCO-000001
+  description: >-
+    Component: Frontend Client / Temporal Toggle. Action: Verify clicking 'Weekly', 'Quarterly', 'Annually' triggers an
+    API fetch immediately. Verify page load defaults strictly to 'Monthly'.
+  requestVersion: 2026.04.03 16.31.34
+  version: 2026.04.03 16.31.34
+  parentVersion: 2026.04.03 16.30.22
+- code: CHE-000002
+  type: Scope
+  item: SCO-000002
+  description: >-
+    Component: Frontend Client / KPICard. Action: Inject mock growth values. Verify 15.2% shows in Green (#4CAF50) with
+    '+15.2%'. Verify -4.1% shows in Red (#F44336) with '-4.1%'. Verify $1,500,000 renders exactly as '$1.5M'.
+  requestVersion: 2026.04.03 16.31.34
+  version: 2026.04.03 16.31.34
+  parentVersion: 2026.04.03 16.30.22
+- code: CHE-000003
+  type: Scope
+  item: SCO-000003
+  description: >-
+    Component: Backend Component / API Gateway. Action: Load test /api/v1/dashboard/sales with JMeter at 100
+    requests/sec. Assert 99th percentile response time is strictly < 1.5s. Assert missing 'X-Timezone-Offset' header
+    throws 400 Bad Request.
+  requestVersion: 2026.04.03 16.31.34
+  version: 2026.04.03 16.31.34
+  parentVersion: 2026.04.03 16.30.22
+- code: CHE-000004
+  type: Scope
+  item: SCO-000004
+  description: >-
+    Component: Background Worker / Cron. Action: Sever the external Currency API connection. Trigger job at 00:00 UTC.
+    Verify it retries precisely 3 times (at T+1h, T+2h, T+3h). Post-failure, verify the dashboard falls back to MongoDB
+    `exchange_rates` from the strictly preceding day.
+  requestVersion: 2026.04.03 16.31.34
+  version: 2026.04.03 16.31.34
+  parentVersion: 2026.04.03 16.30.22
+- code: CHE-000005
+  type: Scope
+  item: SCO-000005
+  description: >-
+    Component: Backend Component / Security. Action: Fire API request with missing/expired JWT; verify 401 response.
+    Login as User with 'Region_ID: EU'. Intercept payload; assure data solely returns EU transactions and no globally
+    scoped data.
+  requestVersion: 2026.04.03 16.31.34
+  version: 2026.04.03 16.31.34
+  parentVersion: 2026.04.03 16.30.22
+- code: CHE-000006
+  type: Impact
+  item: IMP-000001
+  description: >-
+    Component: Legacy Checkout API. Action: Manually shutdown the Redis Cache container. Perform a standard legacy
+    Checkout operation. The Checkout MUST succeed within < 2 seconds regardless of the Redis eviction event failing
+    asynchronously.
+  requestVersion: 2026.04.03 16.31.34
+  version: 2026.04.03 16.31.34
+  parentVersion: 2026.04.03 16.30.22
+- code: CHE-000007
+  type: Impact
+  item: IMP-000002
+  description: >-
+    Component: Database Component. Action: Simulate maximum aggregation queries on MongoDB (Annual Scope loops).
+    Concurrently trigger 10 new Cart Write requests. Verify Cart logic saves to DB sequentially without timeout lockups.
+  requestVersion: 2026.04.03 16.31.34
+  version: 2026.04.03 16.31.34
+  parentVersion: 2026.04.03 16.30.22
+- code: CHE-000008
+  type: Impact
+  item: IMP-000003
+  description: >-
+    Component: Internal Auth Microservice. Action: Execute 1,000 Dashboard API requests simultaneously. Monitor the
+    physical traffic logs inside the Auth Microservice. The JWKS request count should equal 1 (from local cache
+    bootstrap), NOT 1,000.
+  requestVersion: 2026.04.03 16.31.34
+  version: 2026.04.03 16.31.34
+  parentVersion: 2026.04.03 16.30.22
+- code: CHE-000009
+  type: Impact
+  item: IMP-000004
+  description: >-
+    Component: Frontend Client / RevenueChart. Action: Run Chrome DevTools Memory Profiler. Toggle between Weekly and
+    Annually 50 times sequentially. Verify the JavaScript heap footprint remains flat and SVG nodes are definitively
+    garbage collected.
+  requestVersion: 2026.04.03 16.31.34
+  version: 2026.04.03 16.31.34
+  parentVersion: 2026.04.03 16.30.22

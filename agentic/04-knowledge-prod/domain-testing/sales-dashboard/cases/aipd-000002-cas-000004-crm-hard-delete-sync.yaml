@@ -1,0 +1,24 @@
+_metadata:
+  featureCode: AIPD-000002
+  featureName: Sales Dashboard
+  sourceFile: 003.Testing Requirement Workflow/Test Cases.json
+  sourceVersion: 2026.04.03 12.13.52
+testcase_id: d4e5f6a7-b8c9-0d1e-2f3a-4b5c6d7e8f9a
+group: Infrastructure Layer
+suite: Cron Poller
+code: CAS-000004
+pre_condition: 'Mock CRM REST Server configured on background process holding Object ID: ''mock-abc-123''.'
+tc_description: >-
+  Positive Path: Simulate CRM Hard Delete directly on Object ID 'mock-abc-123'. Force fast-forward System Time by 5
+  minutes to trigger NestJS Cron poller. Query Mongo DB and assert Object ID 'mock-abc-123' returns null (effectively
+  purged via $pull).
+ticket_code: JIRA-AIPD-02
+priority: Medium
+complexity: High
+test_type: Functional
+core_custom: Core
+note: 'Serves Checklist ID: CHE-000006'
+reason: Secure cross-database data coherence by removing CRM Ghost records.
+requestVersion: 2026.04.03 12.13.52
+version: 2026.04.03 12.13.52
+parentVersion: 2026.04.03 12.12.19

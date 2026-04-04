@@ -1,0 +1,40 @@
+{
+  "spec_id": "ORD-CREATE-ORDER",
+  "level": "integration",
+  "module": "order",
+  "feature": "create-order",
+  "references": {
+    "frd": "order.frd.md",
+    "api": "create-order.api.yaml"
+  },
+  "test_cases": [
+    {
+      "code": "ORD_CREATE_ORDER_INTEGRATION_001",
+      "description": "Successful create-order flow follows documented rules.",
+      "input": {
+        "scenario": "happy-path",
+        "feature": "create-order"
+      },
+      "expected": {
+        "result": "success",
+        "state": "PENDING_PAYMENT"
+      }
+    },
+    {
+      "code": "ORD_CREATE_ORDER_INTEGRATION_002",
+      "description": "Validation failure returns the documented error behavior for create-order.",
+      "input": {
+        "scenario": "validation-failure",
+        "feature": "create-order"
+      },
+      "expected": {
+        "result": "error",
+        "matches_any": [
+          "PROJECT_NOT_FOUND",
+          "USER_NOT_FOUND",
+          "INVALID_ORDER_ITEM"
+        ]
+      }
+    }
+  ]
+}

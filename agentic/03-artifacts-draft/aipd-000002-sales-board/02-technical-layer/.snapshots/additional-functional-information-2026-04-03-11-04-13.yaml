@@ -1,0 +1,64 @@
+- code: AFI-000005
+  index: 1
+  criteria: Identification of 'Hard Delete' Propagation Strategy from Primary CRM.
+  pass: false
+  hint: >-
+    Specify how the 5-minute `updated_at` delta polling catches records that are physically deleted in the source CRM,
+    not just modified.
+  placeholder: Define strategy for syncing deleted records...
+  references:
+    - info: 'FR-001: CRM Delta Polling Service polling ''updated_at'' only.'
+      source: 002.Technical Requirement Workflow/Functional Requirement Document.md
+  additional_info: If missed, the dashboard will permanently inflate chronological growth with ghost records.
+  requestVersion: 2026.04.03 11.01.13
+  version: 2026.04.03 11.01.13
+  parentVersion: 2026.04.03 10.57.45
+- code: AFI-000006
+  index: 2
+  criteria: Prevention of the 'Thundering Herd' Problem on SSE Cache Invalidation.
+  pass: false
+  hint: >-
+    Outline how the silent background refetches are staggered when an SSE invalidation payload broadcasts to hundreds of
+    active UI sessions globally at the same instance.
+  placeholder: Define staggering or jitter logic for refetching...
+  references:
+    - info: >-
+        FR-002: Real-time UI Streaming Pipeline causing silent background refetches across active client React
+        components.
+      source: 002.Technical Requirement Workflow/Functional Requirement Document.md
+  additional_info: Simultaneous refetch spikes can crash the read nodes instantly.
+  requestVersion: 2026.04.03 11.01.13
+  version: 2026.04.03 11.01.13
+  parentVersion: 2026.04.03 10.57.45
+- code: AFI-000007
+  index: 3
+  criteria: Definition of Secure Access Constraints for Exported AWS S3 Artifacts.
+  pass: false
+  hint: >-
+    Specify whether the generated S3 URLs are publicly accessible pre-signed links or if downloading strictly requires
+    an authenticated JWT token gateway route through NestJS.
+  placeholder: Define export artifact URL security...
+  references:
+    - info: 'FR-006: Temporary Artifact Lifecycle (AWS S3) for PDF and CSV exported files.'
+      source: 002.Technical Requirement Workflow/Functional Requirement Document.md
+  additional_info: >-
+    A 24-hour active, unauthenticated S3 URL containing sensitive Booked/Billed Sales Revenue is a massive compliance
+    breach.
+  requestVersion: 2026.04.03 11.01.13
+  version: 2026.04.03 11.01.13
+  parentVersion: 2026.04.03 10.57.45
+- code: AFI-000008
+  index: 4
+  criteria: Standardization of Date Localization Formatting in UI Tooltips.
+  pass: false
+  hint: >-
+    Since boundary math uses strict UTC, indicate the explicit localized formatting standard (e.g., localized user
+    browser string or strict YYYY-MM-DD offset) used when drawing the exact isolated Date in Recharts tooltips.
+  placeholder: Specify UI date serialization pattern...
+  references:
+    - info: 'FR-009: Visual Chart Tooltips (Recharts) displaying exact isolated Date.'
+      source: 002.Technical Requirement Workflow/Functional Requirement Document.md
+  additional_info: Visual misalignment between the rendered tooltip date and the logical UTC point can severely confuse Analysts.
+  requestVersion: 2026.04.03 11.01.13
+  version: 2026.04.03 11.01.13
+  parentVersion: 2026.04.03 10.57.45
