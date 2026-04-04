@@ -1,0 +1,23 @@
+_description: System Mapping for Foundation Scaffolding Q&A
+skill-id: 'f01'
+name: Foundation Scaffolding Generation
+type: generation
+inputs:
+  system-templates:
+    - 00-system-rules/04-artifact-templates/00-project-foundation/01-business-and-constraints.md
+    - 00-system-rules/04-artifact-templates/00-project-foundation/02-architecture-patterns.md
+    - 00-system-rules/04-artifact-templates/00-project-foundation/03-technology-stack.md
+    - 00-system-rules/04-artifact-templates/00-project-foundation/04-project-structure-and-conventions.md
+    - 00-system-rules/04-artifact-templates/00-project-foundation/05-infrastructure-and-cicd.md
+    - 00-system-rules/04-artifact-templates/00-project-foundation/06-networking-and-security.md
+    - 00-system-rules/04-artifact-templates/00-project-foundation/07-cost-management.md
+    - 00-system-rules/04-artifact-templates/00-project-foundation/08-design-system-and-ui.md
+    - 00-system-rules/04-artifact-templates/00-project-foundation/09-observability-and-monitoring.md
+  prompts:
+    - 00-system-rules/02-prompt-templates/skill-f01-foundation.md
+execution_rule: 
+  - Read the 9 system templates.
+  - Ask the user questions interactively to fill in the missing template information.
+  - DO NOT generate all 9 files simultaneously if the user is overwhelmed. Ask chunk by chunk.
+  - Final output MUST be directed to `03-artifacts-draft/{request-code}/00-project-foundation/`.
+  - Prefix the generated output files exactly as the template names.

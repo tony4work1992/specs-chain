@@ -11,6 +11,37 @@ naming:
 draft-structure:
   root: 03-artifacts-draft/{folder-name}/
   layers:
+    00-project-foundation:
+      description: SYSTEM BASE — Architectural constraints and rules
+      snapshots: false
+      files:
+        - name: 01-business-and-constraints.md
+          skill: f01
+          required: true
+        - name: 02-architecture-patterns.md
+          skill: f01
+          required: true
+        - name: 03-technology-stack.md
+          skill: f01
+          required: true
+        - name: 04-project-structure-and-conventions.md
+          skill: f01
+          required: true
+        - name: 05-infrastructure-and-cicd.md
+          skill: f01
+          required: true
+        - name: 06-networking-and-security.md
+          skill: f01
+          required: true
+        - name: 07-cost-management.md
+          skill: f01
+          required: true
+        - name: 08-design-system-and-ui.md
+          skill: f01
+          required: true
+        - name: 09-observability-and-monitoring.md
+          skill: f01
+          required: true
     01-business-layer:
       description: WHY & WHAT — Business requirements and context
       snapshots: true
@@ -120,6 +151,12 @@ execution-workflow:
     manual-sequential: Execute skills explicitly in sequential numerical order. Used for batch running without feedback loops.
     autonomous-loop: Execute using the defined State Machine. Stop dynamically if validation fails, request input, patch, and resume.
   phases:
+    phase-0-foundation:
+      description: Define SYSTEM ROOT before Feature implementation
+      states:
+        state-1-scaffold:
+          action: Interactive Q&A to generate 9 Foundation documents
+          skill: f01
     phase-1-business:
       description: Understand WHY and WHAT with validation gating
       states:
@@ -216,13 +253,18 @@ done-criteria:
 # ─── QUICK START CHECKLIST ────────────────────────────────────────
 # When Agent receives a new delivery request:
 # 
+# [INITIALIZATION STAGE]
+# 0. Check if `agentic/01-delivery-requests/_trackers/TRACKER-{request}.md` exists. If not, copy it from `agentic/00-system-rules/04-artifact-templates/01-execution-trackers/tracker-template.md`.
+#
 # [AUTONOMOUS MODE]
 # 1. READ 01-delivery-requests/{request}.md
 # 2. CREATE draft-structure folders in 03-artifacts-draft/
 # 3. Follow the execution-workflow phases using the internal State Machine loop.
 # 4. If a Validation state fails, wait for user input -> snapshot -> patch using Skill 14 -> repeat validation.
 # 5. WAIT for user to trigger Knowledge Sync (Skill 19).
+# 6. CRITICAL: At the end of every state execution, check off the corresponding box in the Tracker file!
 #
 # [MANUAL MODE]
-# 1. Execute Skills exactly in order from 01 to 18 sequentially.
+# 1. Execute Skills exactly in order from F1, or 01 to 18 sequentially.
 # 2. Skip state machine conditional loops.
+# 3. CRITICAL: At the end of every manually executed skill, check off the corresponding box in the Tracker file!

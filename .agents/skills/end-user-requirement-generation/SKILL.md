@@ -3,8 +3,11 @@ name: 01. End User Requirement Generation
 description: Trigger workflow for End User Requirement Generation
 ---
 # Instruction
-When the user runs this SKILL, you MUST use the file viewer tool to read the complete workflow and detailed instructions at the path below:
+When the user runs this SKILL, you MUST use the file viewer tool to read the precise YAML mapping instructions at the path below:
 
-`./docs/003.Setup.003.Source Mapping Instructions/002. End User Requirement Generation.md`
+`./agentic/00-system-rules/03-system-mappings/skill-01-end-user-requirement.yaml`
 
-After reading, you must receive the data requested by the user (e.g., Request Code) and begin execution **Strictly adhering** to the workflow you just read. Stop and ask the user if you encounter out-of-scope risks or missing information.
+Additionally, you MUST strictly adhere to the execution loops and conditions explicitly defined in the State Machine Orchestrator at:
+`./agentic/02-execution-workflows/scaffolding/feature-scaffold-blueprint.yaml`
+
+After reading both, you must receive the data requested by the user (e.g., Request Code / Feature Name) and begin execution **Strictly adhering** to the blueprint rules. Stop and wait for the user if Validation states fail or if you encounter missing information.

@@ -6,12 +6,31 @@ inputs:
   prompts:
     - 00-system-rules/02-prompt-templates/skill-19-knowledge-sync.md
   drafts:
+    - 03-artifacts-draft/{request-code}/00-project-foundation/*
     - 03-artifacts-draft/{request-code}/01-business-layer/*
     - 03-artifacts-draft/{request-code}/02-technical-layer/*
     - 03-artifacts-draft/{request-code}/03-testing-layer/*
     - 03-artifacts-draft/{request-code}/04-architecture-layer/*
 output:
   routing_table:
+    - from: 00-project-foundation/01-business-and-constraints
+      to: 04-knowledge-prod/domain-architecture/_system/01-business-and-constraints/
+    - from: 00-project-foundation/02-architecture-patterns
+      to: 04-knowledge-prod/domain-architecture/_system/02-architecture-patterns/
+    - from: 00-project-foundation/03-technology-stack
+      to: 04-knowledge-prod/domain-architecture/_system/03-technology-stack/
+    - from: 00-project-foundation/04-project-structure-and-conventions
+      to: 04-knowledge-prod/domain-architecture/_system/04-project-structure-and-conventions/
+    - from: 00-project-foundation/05-infrastructure-and-cicd
+      to: 04-knowledge-prod/domain-architecture/_system/05-infrastructure-and-cicd/
+    - from: 00-project-foundation/06-networking-and-security
+      to: 04-knowledge-prod/domain-architecture/_system/06-networking-and-security/
+    - from: 00-project-foundation/07-cost-management
+      to: 04-knowledge-prod/domain-architecture/_system/07-cost-management/
+    - from: 00-project-foundation/08-design-system-and-ui
+      to: 04-knowledge-prod/domain-architecture/_system/08-design-system-and-ui/
+    - from: 00-project-foundation/09-observability-and-monitoring
+      to: 04-knowledge-prod/domain-architecture/_system/09-observability-and-monitoring/
     - from: 01-business-layer/end-user-requirement
       to: 04-knowledge-prod/domain-business/{feature-slug}/requirements/
     - from: 01-business-layer/information-collection
