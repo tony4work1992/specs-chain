@@ -3,15 +3,20 @@ name: Generate project foundation
 description: F1. Trigger interactive Q&A to define and generate the 9 Project Foundation System files.
 ---
 
+> [!CAUTION]
+> **PRE-FLIGHT CHECK (MANDATORY IDEMPOTENCY)**
+> Before generating any Output, you MUST read `.agents/00-system-rules/01-architecture-tactics/00-governance/00-idempotency-lock-rule.md` and evaluate the Hash Lock. If the source hash hasn't changed, YOU MUST HALT and skip LLM generation.
+
+
 # 02. Foundation Scaffolding Generation
 
 To use this skill, the AI will execute the Foundation scaffolding pipeline.
 
-1. **System Definition:** AI will review the internal mappings located at `.agents/00-system-rules/03-system-mappings/skill-f01-foundation.yaml`.
+1. **System Definition:** AI will review the internal mappings located at `.agents/00-system-rules/03-system-mappings/skill-02-project-foundation.yaml`.
 2. **Interactive Q&A:** The AI will ask you questions based on the 9 foundation templates located within `.agents/00-system-rules/04-artifact-templates/00-project-foundation/`.
 3. **Execution Delivery:** The AI will document the architectural decisions into the `03-artifacts-draft/{request-code}/00-project-foundation/` directory based on your answers.
 
-> **AI Instruction Engine:** DO NOT proceed using generic knowledge. You MUST strictly adhere to the `skill-f01-foundation.yaml` mapping configuration to scaffold this setup.
+> **AI Instruction Engine:** DO NOT proceed using generic knowledge. You MUST strictly adhere to the `skill-02-project-foundation.yaml` mapping configuration to scaffold this setup.
 
 
 # DATA ISOLATION PROTOCOL

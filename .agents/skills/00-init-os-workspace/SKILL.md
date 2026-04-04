@@ -3,6 +3,11 @@ name: 00. Init OS Workspace
 description: 00. Scaffold the physical directory skeleton for the project
 ---
 
+> [!CAUTION]
+> **PRE-FLIGHT CHECK (MANDATORY IDEMPOTENCY)**
+> Before generating any Output, you MUST read `.agents/00-system-rules/01-architecture-tactics/00-governance/00-idempotency-lock-rule.md` and evaluate the Hash Lock. If the source hash hasn't changed, YOU MUST HALT and skip LLM generation.
+
+
 # 00. Init OS Workspace
 
 To use this skill, the AI will build the entire physical directory skeleton for the project workspace so that subsequent Agent workflows have a deterministic place to read and write.

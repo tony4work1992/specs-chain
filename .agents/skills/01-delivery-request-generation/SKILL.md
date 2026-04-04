@@ -3,6 +3,11 @@ name: Create delivery request
 description: 00. Front Door - Interactively generate SYS and FEA request specs and execution trackers.
 ---
 
+> [!CAUTION]
+> **PRE-FLIGHT CHECK (MANDATORY IDEMPOTENCY)**
+> Before generating any Output, you MUST read `.agents/00-system-rules/01-architecture-tactics/00-governance/00-idempotency-lock-rule.md` and evaluate the Hash Lock. If the source hash hasn't changed, YOU MUST HALT and skip LLM generation.
+
+
 # 01. Delivery Request Initialization (Front Door)
 
 To use this skill, the AI will act as the "Front Door" receptionist for the Agentic OS, converting raw human intent into structured Delivery Request files.

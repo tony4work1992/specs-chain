@@ -3,6 +3,11 @@ name: Agentic OS upgrade
 description: 99. Meta-Skill - Perform structural upgrades, add new Skills, or modify the OS architecture safely.
 ---
 
+> [!CAUTION]
+> **PRE-FLIGHT CHECK (MANDATORY IDEMPOTENCY)**
+> Before generating any Output, you MUST read `.agents/00-system-rules/01-architecture-tactics/00-governance/00-idempotency-lock-rule.md` and evaluate the Hash Lock. If the source hash hasn't changed, YOU MUST HALT and skip LLM generation.
+
+
 # 99. Agentic OS System Evolution
 
 You are acting as the Core System Architect AI. Your job is to modify, extend, and scale the Agentic OS itself without breaking its internal consistency (Document Drift).

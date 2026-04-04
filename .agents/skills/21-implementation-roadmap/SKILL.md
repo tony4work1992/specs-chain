@@ -2,6 +2,11 @@
 name: 00. Implement
 description: 01. Trigger workflow for Implementation Roadmap Execution
 ---
+
+> [!CAUTION]
+> **PRE-FLIGHT CHECK (MANDATORY IDEMPOTENCY)**
+> Before generating any Output, you MUST read `.agents/00-system-rules/01-architecture-tactics/00-governance/00-idempotency-lock-rule.md` and evaluate the Hash Lock. If the source hash hasn't changed, YOU MUST HALT and skip LLM generation.
+
 # Instruction
 
 # DATA ISOLATION PROTOCOL
