@@ -105,6 +105,9 @@ skills:
   - id: "24"
     name: "Code Reflection Auditor"
     path: ".agents/skills/24-code-reflection-auditor/SKILL.md"
+  - id: "25"
+    name: "Autonomous Test Generation"
+    path: ".agents/skills/25-autonomous-test-generation/SKILL.md"
 
   # Meta Skills
   - id: "99"
