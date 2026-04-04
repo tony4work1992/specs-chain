@@ -257,16 +257,16 @@ done-criteria:
 # [PRE-FLIGHT GUARDRAIL]
 # 0. STRICT DEPENDENCY DUAL-INTERLOCK: 
 #    -> GLOBAL: Before executing ANY Feature Skill (01 to 19), the AI MUST verify that Project Foundation (`03-artifacts-draft/00-project-foundation/`) exists via `FOUNDATION-TRACKER.md`. If missing, HALT.
-#    -> LOCAL: Before executing ANY Skill, the AI MUST read `docs/01-delivery-requests/_trackers/TRACKER-FEA-{request}.md` (or `FOUNDATION-TRACKER.md`). If the sequentially preceding Skill is NOT checked off `[x]`, the AI MUST refuse execution, HALT the pipeline.
+#    -> LOCAL: Before executing ANY Skill, the AI MUST read `docs/01-execution-tickets/_trackers/TRACKER-FEA-{request}.md` (or `FOUNDATION-TRACKER.md`). If the sequentially preceding Skill is NOT checked off `[x]`, the AI MUST refuse execution, HALT the pipeline.
 #    -> If Tracker is missing, copy `foundation-tracker-template.md` (for Foundation) or `fea-tracker-template.md` (for FEA request) from `.agents/00-system-rules/04-artifact-templates/01-execution-trackers/`.
 # [AUTONOMOUS MODE]
-# 1. READ 01-delivery-requests/{request}.md
+# 1. READ 01-execution-tickets/{request}.md
 # 2. CREATE draft-structure folders in 03-artifacts-draft/
 # 3. Follow the execution-workflow phases using the internal State Machine loop.
 # 4. If a Validation state fails, wait for user input -> The Auditor Skill saves Snapshot & Audit Summary -> The Auditor Skill updates the pure Base Artifact -> repeat validation.
 # 5. WAIT for user to trigger Knowledge Sync (Skill 19).
 # 6. CRITICAL POST-EXECUTION TASKS:
-#    a. Check off the corresponding box in `01-delivery-requests/_trackers/TRACKER-{request}.md`
+#    a. Check off the corresponding box in `01-execution-tickets/_trackers/TRACKER-{request}.md`
 #    b. Create an Execution Summary `.md` at: `.agents/02-execution-workflows/execution-summaries/YYYY-MM-DD-SKILL-[ID]-[request].md` (Report Input Traces, Output Traces, Effort).
 #    c. Append a new timestamped log entry to BOTH CSV Logs (Global and Project).
 #    FORMAT for CSV: "YYYY-MM-DD HH:MM:SS","SKILL-[ID]","[Status]","[Output File Paths]","[Path/To/The/Generated/Summary.md]"
@@ -276,7 +276,7 @@ done-criteria:
 # 1. Execute Skills exactly in order from F1, or 01 to 18 sequentially.
 # 2. Skip state machine conditional loops.
 # 3. CRITICAL POST-EXECUTION TASKS:
-#    a. Check off the corresponding box in `01-delivery-requests/_trackers/TRACKER-{request}.md`
+#    a. Check off the corresponding box in `01-execution-tickets/_trackers/TRACKER-{request}.md`
 #    b. Create an Execution Summary `.md` at: `.agents/02-execution-workflows/execution-summaries/YYYY-MM-DD-SKILL-[ID]-[request].md` (Report Input Traces, Output Traces, Effort).
 #    c. Append a new timestamped log entry to BOTH CSV Logs (Global and Project).
 #    FORMAT for CSV: "YYYY-MM-DD HH:MM:SS","SKILL-[ID]","[Status]","[Output File Paths]","[Path/To/The/Generated/Summary.md]"

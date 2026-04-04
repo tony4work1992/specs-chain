@@ -84,7 +84,7 @@ Cấu Hình → Đầu Vào → Động Cơ → Bản Nháp → Kiến Thức �
 | **⚙️ Động cơ OS** | `.agents/00-system-rules/` | Bộ DNA. Chứa Prompts, YAML Mappings, và Templates. | Base System |
 | **🏭 Luồng Thực Thi**| `.agents/02-execution-workflows/` | Các cỗ máy điều hướng State Machine và chi phối Luật. | AI Orchestrator |
 | **📦 Khuôn đúc OS** | `.agents/04-os-templates/` | Cấu hình Tiền đề. Không gian làm việc tất định chích qua Skill 00. | Base System |
-| **📥 Đầu vào Đường ống** | `docs/01-delivery-requests/` | Nơi chứa các Yêu cầu Delivery. Đặc tả tính năng và Yêu cầu nằm đây. | Human PMs |
+| **📥 Đầu vào Đường ống** | `docs/01-execution-tickets/` | Nơi tập kết mọi Ticket (Yêu cầu Tính năng mới, Cứu hộ, hoặc Refactor). | Human PMs & Ops |
 | **📝 Không gian Nháp**| `docs/03-artifacts-draft/` | Các bản Draft tĩnh đẻ ra từ AI để User Review rà soát. | Human Engineers |
 | **🧠 CSDL Trí Thức** | `docs/04-knowledge-prod/` | Chi tiết, tra cứu O(1), là Chân lý duy nhất (SSOT) cho MẢNG AI DƯỚI. | AI Encoders |
 | **🧰 Tài sản Hỗ trợ** | `docs/05-support-assets/` | Chứa script bash, dữ liệu mock data, và công cụ Test Tĩnh. | Hybrid |
@@ -98,7 +98,7 @@ Hệ điều hành chia mớ AI Agent thành những nhánh **"Skills"** rất c
 
 ### 🚪 Khối Đón Tiếp (Front-Door Unit)
 - **Skill 00 (Init OS Workspace):** Đổ khung móng bộ thư mục gốc cho cái Hệ điều hành này qua bash.
-- **Skill 01 (Delivery Request Generation):** Đóng vai phỏng vấn viên tương tác Hỏi Đáp với chủ dự án (PO) để tạo ra Yêu cấu Triển khai ban đầu.
+- **Skill 01 (Execution Ticket Dispatcher):** Đặc vụ Cò mồi & Điều Phối. Phỏng vấn User để tạo ra một Ticket thực thi (Làm mới, Fix bug, hay Refactor) và phân luồng nó.
 - **Skill 02 (Project Foundation Generation):** Xây dựng Cấu trúc 9 Hệ thống Nền tảng (Architectural Foundations) trước khi bất kì cái Yêu cầu Feature nào được động móng.
 
 ### 🏗️ Lực Lượng Thi Công Xây Dựng (The Builders - Iterative Generation)
@@ -134,6 +134,14 @@ Khu vực này CHỈ kích hoạt khi phải đối phó với Dự án cũ (Bro
 - **Skill 26 (Máy Quét Mù - Legacy Discovery Scanner):** Càn lướt toàn bộ không gian làm việc cũ của dự án bằng dấu vết văn bản thô để nhả ra Tờ phơi khám nghiệm `legacy-discovery-report.yaml` VÀ Bảng Track Tiến Độ `INGESTION-COVERAGE-TRACKER.md`. Bác sĩ Kiến trúc sư (Human Architect) duyệt báo cáo này để thực hiện **Tái cấu trúc Tần cực (Domain Boundary Refactoring)**—gom đống folder rác thải vật lý thành các cục `{feature-slug}` chuẩn DDD trong `framework-ingestion.yaml`.
 - **Skill 27 (Cỗ Máy Nhai Code Cú Pháp - AST Reverse Engineer):** Đặc Vụ Nuốt Code. Nó nhận tham số mồi `--target_node` từ file Tracker, đọc hiểu source code vật lý thông qua ngàm Phân tích cây Cú pháp AST, nhổ ngược ra các file Dữ liệu tinh chuẩn vào Lò Knowledge Base, và lấy bút đánh dấu `[x]` vào Tracker để trừ hao tiến độ.
 - **Skill 28 (Đặc Vụ Ngoáy Não - Business Rule Extractor):** Đọc hiểu hệ thống logic đánh võng chằng chịt trong cái Node mục tiêu (Controllers/Helpers đời cũ), rồi "đạo diễn" ngược lại các luật lệ ngầm, đắp vá trả lại vào `03-artifacts-draft/BRD.md` để User loài người Review.
+
+### 🚑 Khối Đặc Nhiệm Vận Hành (The SRE / Ops Unit)
+Chuyên trị các nghiệp vụ bảo trì, cứu hộ, fix lỗi diễn ra trên Production sau khi dự án đã Go-live.
+- **Skill 29 (Đặc Vụ Bắt Mạch - Incident Triage Analyzer):** Tiếp nhận log lỗi (Sentry, Crash logs, Support Tickets) từ `docs/01-execution-tickets/`. Nó chọc thẳng vào Cỗ máy Index `04-knowledge-prod/_index` để nội soi ra chính xác file Code và Điều luật Business nào đang bị chết. Đẻ ra file `HOTFIX-PLAN.md`.
+- **Skill 30 (Đặc Vụ Chữa Cháy - Hotfix Code Generator):** Đóng vai lính cứu hỏa thực thi Hotfix. Vừa sửa code vật lý, vừa bắt buộc phải **cập nhật ngược lại Knowledge Base YAML** để đảm bảo Kiến trúc hệ thống luôn "Tiến hóa" sau mỗi lần sấp mặt.
+- **Skill 31 (Đặc Vụ Dữ Liệu - Data Operations Runner):** Quét kho Database Architecture để đẻ script chạy tay SQL/API giải quyết vé hỗ trợ (VD: Hoàn tiền, Ban User) siêu tốc mà không cần qua quy trình đẻ Feature mới.
+- **Skill 32 (Đặc Vụ Khí Tài - Infrastructure Ops Manager):** Chuyên gia tinh chỉnh `docker-compose.yml`, Terraform hay K8s manifests để Scale up RAM/CPU hoặc đổi config hạ tầng dập bão.
+
 - **Meta-Skill 99 (Biến Hóa Toàn Hệ - System OS Evolution):** Tung độc chiêu Nâng Cấp Cấu Trúc Toàn Diện lên thẳng cái Bản thân Của Hệ Điều Hành.
 
 ---

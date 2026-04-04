@@ -22,8 +22,8 @@ skills:
     name: "Init OS Workspace"
     path: ".agents/skills/00-init-os-workspace/SKILL.md"
   - id: "01"
-    name: "Delivery Request Generation"
-    path: ".agents/skills/01-delivery-request-generation/SKILL.md"
+    name: "Execution Ticket Dispatcher"
+    path: ".agents/skills/01-execution-ticket-dispatcher/SKILL.md"
   - id: "02"
     name: "Project Foundation Generation"
     path: ".agents/skills/02-project-foundation-generation/SKILL.md"
@@ -119,6 +119,20 @@ skills:
   - id: "28"
     name: "Business Rule Extractor"
     path: ".agents/skills/28-business-rule-extractor/SKILL.md"
+
+  # Operations Phase (SRE & Ops Unit)
+  - id: "29"
+    name: "Incident Triage Analyzer"
+    path: ".agents/skills/29-incident-triage-analyzer/SKILL.md"
+  - id: "30"
+    name: "Hotfix Code Generator"
+    path: ".agents/skills/30-hotfix-code-generator/SKILL.md"
+  - id: "31"
+    name: "Data Operations Runner"
+    path: ".agents/skills/31-data-operations-runner/SKILL.md"
+  - id: "32"
+    name: "Infrastructure Ops Manager"
+    path: ".agents/skills/32-infrastructure-ops-manager/SKILL.md"
 
   # Meta Skills
   - id: "99"
