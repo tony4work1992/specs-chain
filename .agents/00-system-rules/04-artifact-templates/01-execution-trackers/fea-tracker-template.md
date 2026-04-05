@@ -7,34 +7,34 @@ _This file tracks the autonomous completion state of a Feature._
 - **Last Updated:** `[YYYY-MM-DD]`
 
 ## 00. Request Initialization
-- [ ] **Skill 00:** Delivery Request Generation (Front Door)
+- [ ] **Skill 01:** Execution Ticket Dispatcher (Front Door)
 
 ## 1. Business Layer (WHY & WHAT)
-- [ ] **Skill 01:** End User Requirement
-- [ ] **Skill 02:** End User Requirement Auditor
-- [ ] **Skill 03:** BRD Generation
+- [ ] **Skill 03:** End User Requirement Generation
+- [ ] **Skill 04:** End User Requirement Auditor
+- [ ] **Skill 05:** Business Requirement Document Generation
 
 ## 2. Technical Layer (HOW)
-- [ ] **Skill 04:** System Context Generation
-- [ ] **Skill 05:** System Context Auditor
-- [ ] **Skill 06:** FRD Generation
-- [ ] **Skill 07:** Functional Requirement Auditor
-- [ ] **Skill 08:** Functional Specifications Generation
+- [ ] **Skill 06:** System Context Generation
+- [ ] **Skill 07:** System Context Auditor
+- [ ] **Skill 08:** Functional Requirement Document Generation
+- [ ] **Skill 09:** Functional Requirement Auditor
+- [ ] **Skill 10:** Functional Specifications Generation
 
 ## 3. Testing Layer (VERIFY)
-- [ ] **Skill 09:** Test Scope
-- [ ] **Skill 10:** Test Impact
-- [ ] **Skill 11:** Test Checklist
-- [ ] **Skill 12:** Test Cases
-- [ ] **Skill 13:** Test Steps
+- [ ] **Skill 11:** Test Scope Generation
+- [ ] **Skill 12:** Test Impact Generation
+- [ ] **Skill 13:** Test Checklist Generation
+- [ ] **Skill 14:** Test Cases Generation
+- [ ] **Skill 15:** Test Steps Generation
 
 ## 4. Architecture Layer (STRUCTURE)
-- [ ] **Skill 15:** UI Component Architecture
-- [ ] **Skill 16:** Strategic Architecture
-- [ ] **Skill 17:** Tactic Architecture
-- [ ] **Skill 18:** Flow Sequence Architecture
+- [ ] **Skill 16:** UI Component Architecture Generation
+- [ ] **Skill 17:** Strategic Architecture Generation
+- [ ] **Skill 18:** Tactic Architecture Generation
+- [ ] **Skill 19:** Flow Sequence Generation
 
 ## 5. Promotion & Synchronisation
-- [ ] **Skill 19:** Knowledge Sync Run
+- [ ] **Skill 20:** Knowledge Sync
 
 > **MANDATORY AI INSTRUCTION:** At the end of every individual Skill execution, you MUST open this specific Tracker file and mark `[x]` next to the Skill you just finished. Do not skip this step!

@@ -20,7 +20,7 @@ inputs:
     - 04-knowledge-prod/_index/manifest.yaml
     - 04-knowledge-prod/_index/by-domain.yaml
   templates:
-    - 00-system-rules/04-artifact-templates/.../api-tactic-architecture.yaml
+    - 00-system-rules/04-artifact-templates/04-software-architecture/03-tactic-architecture-template.yaml
 output:
   draft: 03-artifacts-draft/{request-code}/04-architecture-layer/api-tactic-architecture.yaml
   snapshot: 03-artifacts-draft/{request-code}/04-architecture-layer/.snapshots/

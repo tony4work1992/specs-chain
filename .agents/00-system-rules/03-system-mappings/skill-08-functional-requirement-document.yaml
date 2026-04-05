@@ -19,7 +19,7 @@ inputs:
     - 04-knowledge-prod/_index/manifest.yaml
     - 04-knowledge-prod/_index/by-domain.yaml
   templates:
-    - 00-system-rules/04-artifact-templates/.../functional-requirement-document.md
+    - 00-system-rules/04-artifact-templates/02-technical-requirement/03-functional-requirement-document-template.md
 output:
   draft: 03-artifacts-draft/{request-code}/02-technical-layer/functional-requirement-document.md
   snapshot: 03-artifacts-draft/{request-code}/02-technical-layer/.snapshots/

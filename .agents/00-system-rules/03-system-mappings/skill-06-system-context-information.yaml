@@ -19,7 +19,7 @@ inputs:
     - 04-knowledge-prod/_index/manifest.yaml
     - 04-knowledge-prod/_index/by-domain.yaml
   templates:
-    - 00-system-rules/04-artifact-templates/.../system-context-information.md
+    - 00-system-rules/04-artifact-templates/02-technical-requirement/01-system-context-information-template.md
 output:
   draft: 03-artifacts-draft/{request-code}/02-technical-layer/system-context-information.md
   snapshot: 03-artifacts-draft/{request-code}/02-technical-layer/.snapshots/

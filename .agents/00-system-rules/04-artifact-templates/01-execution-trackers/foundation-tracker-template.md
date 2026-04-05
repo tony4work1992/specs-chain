@@ -7,7 +7,7 @@ _This file tracks the autonomous completion state of the Foundation Level._
 - **Last Updated:** `[YYYY-MM-DD]`
 
 ## 00. Request Initialization
-- [ ] **Skill 00:** Delivery Request Generation (Front Door)
+- [ ] **Skill 01:** Execution Ticket Dispatcher (Front Door)
 
 ## 01. Project Foundation
 - [ ] **Skill F1:** Foundation Scaffolding Generation

@@ -18,7 +18,7 @@ inputs:
     - 04-knowledge-prod/_index/manifest.yaml
     - 04-knowledge-prod/_index/by-domain.yaml
   templates:
-    - 00-system-rules/04-artifact-templates/.../test-scope.yaml
+    - 00-system-rules/04-artifact-templates/03-testing-requirement/03-test-scope-template.yaml
 output:
   draft: 03-artifacts-draft/{request-code}/03-testing-layer/test-scope.yaml
   snapshot: 03-artifacts-draft/{request-code}/03-testing-layer/.snapshots/
