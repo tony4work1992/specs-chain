@@ -1,0 +1,13 @@
+_description: System Mapping for Skill 28 — Business Rule Extractor
+skill-id: '28'
+name: Business Rule Extractor
+inputs:
+  rules:
+    - 00-system-rules/01-architecture-tactics/00-governance/00-idempotency-lock-rule.md
+  prompts:
+    - 00-system-rules/02-prompt-templates/skill-28-business-rule-extractor.md
+  knowledge:
+    - docs/03-artifacts-draft/INGESTION-COVERAGE-TRACKER.md
+output:
+  draft: docs/03-artifacts-draft/
+execution_rule: Extract unspoken if/else rules into natural language requirements and append to BRD/FRD.

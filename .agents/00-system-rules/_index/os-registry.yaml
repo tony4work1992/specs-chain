@@ -20,127 +20,349 @@ skills:
   # Base Setup
   - id: "00"
     name: "Init OS Workspace"
-    path: ".agents/skills/00-init-os-workspace/SKILL.md"
+    paths:
+      proxy: ".agents/skills/00-init-os-workspace/SKILL.md"
+      mapping: ".agents/00-system-rules/03-system-mappings/skill-00-init-workspace.yaml"
+      prompt: ".agents/00-system-rules/02-prompt-templates/skill-00-init-workspace.md"
   - id: "01"
     name: "Execution Ticket Dispatcher"
-    path: ".agents/skills/01-execution-ticket-dispatcher/SKILL.md"
+    paths:
+      proxy: ".agents/skills/01-execution-ticket-dispatcher/SKILL.md"
+      mapping: ".agents/00-system-rules/03-system-mappings/skill-01-ticket-dispatcher.yaml"
+      prompt: ".agents/00-system-rules/02-prompt-templates/skill-01-ticket-dispatcher.md"
   - id: "02"
     name: "Project Foundation Generation"
-    path: ".agents/skills/02-project-foundation-generation/SKILL.md"
+    paths:
+      proxy: ".agents/skills/02-project-foundation-generation/SKILL.md"
+      mapping: ".agents/00-system-rules/03-system-mappings/skill-02-project-foundation.yaml"
+      prompt: ".agents/00-system-rules/02-prompt-templates/skill-02-project-foundation.md"
 
   # Business Layer
   - id: "03"
     name: "End User Requirement Generation"
-    path: ".agents/skills/03-end-user-requirement-generation/SKILL.md"
+    paths:
+      proxy: ".agents/skills/03-end-user-requirement-generation/SKILL.md"
+      mapping: ".agents/00-system-rules/03-system-mappings/skill-03-end-user-requirement.yaml"
+      prompt: ".agents/00-system-rules/02-prompt-templates/skill-03-end-user-requirement.md"
   - id: "04"
     name: "End User Requirement Auditor"
-    path: ".agents/skills/04-end-user-requirement-auditor/SKILL.md"
+    paths:
+      proxy: ".agents/skills/04-end-user-requirement-auditor/SKILL.md"
+      mapping: ".agents/00-system-rules/03-system-mappings/skill-04-end-user-requirement-auditor.yaml"
+      prompt: ".agents/00-system-rules/02-prompt-templates/skill-04-end-user-requirement-auditor.md"
   - id: "05"
     name: "Business Requirement Document Generation"
-    path: ".agents/skills/05-business-requirement-document-generation/SKILL.md"
+    paths:
+      proxy: ".agents/skills/05-business-requirement-document-generation/SKILL.md"
+      mapping: ".agents/00-system-rules/03-system-mappings/skill-05-business-requirement-document.yaml"
+      prompt: ".agents/00-system-rules/02-prompt-templates/skill-05-business-requirement-document.md"
 
   # Technical Layer
   - id: "06"
     name: "System Context Generation"
-    path: ".agents/skills/06-system-context-generation/SKILL.md"
+    paths:
+      proxy: ".agents/skills/06-system-context-generation/SKILL.md"
+      mapping: ".agents/00-system-rules/03-system-mappings/skill-06-system-context-information.yaml"
+      prompt: ".agents/00-system-rules/02-prompt-templates/skill-06-system-context.md"
   - id: "07"
     name: "System Context Auditor"
-    path: ".agents/skills/07-system-context-auditor/SKILL.md"
+    paths:
+      proxy: ".agents/skills/07-system-context-auditor/SKILL.md"
+      mapping: ".agents/00-system-rules/03-system-mappings/skill-07-system-context-auditor.yaml"
+      prompt: ".agents/00-system-rules/02-prompt-templates/skill-07-system-context-auditor.md"
   - id: "08"
     name: "Functional Requirement Document Generation"
-    path: ".agents/skills/08-functional-requirement-document-generation/SKILL.md"
+    paths:
+      proxy: ".agents/skills/08-functional-requirement-document-generation/SKILL.md"
+      mapping: ".agents/00-system-rules/03-system-mappings/skill-08-functional-requirement-document.yaml"
+      prompt: ".agents/00-system-rules/02-prompt-templates/skill-08-functional-requirement-document.md"
   - id: "09"
     name: "Functional Requirement Auditor"
-    path: ".agents/skills/09-functional-requirement-auditor/SKILL.md"
+    paths:
+      proxy: ".agents/skills/09-functional-requirement-auditor/SKILL.md"
+      mapping: ".agents/00-system-rules/03-system-mappings/skill-09-functional-requirement-auditor.yaml"
+      prompt: ".agents/00-system-rules/02-prompt-templates/skill-09-functional-requirement-auditor.md"
   - id: "10"
     name: "Functional Specifications Generation"
-    path: ".agents/skills/10-functional-specifications-generation/SKILL.md"
+    paths:
+      proxy: ".agents/skills/10-functional-specifications-generation/SKILL.md"
+      mapping: ".agents/00-system-rules/03-system-mappings/skill-10-function-specifications.yaml"
+      prompt: ".agents/00-system-rules/02-prompt-templates/skill-10-functional-specifications.md"
 
   # Testing Layer
   - id: "11"
     name: "Test Scope Generation"
-    path: ".agents/skills/11-test-scope-generation/SKILL.md"
+    paths:
+      proxy: ".agents/skills/11-test-scope-generation/SKILL.md"
+      mapping: ".agents/00-system-rules/03-system-mappings/skill-11-test-scope.yaml"
+      prompt: ".agents/00-system-rules/02-prompt-templates/skill-11-test-scope.md"
   - id: "12"
     name: "Test Impact Generation"
-    path: ".agents/skills/12-test-impact-generation/SKILL.md"
+    paths:
+      proxy: ".agents/skills/12-test-impact-generation/SKILL.md"
+      mapping: ".agents/00-system-rules/03-system-mappings/skill-12-test-impact.yaml"
+      prompt: ".agents/00-system-rules/02-prompt-templates/skill-12-test-impact.md"
   - id: "13"
     name: "Test Checklist Generation"
-    path: ".agents/skills/13-test-checklist-generation/SKILL.md"
+    paths:
+      proxy: ".agents/skills/13-test-checklist-generation/SKILL.md"
+      mapping: ".agents/00-system-rules/03-system-mappings/skill-13-test-checklist.yaml"
+      prompt: ".agents/00-system-rules/02-prompt-templates/skill-13-test-checklist.md"
   - id: "14"
     name: "Test Cases Generation"
-    path: ".agents/skills/14-test-cases-generation/SKILL.md"
+    paths:
+      proxy: ".agents/skills/14-test-cases-generation/SKILL.md"
+      mapping: ".agents/00-system-rules/03-system-mappings/skill-14-test-cases.yaml"
+      prompt: ".agents/00-system-rules/02-prompt-templates/skill-14-test-cases.md"
   - id: "15"
     name: "Test Steps Generation"
-    path: ".agents/skills/15-test-steps-generation/SKILL.md"
+    paths:
+      proxy: ".agents/skills/15-test-steps-generation/SKILL.md"
+      mapping: ".agents/00-system-rules/03-system-mappings/skill-15-test-steps.yaml"
+      prompt: ".agents/00-system-rules/02-prompt-templates/skill-15-test-steps.md"
 
   # Architecture Layer
   - id: "16"
     name: "UI Component Architecture Generation"
-    path: ".agents/skills/16-ui-component-architecture-generation/SKILL.md"
+    paths:
+      proxy: ".agents/skills/16-ui-component-architecture-generation/SKILL.md"
+      mapping: ".agents/00-system-rules/03-system-mappings/skill-16-ui-component-architecture.yaml"
+      prompt: ".agents/00-system-rules/02-prompt-templates/skill-16-ui-component-architecture.md"
   - id: "17"
     name: "Strategic Architecture Generation"
-    path: ".agents/skills/17-strategic-architecture-generation/SKILL.md"
+    paths:
+      proxy: ".agents/skills/17-strategic-architecture-generation/SKILL.md"
+      mapping: ".agents/00-system-rules/03-system-mappings/skill-17-strategic-architecture.yaml"
+      prompt: ".agents/00-system-rules/02-prompt-templates/skill-17-strategic-architecture.md"
   - id: "18"
     name: "Tactic Architecture Generation"
-    path: ".agents/skills/18-tactic-architecture-generation/SKILL.md"
+    paths:
+      proxy: ".agents/skills/18-tactic-architecture-generation/SKILL.md"
+      mapping: ".agents/00-system-rules/03-system-mappings/skill-18-api-tactic-architecture.yaml"
+      prompt: ".agents/00-system-rules/02-prompt-templates/skill-18-tactic-architecture.md"
   - id: "19"
     name: "Flow Sequence Generation"
-    path: ".agents/skills/19-flow-sequence-generation/SKILL.md"
+    paths:
+      proxy: ".agents/skills/19-flow-sequence-generation/SKILL.md"
+      mapping: ".agents/00-system-rules/03-system-mappings/skill-19-flow-sequence-architecture.yaml"
+      prompt: ".agents/00-system-rules/02-prompt-templates/skill-19-flow-sequence.md"
 
   # Finalization
   - id: "20"
     name: "Knowledge Sync"
-    path: ".agents/skills/20-knowledge-sync/SKILL.md"
+    paths:
+      proxy: ".agents/skills/20-knowledge-sync/SKILL.md"
+      mapping: ".agents/00-system-rules/03-system-mappings/skill-20-knowledge-sync.yaml"
+      prompt: ".agents/00-system-rules/02-prompt-templates/skill-20-knowledge-sync.md"
   - id: "21"
     name: "Implementation Roadmap"
-    path: ".agents/skills/21-implementation-roadmap/SKILL.md"
+    paths:
+      proxy: ".agents/skills/21-implementation-roadmap/SKILL.md"
+      mapping: ".agents/00-system-rules/03-system-mappings/skill-21-implementation-roadmap.yaml"
+      prompt: ".agents/00-system-rules/02-prompt-templates/skill-21-implementation-roadmap.md"
 
   # Execution Phase
   - id: "22"
     name: "Install Framework Plugin"
-    path: ".agents/skills/22-install-framework-plugin/SKILL.md"
+    paths:
+      proxy: ".agents/skills/22-install-framework-plugin/SKILL.md"
+      mapping: ".agents/00-system-rules/03-system-mappings/skill-22-install-framework-plugin.yaml"
+      prompt: ".agents/00-system-rules/02-prompt-templates/skill-22-install-framework-plugin.md"
   - id: "23"
     name: "Autonomous Code Generation"
-    path: ".agents/skills/23-autonomous-code-generation/SKILL.md"
+    paths:
+      proxy: ".agents/skills/23-autonomous-code-generation/SKILL.md"
+      mappings:
+        - ".agents/00-system-rules/03-system-mappings/skill-23-backend-gen.yaml"
+        - ".agents/00-system-rules/03-system-mappings/skill-23-database-gen.yaml"
+        - ".agents/00-system-rules/03-system-mappings/skill-23-frontend-gen.yaml"
+      prompts:
+        - ".agents/00-system-rules/02-prompt-templates/skill-23-backend-gen.md"
+        - ".agents/00-system-rules/02-prompt-templates/skill-23-database-gen.md"
+        - ".agents/00-system-rules/02-prompt-templates/skill-23-frontend-gen.md"
   - id: "24"
     name: "Code Reflection Auditor"
-    path: ".agents/skills/24-code-reflection-auditor/SKILL.md"
+    paths:
+      proxy: ".agents/skills/24-code-reflection-auditor/SKILL.md"
+      mapping: ".agents/00-system-rules/03-system-mappings/skill-24-code-reflection-auditor.yaml"
+      prompt: ".agents/00-system-rules/02-prompt-templates/skill-24-code-reflection-auditor.md"
   - id: "25"
     name: "Autonomous Test Generation"
-    path: ".agents/skills/25-autonomous-test-generation/SKILL.md"
+    paths:
+      proxy: ".agents/skills/25-autonomous-test-generation/SKILL.md"
+      mapping: ".agents/00-system-rules/03-system-mappings/skill-25-autonomous-test-generation.yaml"
+      prompt: ".agents/00-system-rules/02-prompt-templates/skill-25-autonomous-test-generation.md"
 
   # Legacy Ingestion Phase
   - id: "26"
     name: "Legacy Discovery Scanner"
-    path: ".agents/skills/26-legacy-discovery-scanner/SKILL.md"
+    paths:
+      proxy: ".agents/skills/26-legacy-discovery-scanner/SKILL.md"
+      mapping: ".agents/00-system-rules/03-system-mappings/skill-26-legacy-discovery-scanner.yaml"
+      prompt: ".agents/00-system-rules/02-prompt-templates/skill-26-legacy-discovery-scanner.md"
   - id: "27"
     name: "AST Reverse Engineer"
-    path: ".agents/skills/27-ast-reverse-engineer/SKILL.md"
+    paths:
+      proxy: ".agents/skills/27-ast-reverse-engineer/SKILL.md"
+      mapping: ".agents/00-system-rules/03-system-mappings/skill-27-ast-reverse-engineer.yaml"
+      prompt: ".agents/00-system-rules/02-prompt-templates/skill-27-ast-reverse-engineer.md"
   - id: "28"
     name: "Business Rule Extractor"
-    path: ".agents/skills/28-business-rule-extractor/SKILL.md"
+    paths:
+      proxy: ".agents/skills/28-business-rule-extractor/SKILL.md"
+      mapping: ".agents/00-system-rules/03-system-mappings/skill-28-business-rule-extractor.yaml"
+      prompt: ".agents/00-system-rules/02-prompt-templates/skill-28-business-rule-extractor.md"
 
   # Operations Phase (SRE & Ops Unit)
   - id: "29"
     name: "Incident Triage Analyzer"
-    path: ".agents/skills/29-incident-triage-analyzer/SKILL.md"
+    paths:
+      proxy: ".agents/skills/29-incident-triage-analyzer/SKILL.md"
+      mapping: ".agents/00-system-rules/03-system-mappings/skill-29-incident-triage-analyzer.yaml"
+      prompt: ".agents/00-system-rules/02-prompt-templates/skill-29-incident-triage-analyzer.md"
   - id: "30"
     name: "Hotfix Code Generator"
-    path: ".agents/skills/30-hotfix-code-generator/SKILL.md"
+    paths:
+      proxy: ".agents/skills/30-hotfix-code-generator/SKILL.md"
+      mapping: ".agents/00-system-rules/03-system-mappings/skill-30-hotfix-code-generator.yaml"
+      prompt: ".agents/00-system-rules/02-prompt-templates/skill-30-hotfix-code-generator.md"
   - id: "31"
     name: "Data Operations Runner"
-    path: ".agents/skills/31-data-operations-runner/SKILL.md"
+    paths:
+      proxy: ".agents/skills/31-data-operations-runner/SKILL.md"
+      mapping: ".agents/00-system-rules/03-system-mappings/skill-31-data-operations-runner.yaml"
+      prompt: ".agents/00-system-rules/02-prompt-templates/skill-31-data-operations-runner.md"
   - id: "32"
     name: "Infrastructure Ops Manager"
-    path: ".agents/skills/32-infrastructure-ops-manager/SKILL.md"
+    paths:
+      proxy: ".agents/skills/32-infrastructure-ops-manager/SKILL.md"
+      mapping: ".agents/00-system-rules/03-system-mappings/skill-32-infrastructure-ops-manager.yaml"
+      prompt: ".agents/00-system-rules/02-prompt-templates/skill-32-infrastructure-ops-manager.md"
 
   # Meta Skills
   - id: "99"
     name: "System OS Evolution"
-    path: ".agents/skills/system-evolution/SKILL.md"
+    paths:
+      proxy: ".agents/skills/system-evolution/SKILL.md"
+      mapping: ".agents/00-system-rules/03-system-mappings/skill-99-system-evolution.yaml"
+      prompt: ".agents/00-system-rules/02-prompt-templates/skill-99-system-evolution.md"
 
 workflows:
   - command: "/discuss"
     path: ".agents/workflows/discuss.md"
   - command: "/do"
     path: ".agents/workflows/do.md"
+
+artifact_templates:
+  - path: ".agents/00-system-rules/04-artifact-templates/00-project-foundation/01-business-and-constraints.md"
+    consumed_by_skills: ["02"]
+    consumed_by_mappings:
+      - ".agents/00-system-rules/03-system-mappings/skill-02-project-foundation.yaml"
+  - path: ".agents/00-system-rules/04-artifact-templates/00-project-foundation/02-architecture-patterns.md"
+    consumed_by_skills: ["02"]
+    consumed_by_mappings:
+      - ".agents/00-system-rules/03-system-mappings/skill-02-project-foundation.yaml"
+  - path: ".agents/00-system-rules/04-artifact-templates/00-project-foundation/03-technology-stack.md"
+    consumed_by_skills: ["02"]
+    consumed_by_mappings:
+      - ".agents/00-system-rules/03-system-mappings/skill-02-project-foundation.yaml"
+  - path: ".agents/00-system-rules/04-artifact-templates/00-project-foundation/04-project-structure-and-conventions.md"
+    consumed_by_skills: ["02"]
+    consumed_by_mappings:
+      - ".agents/00-system-rules/03-system-mappings/skill-02-project-foundation.yaml"
+  - path: ".agents/00-system-rules/04-artifact-templates/00-project-foundation/05-infrastructure-and-cicd.md"
+    consumed_by_skills: ["02"]
+    consumed_by_mappings:
+      - ".agents/00-system-rules/03-system-mappings/skill-02-project-foundation.yaml"
+  - path: ".agents/00-system-rules/04-artifact-templates/00-project-foundation/06-networking-and-security.md"
+    consumed_by_skills: ["02"]
+    consumed_by_mappings:
+      - ".agents/00-system-rules/03-system-mappings/skill-02-project-foundation.yaml"
+  - path: ".agents/00-system-rules/04-artifact-templates/00-project-foundation/07-cost-management.md"
+    consumed_by_skills: ["02"]
+    consumed_by_mappings:
+      - ".agents/00-system-rules/03-system-mappings/skill-02-project-foundation.yaml"
+  - path: ".agents/00-system-rules/04-artifact-templates/00-project-foundation/08-design-system-and-ui.md"
+    consumed_by_skills: ["02"]
+    consumed_by_mappings:
+      - ".agents/00-system-rules/03-system-mappings/skill-02-project-foundation.yaml"
+  - path: ".agents/00-system-rules/04-artifact-templates/00-project-foundation/09-observability-and-monitoring.md"
+    consumed_by_skills: ["02"]
+    consumed_by_mappings:
+      - ".agents/00-system-rules/03-system-mappings/skill-02-project-foundation.yaml"
+  - path: ".agents/00-system-rules/04-artifact-templates/01-execution-trackers/"
+    consumed_by_skills: ["01"]
+    consumed_by_mappings:
+      - ".agents/00-system-rules/03-system-mappings/skill-01-ticket-dispatcher.yaml"
+  - path: ".agents/00-system-rules/04-artifact-templates/01-execution-trackers/ingestion-coverage-tracker.md"
+    consumed_by_skills: ["26"]
+    consumed_by_mappings:
+      - ".agents/00-system-rules/03-system-mappings/skill-26-legacy-discovery-scanner.yaml"
+  - path: ".agents/00-system-rules/04-artifact-templates/01-requirement-development/01-end-user-requirement-template.md"
+    consumed_by_skills: ["03"]
+    consumed_by_mappings:
+      - ".agents/00-system-rules/03-system-mappings/skill-03-end-user-requirement.yaml"
+  - path: ".agents/00-system-rules/04-artifact-templates/01-requirement-development/02-end-user-requirement-auditor-template.md"
+    consumed_by_skills: ["04"]
+    consumed_by_mappings:
+      - ".agents/00-system-rules/03-system-mappings/skill-04-end-user-requirement-auditor.yaml"
+  - path: ".agents/00-system-rules/04-artifact-templates/01-requirement-development/03-business-requirement-document-template.md"
+    consumed_by_skills: ["05"]
+    consumed_by_mappings:
+      - ".agents/00-system-rules/03-system-mappings/skill-05-business-requirement-document.yaml"
+  - path: ".agents/00-system-rules/04-artifact-templates/02-technical-requirement/01-system-context-information-template.md"
+    consumed_by_skills: ["06"]
+    consumed_by_mappings:
+      - ".agents/00-system-rules/03-system-mappings/skill-06-system-context-information.yaml"
+  - path: ".agents/00-system-rules/04-artifact-templates/02-technical-requirement/02-system-context-auditor-template.md"
+    consumed_by_skills: ["07"]
+    consumed_by_mappings:
+      - ".agents/00-system-rules/03-system-mappings/skill-07-system-context-auditor.yaml"
+  - path: ".agents/00-system-rules/04-artifact-templates/02-technical-requirement/03-functional-requirement-document-template.md"
+    consumed_by_skills: ["08"]
+    consumed_by_mappings:
+      - ".agents/00-system-rules/03-system-mappings/skill-08-functional-requirement-document.yaml"
+  - path: ".agents/00-system-rules/04-artifact-templates/02-technical-requirement/04-functional-requirement-auditor-template.md"
+    consumed_by_skills: ["09"]
+    consumed_by_mappings:
+      - ".agents/00-system-rules/03-system-mappings/skill-09-functional-requirement-auditor.yaml"
+  - path: ".agents/00-system-rules/04-artifact-templates/02-technical-requirement/05-function-specifications-template.yaml"
+    consumed_by_skills: ["10"]
+    consumed_by_mappings:
+      - ".agents/00-system-rules/03-system-mappings/skill-10-function-specifications.yaml"
+  - path: ".agents/00-system-rules/04-artifact-templates/03-testing-requirement/02-test-impact-template.yaml"
+    consumed_by_skills: ["12"]
+    consumed_by_mappings:
+      - ".agents/00-system-rules/03-system-mappings/skill-12-test-impact.yaml"
+  - path: ".agents/00-system-rules/04-artifact-templates/03-testing-requirement/03-test-scope-template.yaml"
+    consumed_by_skills: ["11"]
+    consumed_by_mappings:
+      - ".agents/00-system-rules/03-system-mappings/skill-11-test-scope.yaml"
+  - path: ".agents/00-system-rules/04-artifact-templates/03-testing-requirement/04-test-checklist-template.yaml"
+    consumed_by_skills: ["13"]
+    consumed_by_mappings:
+      - ".agents/00-system-rules/03-system-mappings/skill-13-test-checklist.yaml"
+  - path: ".agents/00-system-rules/04-artifact-templates/03-testing-requirement/05-test-cases-template.yaml"
+    consumed_by_skills: ["14"]
+    consumed_by_mappings:
+      - ".agents/00-system-rules/03-system-mappings/skill-14-test-cases.yaml"
+  - path: ".agents/00-system-rules/04-artifact-templates/03-testing-requirement/06-test-steps-template.yaml"
+    consumed_by_skills: ["15"]
+    consumed_by_mappings:
+      - ".agents/00-system-rules/03-system-mappings/skill-15-test-steps.yaml"
+  - path: ".agents/00-system-rules/04-artifact-templates/04-software-architecture/01-ui-component-architecture-template.yaml"
+    consumed_by_skills: ["16"]
+    consumed_by_mappings:
+      - ".agents/00-system-rules/03-system-mappings/skill-16-ui-component-architecture.yaml"
+  - path: ".agents/00-system-rules/04-artifact-templates/04-software-architecture/02-strategic-architecture-template.md"
+    consumed_by_skills: ["17"]
+    consumed_by_mappings:
+      - ".agents/00-system-rules/03-system-mappings/skill-17-strategic-architecture.yaml"
+  - path: ".agents/00-system-rules/04-artifact-templates/04-software-architecture/03-tactic-architecture-template.yaml"
+    consumed_by_skills: ["18"]
+    consumed_by_mappings:
+      - ".agents/00-system-rules/03-system-mappings/skill-18-api-tactic-architecture.yaml"
+  - path: ".agents/00-system-rules/04-artifact-templates/04-software-architecture/04-flow-sequence-architecture-template.md"
+    consumed_by_skills: ["19"]
+    consumed_by_mappings:
+      - ".agents/00-system-rules/03-system-mappings/skill-19-flow-sequence-architecture.yaml"

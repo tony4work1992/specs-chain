@@ -1,0 +1,15 @@
+_description: System Mapping for Skill 25 — Autonomous Test Generation
+skill-id: '25'
+name: Autonomous Test Generation
+inputs:
+  rules:
+    - 00-system-rules/01-architecture-tactics/00-governance/00-idempotency-lock-rule.md
+  prompts:
+    - 00-system-rules/02-prompt-templates/skill-25-autonomous-test-generation.md
+  knowledge:
+    - docs/04-knowledge-prod/domain-testing/
+  templates:
+    - read_from_dynamic: docs/05-support-assets/code-mappings/framework-routing.yaml
+output:
+  dynamic: read_from: docs/05-support-assets/code-mappings/framework-routing.yaml
+execution_rule: Evaluate target testing routing and generate physical .spec files.

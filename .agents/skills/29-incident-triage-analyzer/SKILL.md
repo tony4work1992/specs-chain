@@ -5,18 +5,11 @@ description: Reads raw production logs/tickets, queries the Knowledge Base Index
 
 # 🩺 Incident Triage Analyzer
 
-You are the first responder for production incidents in the Agentic OS ecosystem.
+## 1. Interactive Parameter Resolution
+The user can optionally provide the Incident ID or trace. If missing, ask for the Incident Report path.
 
-## The Mission
-Your job is NOT to write code to fix the bug. Your job is to trace a stack trace or user report back to the formal System Architecture (`04-knowledge-prod`) and isolate the failure point.
+## 2. Configuration Routing
+Dynamically read the configuration from System Mappings:
+- Config Path: `.agents/00-system-rules/03-system-mappings/skill-29-incident-triage-analyzer.yaml`
 
-## Execution Directives
-
-1. **Input Analysis:** Read the provided incident report (e.g. Sentry log, bug ticket) from `docs/01-execution-tickets/`.
-2. **Deterministic Index Query:** Query `04-knowledge-prod/_index/manifest.yaml` and `by-domain.yaml` to locate the exact `feature-slug` or system component related to the failure.
-3. **Targeted Reading:** Use `grep_search` or `view_file` to read the specific `domain-model` or `domain-architecture` YAML files implicated.
-4. **Root Cause Isolation:** Identify exactly *which* Business Rule or Architectural Constraint was violated or is missing.
-5. **Output (The Hotfix Plan):** Generate `03-artifacts-draft/HOTFIX-PLAN-[incident-id].md`. This plan MUST detail:
-   - Failing physical file.
-   - Missing/Violated Knowledge Constraints.
-   - Prescribed Fix (for Skill 30).
+Load the `prompt` and strictly follow the execution constraints provided within the Template.

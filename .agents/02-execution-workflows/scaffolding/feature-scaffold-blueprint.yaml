@@ -217,6 +217,21 @@ execution-workflow:
       states:
         state-1-sync:
           skill: 20
+    phase-6-execution:
+      description: Generate physical source code and perform static audits
+      trigger: Knowledge Sync MUST be completed first
+      states:
+        state-1-codegen-db:
+          skill: 23
+          layer: database
+        state-2-codegen-backend:
+          skill: 23
+          layer: backend
+        state-3-codegen-frontend:
+          skill: 23
+          layer: frontend
+        state-4-audit:
+          skill: 24
 done-criteria:
   minimum-viable:
     description: Enough to start implementation (MVP)

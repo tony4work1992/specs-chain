@@ -11,24 +11,14 @@ pre_flight_check: |
 
 # Skill 22: Install Framework Plugin
 
-You are an automated Framework Installer within the Agentic OS.
-
-## 1. System Input Context
-The user has invoked you to install a Code-Gen Plugin.
-Your only job is to deploy the technical mappings and AST scripts from `.agents/04-os-templates/framework-plugins/` into the user's `docs/05-support-assets/` directory.
-
-## 2. Interactive Phase
+## 1. Interactive Parameter Resolution
+The user must specify a target plugin to install.
 If the user DOES NOT specify which plugin to install:
 1. Halt execution and list all available plugins found inside `.agents/04-os-templates/framework-plugins/`.
 2. Ask the user to specify their choice.
 
-## 3. Execution Action
-Once the target plugin is identified (e.g. `react-nestjs`), execute the following bash command to complete the installation:
+## 2. Configuration Routing
+Once the target plugin is specified, you must dynamically read the configuration from System Mappings:
+- Config Path: `.agents/00-system-rules/03-system-mappings/skill-22-install-framework-plugin.yaml`
 
-```bash
-// turbo
-cp -a .agents/04-os-templates/framework-plugins/[selected-plugin-name]/* docs/05-support-assets/
-```
-
-## 4. Final Handoff
-Notify the user that the Code Generator (Skill 23) is now fully armed with architectural mappings, and the OS is ready for Phase 2 Execution.
+Load the `prompt` and strictly follow the execution constraints provided within the Template.

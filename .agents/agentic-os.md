@@ -125,7 +125,7 @@ Act as automated Gatekeepers. They scan documents produced by the Builders to de
 ### 🛠️ The Code-Gen Unit (Phase 2 Execution)
 Code generation is strictly framework-agnostic. The overarching rules are kept at the Project Boundary `docs/`, while these OS Skills act purely as Orchestrators.
 - **Skill 22 (Install Framework Plugin):** Copies the selected `code-mappings`, `code-templates`, and `scripts` from `.agents/04-os-templates/framework-plugins/` into the user's `docs/05-support-assets/`.
-- **Skill 23 (Autonomous Code Generation):** Evaluates `framework-routing.yaml` to precisely inject Knowledge Base YAMLs into the respective Framework-specific physical template arrays.
+- **Skill 23 (Autonomous Code Generation - Polymorphic):** A heavily decoupled Interactive Multi-Agent. Evaluates `--layer` [Database, Backend, Frontend] to assume specialized DBA/Backend/Frontend Personas. It dynamically bridges Knowledge Base YAMLs into the respective physical templates defined in `framework-routing.yaml` without causing LLM Context Window exhaustion.
 - **Skill 24 (Code Reflection Auditor):** Executes the target script `docs/05-support-assets/scripts/trace-scanner.js` to cross-validate physical code Abstract Syntax Trees against O(1) Knowledge Base constraints. Autonomously Auto-Heals the physical code on failure.
 - **Skill 25 (Autonomous Test Generation):** The TDD Execution Engine. Evaluates `test_routing` and translates Knowledge Base Test Cases into physical `.spec.ts` test files BEFORE domain code generation.
 

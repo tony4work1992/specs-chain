@@ -16,7 +16,7 @@ inputs:
     - 00-system-rules/04-artifact-templates/00-project-foundation/08-design-system-and-ui.md
     - 00-system-rules/04-artifact-templates/00-project-foundation/09-observability-and-monitoring.md
   prompts:
-    - 00-system-rules/02-prompt-templates/skill-f01-foundation.md
+    - 00-system-rules/02-prompt-templates/skill-02-project-foundation.md
 execution_rule: 
   - Read the 9 system templates.
   - Ask the user questions interactively to fill in the missing template information.

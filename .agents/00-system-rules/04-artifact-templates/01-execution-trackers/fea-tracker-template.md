@@ -37,4 +37,12 @@ _This file tracks the autonomous completion state of a Feature._
 ## 5. Promotion & Synchronisation
 - [ ] **Skill 20:** Knowledge Sync
 
+## 6. Execution (Implementation)
+_Prerequisite: Knowledge Sync (Phase 5) must be completed before generating code._
+- [ ] **Skill 23 [DBA]:** Code Gen (Database & Migrations)
+- [ ] **Skill 23 [Backend]:** Code Gen (Controllers & Services)
+- [ ] **Skill 23 [Frontend]:** Code Gen (UI Components)
+- [ ] **Skill 24:** Code Reflection Auditor
+- [ ] **Skill 25:** Autonomous Test Generation
+
 > **MANDATORY AI INSTRUCTION:** At the end of every individual Skill execution, you MUST open this specific Tracker file and mark `[x]` next to the Skill you just finished. Do not skip this step!

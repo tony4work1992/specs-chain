@@ -1,0 +1,16 @@
+_description: System Mapping for Skill 30 — Hotfix Code Generator
+skill-id: '30'
+name: Hotfix Code Generator
+inputs:
+  rules:
+    - 00-system-rules/01-architecture-tactics/00-governance/00-idempotency-lock-rule.md
+  prompts:
+    - 00-system-rules/02-prompt-templates/skill-30-hotfix-code-generator.md
+  knowledge:
+    - docs/04-knowledge-prod/
+  drafts:
+    - docs/03-artifacts-draft/
+output:
+  knowledge_base: docs/04-knowledge-prod/
+  source_code: ./
+execution_rule: Execute the HOTFIX-PLAN by writing regression specs, updating KB YAMLs, and applying the code patch.
