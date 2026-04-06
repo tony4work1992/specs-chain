@@ -10,7 +10,7 @@ You must execute a bash `cp -a` command to copy the selected plugin content.
 Example:
 ```bash
 // turbo
-cp -a .agents/04-os-templates/framework-plugins/[selected-plugin-name]/* docs/05-support-assets/
+cp -a .agents/03-os-templates/framework-plugins/[selected-plugin-name]/* docs/05-support-assets/
 ```
 
 # Hand-off

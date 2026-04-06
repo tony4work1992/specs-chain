@@ -5,7 +5,7 @@ Nếu bạn đang đọc file này, tức là bạn đang nhận nhiệm vụ ti
 
 **🛑 TÌNH TRẠNG HIỆN TẠI (SYSTEM STATE):**
 - Foundation Base (00-21) đã hoàn chỉnh.
-- Hệ thống Mẫu (04-os-templates) đã hoạt động.
+- Hệ thống Mẫu (03-os-templates) đã hoạt động.
 
 **🎯 NHIỆM VỤ CỦA BẠN: CODE-GEN (SKILL 23+) VÀ QUY TẮC "FRAMEWORK-AGNOSTIC BOUNDARY"**
 Khác với quy trình Knowledge Engine nằm hoàn toàn trong `.agents/`, quá trình Code-Gen đòi hỏi tính Phân Quyền (Decoupling) tuyệt đối giữa **Lõi Hệ Điều Hành** và **Dự Án**. Kỷ luật thép bạn phải tuân thủ:
@@ -20,6 +20,6 @@ Khác với quy trình Knowledge Engine nằm hoàn toàn trong `.agents/`, quá
 - **Khuôn Đúc Mã Vạch (Tracing Templates):** Code Agent phải nhồi Logic đẻ Code vào các Template.tsx/Template.ts. Đảm bảo mọi file sinh ra ĐỀU CÓ mã JSDoc Docstring `@trace {feature-slug}` trên đầu.
 - **Gương Phản Chiếu (Code Reflection Auditor):** Trước khi báo "Done", Coder Agent phải chạy file Script quét AST Parser gốc của Dự án (ví dụ `scripts/trace-scanner.js`) để xác minh Source Code đã chuẩn 100% so với Knowledge Base.
 
-*Bạn không cần thiết kế lại cái này. Human Architect và Tôi đã chắt lọc sẵn 1 bộ "Băng Đạn" (Plugin) của React-NestJS lưu sẵn trong kho `.agents/04-os-templates/framework-plugins/`. Nếu Human chưa chạy **Skill 22**, hãy yêu cầu Human gọi `@[/22. Install Framework Plugin]` để đổ băng đạn này xuống `docs/05-...` trước khi bạn bắt đầu ngâm cứu tạo Code Coder!*
+*Bạn không cần thiết kế lại cái này. Human Architect và Tôi đã chắt lọc sẵn 1 bộ "Băng Đạn" (Plugin) của React-NestJS lưu sẵn trong kho `.agents/03-os-templates/framework-plugins/`. Nếu Human chưa chạy **Skill 22**, hãy yêu cầu Human gọi `@[/22. Install Framework Plugin]` để đổ băng đạn này xuống `docs/05-...` trước khi bạn bắt đầu ngâm cứu tạo Code Coder!*
 
 Hãy tóm tắt lại Memo này để chứng minh bạn đã sẵn sàng nối bước Phase 2!

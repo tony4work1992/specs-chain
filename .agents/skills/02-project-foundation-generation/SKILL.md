@@ -5,7 +5,7 @@ description: F1. Trigger interactive Q&A to define and generate the 9 Project Fo
 
 > [!CAUTION]
 > **PRE-FLIGHT CHECK (MANDATORY IDEMPOTENCY)**
-> Before generating any Output, you MUST read `.agents/00-system-rules/01-architecture-tactics/00-governance/00-idempotency-lock-rule.md` and evaluate the Hash Lock. If the source hash hasn't changed, YOU MUST HALT and skip LLM generation.
+> Before generating any Output, you MUST read `.agents/00-system-rules/01-governance/00-idempotency-lock-rule.md` and evaluate the Hash Lock. If the source hash hasn't changed, YOU MUST HALT and skip LLM generation.
 
 
 # 02. Foundation Scaffolding Generation

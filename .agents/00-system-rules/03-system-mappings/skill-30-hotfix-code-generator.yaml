@@ -3,7 +3,7 @@ skill-id: '30'
 name: Hotfix Code Generator
 inputs:
   rules:
-    - 00-system-rules/01-architecture-tactics/00-governance/00-idempotency-lock-rule.md
+    - 00-system-rules/01-governance/00-idempotency-lock-rule.md
   prompts:
     - 00-system-rules/02-prompt-templates/skill-30-hotfix-code-generator.md
   knowledge:

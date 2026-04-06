@@ -83,7 +83,7 @@ Cấu Hình → Đầu Vào → Động Cơ → Bản Nháp → Kiến Thức �
 | :--- | :--- | :--- | :--- |
 | **⚙️ Động cơ OS** | `.agents/00-system-rules/` | Bộ DNA. Chứa Prompts, YAML Mappings, và Templates. | Base System |
 | **🏭 Luồng Thực Thi**| `.agents/02-execution-workflows/` | Các cỗ máy điều hướng State Machine và chi phối Luật. | AI Orchestrator |
-| **📦 Khuôn đúc OS** | `.agents/04-os-templates/` | Cấu hình Tiền đề. Không gian làm việc tất định chích qua Skill 00. | Base System |
+| **📦 Khuôn đúc OS** | `.agents/03-os-templates/` | Cấu hình Tiền đề. Không gian làm việc tất định chích qua Skill 00. | Base System |
 | **📥 Đầu vào Đường ống** | `docs/01-execution-tickets/` | Nơi tập kết mọi Ticket (Yêu cầu Tính năng mới, Cứu hộ, hoặc Refactor). | Human PMs & Ops |
 | **📝 Không gian Nháp**| `docs/03-artifacts-draft/` | Các bản Draft tĩnh đẻ ra từ AI để User Review rà soát. | Human Engineers |
 | **🧠 CSDL Trí Thức** | `docs/04-knowledge-prod/` | Chi tiết, tra cứu O(1), là Chân lý duy nhất (SSOT) cho MẢNG AI DƯỚI. | AI Encoders |
@@ -124,7 +124,7 @@ Nhập vai Người Giữ Cửa tự động hóa (Automated Gatekeepers). Tụi
 
 ### 🛠️ Lực Lượng Nhả Code (The Code-Gen Unit - Phase 2 Execution)
 Cái cục Khởi tạo Sinh Mã (Code generation) bị giới nghiêm hoàn toàn trong việc Thượng Suy Tôn Thờ Mã Kiến (framework-agnostic). Luận chưởng tổng nằm khoá tại Bãi Biển `docs/`, tụi đẻ OS Skills này chỉ bị đẩy ra rìa gõ chém gió kiểu Người Cầm Trịch.
-- **Skill 22 (Install Framework Plugin):** Ép tải lôi các `code-mappings`, `code-templates`, và bash `scripts` bên kho chứa gốc `.agents/04-os-templates/framework-plugins/` đem chà lết vào không gian User `docs/05-support-assets/`.
+- **Skill 22 (Install Framework Plugin):** Ép tải lôi các `code-mappings`, `code-templates`, và bash `scripts` bên kho chứa gốc `.agents/03-os-templates/framework-plugins/` đem chà lết vào không gian User `docs/05-support-assets/`.
 - **Skill 23 (Tự Sinh Code Đa Hình - Polymorphic Code Gen):** Đặc vụ Đa nhân cách cực kỳ tinh vi. Tự động hỏi và ép User chọn `--layer` [Database, Backend, Frontend] thông qua Interactive Chat Menu. Dựa vào layer được chọn, nó sẽ thay đổi Persona (Não bộ Prompt) để đổ YAML từ Knowledge Base vào rãnh Template vật lý ở `framework-routing.yaml`. Thiết kế Decoupled này chống rác Hallucination và chống tràn RAM Context tuyệt đối!
 - **Skill 24 (Soi Gương Chữa Lỗi Code - Code Reflection Auditor):** Khởi sự tập tin điều khiển `docs/05-support-assets/scripts/trace-scanner.js` để đem đối chiếu qua lại cây Ngữ Pháp Cú Pháp Trừu Tượng (Abstract Syntax Trees) với Bộ Băng Trí Thức Tần Vực siêu Tra Cứu O(1) Knowledge Base. Ốm là Auto-Heal, AI tự cứu lấy Mã AI.
 - **Skill 25 (Động cơ Test Tự Trị - Autonomous Test Generation):** Hệ máy thực thi TDD (Test-Driven Development). Dò bản đồ `test_routing` rồi chuyển tấu Tờ Phiếu Kiểm Thử Test Case qua định dạng vật lý file Specs `.spec.ts` TRƯỚC KHI sinh Mã Sinh Mệnh!

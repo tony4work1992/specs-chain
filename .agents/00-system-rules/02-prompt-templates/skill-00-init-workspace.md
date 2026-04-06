@@ -9,7 +9,7 @@ Build the entire physical directory skeleton for the project workspace so that s
    ```bash
    // turbo
    mkdir -p docs
-   cp -a .agents/04-os-templates/workspace-skeleton/docs/. docs/
+   cp -a .agents/03-os-templates/workspace-skeleton/docs/. docs/
    ```
 2. **Hand-off Execution:**
    Once the directory scaffolding finishes successfully, instruct the user to proceed to **Skill 01** (Execution Ticket Dispatcher) to begin submitting new features or projects.

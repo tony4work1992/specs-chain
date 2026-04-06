@@ -3,13 +3,11 @@ skill-id: '26'
 name: Legacy Discovery Scanner
 inputs:
   rules:
-    - 00-system-rules/01-architecture-tactics/00-governance/00-idempotency-lock-rule.md
+    - 00-system-rules/01-governance/00-idempotency-lock-rule.md
   prompts:
     - 00-system-rules/02-prompt-templates/skill-26-legacy-discovery-scanner.md
   legacy_code:
-    - src/
-    - lib/
-    - app/
+    - "{target_dir}" # Parameterized target directory passed by user via CLI
   templates:
     - 00-system-rules/04-artifact-templates/01-execution-trackers/ingestion-coverage-tracker.md
 output:

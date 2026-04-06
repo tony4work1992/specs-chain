@@ -5,7 +5,7 @@ description: 01. Front Door - Interactively generate Execution Tickets (GREENFIE
 
 > [!CAUTION]
 > **PRE-FLIGHT CHECK (MANDATORY IDEMPOTENCY)**
-> Before generating any Output, you MUST read `.agents/00-system-rules/01-architecture-tactics/00-governance/00-idempotency-lock-rule.md` and evaluate the Hash Lock. If the source hash hasn't changed, YOU MUST HALT and skip LLM generation.
+> Before generating any Output, you MUST read `.agents/00-system-rules/01-governance/00-idempotency-lock-rule.md` and evaluate the Hash Lock. If the source hash hasn't changed, YOU MUST HALT and skip LLM generation.
 
 # 01. Execution Ticket Dispatcher (Front Door)
 

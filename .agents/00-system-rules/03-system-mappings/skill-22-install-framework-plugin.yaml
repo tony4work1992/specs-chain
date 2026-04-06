@@ -3,11 +3,11 @@ skill-id: '22'
 name: Install Framework Plugin
 inputs:
   rules:
-    - 00-system-rules/01-architecture-tactics/00-governance/00-idempotency-lock-rule.md
+    - 00-system-rules/01-governance/00-idempotency-lock-rule.md
   prompts:
     - 00-system-rules/02-prompt-templates/skill-22-install-framework-plugin.md
   knowledge:
-    - .agents/04-os-templates/framework-plugins/
+    - .agents/03-os-templates/framework-plugins/
 output:
   draft: docs/05-support-assets/
 execution_rule: Execute bash command to copy plugin artifacts based on prompt instructions.

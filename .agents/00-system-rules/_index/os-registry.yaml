@@ -8,7 +8,7 @@ ontology:
     - 02-technical-layer/
     - 03-testing-layer/
     - 04-architecture-layer/
-    - 04-os-templates/
+    - 03-os-templates/
   domains:
     - domain-business/
     - domain-technical/

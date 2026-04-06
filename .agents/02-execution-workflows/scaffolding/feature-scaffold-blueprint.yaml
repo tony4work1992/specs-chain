@@ -16,98 +16,98 @@ draft-structure:
       snapshots: false
       files:
         - name: 01-business-and-constraints.md
-          skill: f01
+          skill: "02"
           required: true
         - name: 02-architecture-patterns.md
-          skill: f01
+          skill: "02"
           required: true
         - name: 03-technology-stack.md
-          skill: f01
+          skill: "02"
           required: true
         - name: 04-project-structure-and-conventions.md
-          skill: f01
+          skill: "02"
           required: true
         - name: 05-infrastructure-and-cicd.md
-          skill: f01
+          skill: "02"
           required: true
         - name: 06-networking-and-security.md
-          skill: f01
+          skill: "02"
           required: true
         - name: 07-cost-management.md
-          skill: f01
+          skill: "02"
           required: true
         - name: 08-design-system-and-ui.md
-          skill: f01
+          skill: "02"
           required: true
         - name: 09-observability-and-monitoring.md
-          skill: f01
+          skill: "02"
           required: true
     01-business-layer:
       description: WHY & WHAT — Business requirements and context
       snapshots: true
       files:
         - name: end-user-requirement.md
-          skill: 3
+          skill: "03"
           required: true
         - name: end-user-requirement-auditor.md
-          skill: 4
+          skill: "04"
           required: true
         - name: business-requirement-document.md
-          skill: 5
+          skill: "05"
           required: true
     02-technical-layer:
       description: HOW — Technical specifications and system design
       snapshots: true
       files:
         - name: system-context-information.md
-          skill: 6
+          skill: "06"
           required: true
         - name: system-context-auditor.md
-          skill: 7
+          skill: "07"
           required: true
         - name: functional-requirement-document.md
-          skill: 8
+          skill: "08"
           required: true
         - name: functional-requirement-auditor.md
-          skill: 9
+          skill: "09"
           required: true
         - name: function-specifications.yaml
-          skill: 10
+          skill: "10"
           required: true
     03-testing-layer:
       description: VERIFY — Test strategy and execution specs
       snapshots: true
       files:
         - name: test-scope.yaml
-          skill: 11
+          skill: "11"
           required: true
         - name: test-impact.yaml
-          skill: 12
+          skill: "12"
           required: true
         - name: test-checklist.yaml
-          skill: 13
+          skill: "13"
           required: true
         - name: test-cases.yaml
-          skill: 14
+          skill: "14"
           required: true
         - name: test-steps.yaml
-          skill: 15
+          skill: "15"
           required: true
     04-architecture-layer:
       description: STRUCTURE — Software architecture and design
       snapshots: true
       files:
         - name: ui-component-architecture.yaml
-          skill: 17
+          skill: "16"
           required: false
         - name: strategic-architecture.md
-          skill: 18
+          skill: "17"
           required: true
         - name: api-tactic-architecture.yaml
-          skill: 19
+          skill: "18"
           required: true
         - name: flow-sequence-architecture.md
-          skill: 20
+          skill: "19"
           required: true
 knowledge-structure:
   domain-business:
@@ -156,82 +156,82 @@ execution-workflow:
       states:
         state-1-scaffold:
           action: Interactive Q&A to generate 9 Foundation documents
-          skill: f01
+          skill: "02"
     phase-1-business:
       description: Understand WHY and WHAT with validation gating
       states:
         state-1-generate:
           action: Generate End User Requirement
-          skill: 3
+          skill: "03"
         state-2-validate:
           action: Check End User Requirement. If Pass -> Goto state-3. If Fail -> Goto state-2a
-          skill: 4
+          skill: "04"
         state-2a-wait-and-patch:
           action: Wait for User Input -> Skill 2 stores Pre-Patch Snapshot -> Skill 2 writes independent Audit Summary Log -> Skill 2 generates updated pure End User Req -> Goto state-2
-          skill: 4
+          skill: "04"
         state-3-finalize:
           action: Generate BRD
-          skill: 5
+          skill: "05"
     phase-2-technical:
       description: Define HOW with validation gating
       states:
         state-1-generate-context:
-          skill: 6
+          skill: "06"
         state-2-validate-context:
-          skill: 7
+          skill: "07"
           action: If Fail -> Wait for User Input -> Skill 5 creates Snapshot & independent Audit Log -> Skill 5 patches pure Context doc -> Verify (Goto state-2)
         state-3-generate-functional:
-          skill: 8
+          skill: "08"
         state-4-validate-functional:
-          skill: 9
+          skill: "09"
           action: If Fail -> Wait for User Input -> Skill 7 creates Snapshot & independent Audit Log -> Skill 7 patches pure Functional doc -> Verify (Goto state-4)
         state-5-specifications:
-          skill: 10
+          skill: "10"
     phase-3-testing:
       description: Define HOW TO VERIFY (Sequential)
       states:
         state-1:
-          skill: 11
+          skill: "11"
         state-2:
-          skill: 12
+          skill: "12"
         state-3:
-          skill: 13
+          skill: "13"
         state-4:
-          skill: 14
+          skill: "14"
         state-5:
-          skill: 15
+          skill: "15"
     phase-4-architecture:
       description: Define STRUCTURE (Sequential)
       states:
         state-1:
-          skill: 17
+          skill: "16"
         state-2:
-          skill: 18
+          skill: "17"
         state-3:
-          skill: 19
+          skill: "18"
         state-4:
-          skill: 20
+          skill: "19"
     phase-5-knowledge-sync:
       description: Promote approved drafts to production knowledge
       trigger: USER MUST explicitly request this
       states:
         state-1-sync:
-          skill: 20
+          skill: "20"
     phase-6-execution:
       description: Generate physical source code and perform static audits
       trigger: Knowledge Sync MUST be completed first
       states:
         state-1-codegen-db:
-          skill: 23
+          skill: "23"
           layer: database
         state-2-codegen-backend:
-          skill: 23
+          skill: "23"
           layer: backend
         state-3-codegen-frontend:
-          skill: 23
+          skill: "23"
           layer: frontend
         state-4-audit:
-          skill: 24
+          skill: "24"
 done-criteria:
   minimum-viable:
     description: Enough to start implementation (MVP)

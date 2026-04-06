@@ -6,10 +6,10 @@ inputs:
     - 03-artifacts-draft/00-project-foundation/01-business-and-constraints.md
     - 03-artifacts-draft/00-project-foundation/07-cost-management.md
   rules:
-    - 00-system-rules/01-architecture-tactics/00-governance/00-idempotency-lock-rule.md
-    - 00-system-rules/01-architecture-tactics/00-governance/output-quality-rules.md
-    - 00-system-rules/01-architecture-tactics/00-governance/naming-conventions.md
-    - 00-system-rules/01-architecture-tactics/00-governance/anti-patterns.md
+    - 00-system-rules/01-governance/00-idempotency-lock-rule.md
+    - 00-system-rules/01-governance/output-quality-rules.md
+    - 00-system-rules/01-governance/naming-conventions.md
+    - 00-system-rules/01-governance/anti-patterns.md
   blueprints:
     - 02-execution-workflows/scaffolding/feature-scaffold-blueprint.yaml
   prompts:
