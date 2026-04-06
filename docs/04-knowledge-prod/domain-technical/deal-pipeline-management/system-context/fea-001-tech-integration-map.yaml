@@ -1,0 +1,59 @@
+_meta:
+  feature: "FEA-001 — Deal Pipeline Management"
+  source: "02-technical-layer/01-system-context.md § 6"
+  promoted_at: "2026-04-06"
+  skill: "20"
+
+cross_module_integrations:
+  - module: "Identity Module (identity)"
+    type: "Internal (in-process)"
+    consumed_interface: "IUserQueryService"
+    consumed_dto: "UserSummaryDto { id, fullName, avatarUrl, role }"
+    consumed_method: "getManagerForRep(assignedRepId)"
+    usage: "Resolve deal owner names for response DTOs. Resolve manager ID for cache invalidation."
+    constraint: "MUST NOT import UserEntity directly."
+
+  - module: "Lead & Contact Module (lead-contact)"
+    type: "Internal (in-process)"
+    consumed_interface: "IContactQueryService"
+    consumed_dto: "ContactSummaryDto"
+    consumed_method: "findById(contact_id)"
+    usage: "Validate contact_id on deal creation. Resolve contact/company display names for DTOs."
+    constraint: "MUST NOT join directly against contacts table. No DB FK constraint enforced."
+
+  - module: "Activity Module (activity)"
+    type: "Frontend → External REST (not backend coupling)"
+    consumed_endpoint: "GET /activities?deal_id={uuid}&sort=created_at:desc"
+    usage: "Deal Detail Page embeds Activity Timeline via separate frontend fetch. No backend coupling in DealPipelineModule."
+    constraint: "Activity module not yet built at time of FEA-001. Frontend fetch is independent."
+
+external_services:
+  - service: "AWS S3"
+    usage: "Async CSV export storage. Pre-signed URL generation."
+    sdk: "AWS SDK v3"
+
+  - service: "AWS CloudWatch"
+    usage: "Receives pino structured JSON logs and OpenTelemetry traces."
+    sdk: "OTLP exporter"
+
+error_codes:
+  - code: "INVALID_STAGE_TRANSITION"
+    http: 422
+    context: "Stage transition that violates sequential order"
+    payload: "{ error_code, from_stage, to_stage, allowed_next_stages }"
+
+  - code: "DEAL_STAGE_TERMINAL"
+    http: 422
+    context: "Attempting to transition a deal in Closed Won or Closed Lost"
+
+  - code: "INVALID_INITIAL_STAGE"
+    http: 422
+    context: "Client submits a stage_id other than order=1 on deal creation"
+
+  - code: "DEAL_ACCESS_FORBIDDEN"
+    http: 403
+    context: "Sales Rep accessing a deal not owned by them"
+
+  - code: "EXPORT_LIMIT_EXCEEDED"
+    http: 422
+    context: "Export request for more than 1,000 rows"

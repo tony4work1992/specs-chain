@@ -1,0 +1,118 @@
+_meta:
+  feature: "FEA-001 — Deal Pipeline Management"
+  source: "02-technical-layer/02-functional-requirement-document.md § 5-6"
+  promoted_at: "2026-04-06"
+  skill: "20"
+
+modules:
+  deal_creation:
+    label: "5.1 Deal Creation"
+    requirements:
+      - id: FR-001
+        summary: "Create Deal Form Rendering — modal with RHF v7 + Zod v3 schema"
+      - id: FR-002
+        summary: "Required Field Enforcement — title, contact_id, value > 0, expected_close_date (future), assigned_rep_id"
+      - id: FR-003
+        summary: "Duplicate Deal Warning — GET /deals/check-duplicate, non-blocking banner"
+      - id: FR-004
+        summary: "Initial Stage Assignment — forced to order=1 (New), backend enforces 422 INVALID_INITIAL_STAGE"
+      - id: FR-005
+        summary: "Creation API Response — HTTP 201 + DealResponseDto, optimistic append to board"
+
+  pipeline_board:
+    label: "5.2 Pipeline Board"
+    requirements:
+      - id: FR-006
+        summary: "Board Stage Column Rendering — one column per stage, ordered by pipeline_stages.order ASC"
+      - id: FR-007
+        summary: "Deal Card Contents — title (40 char), rep avatar, contact name, value, staleness badge, Log Activity button"
+      - id: FR-008
+        summary: "DnD Stage Transition Initiation — @dnd-kit, optimistic Zustand update + parallel PATCH /deals/:id/stage"
+      - id: FR-009
+        summary: "Stage Transition Server Validation — sequential order check OR Closed Lost from any stage"
+      - id: FR-010
+        summary: "Optimistic Rollback on Failure — revert Zustand store, snap card back, Sonner toast error"
+      - id: FR-011
+        summary: "Board Filters — Assigned Rep (Manager only), Stage, Value range, Date Created range, removable chips"
+      - id: FR-012
+        summary: "Board Search — 300ms debounce, server-side search, highlight matched text"
+
+  deal_detail:
+    label: "5.3 Deal Detail Page"
+    requirements:
+      - id: FR-013
+        summary: "Deal Detail Page Layout — GET /deals/:id, header + field panel + activity timeline + stage history"
+      - id: FR-014
+        summary: "Inline Field Editing — auto-save PATCH /deals/:id with 1s debounce, optimistic update + rollback"
+      - id: FR-015
+        summary: "Stage Transition from Detail — dropdown shows valid next stages only + Closed Lost"
+      - id: FR-016
+        summary: "Stage Transition History — DealStageTransitions in descending order, read-only"
+      - id: FR-017
+        summary: "Activity Timeline Embedding — GET /activities?deal_id= (independent TanStack Query key)"
+
+  deal_list:
+    label: "5.4 Deal List View"
+    requirements:
+      - id: FR-018
+        summary: "List View Columns — TanStack Table v8, 11 columns, default sort: Last Activity Date DESC"
+      - id: FR-019
+        summary: "Multi-Column Sort — ASC/DESC/unsorted cycle, reflected in URL params"
+      - id: FR-020
+        summary: "Multi-Filter Support — Stage, Rep, Value range, Close Date range, all URL-persisted"
+      - id: FR-021
+        summary: "Pagination — default 25 rows, selectable 10/25/50/100, all state URL-persisted"
+      - id: FR-022
+        summary: "CSV Export — sync ≤500 rows, async >500 rows (Bull queue, S3 pre-signed URL, 3s polling)"
+      - id: FR-023
+        summary: "Bulk Actions (Manager/Admin) — Reassign Rep, Archive, current page only"
+
+  pipeline_summary:
+    label: "5.5 Pipeline Summary Bar"
+    requirements:
+      - id: FR-024
+        summary: "Summary Bar Visibility — Manager/Admin only, 403 for Sales Rep"
+      - id: FR-025
+        summary: "30s Auto-Refresh — TanStack Query refetchInterval, Redis cache-aside (TTL 30s), invalidate on writes"
+      - id: FR-026
+        summary: "Filters Applied to Summary — summary reflects active board filters"
+
+  stale_deal:
+    label: "5.6 Stale Deal Detection"
+    requirements:
+      - id: FR-027
+        summary: "Staleness Level Cron — @Cron every hour, bulk UPDATE with CASE WHEN SQL"
+      - id: FR-028
+        summary: "Staleness Visual Rendering — no badge (NORMAL), amber 14d (WARNING), red pulsing 30d+ (CRITICAL)"
+
+  authorization:
+    label: "6.1 Authorization Enforcement"
+    requirements:
+      - id: FR-029
+        summary: "Sales Rep Scope Restriction — Use Case checks assigned_rep_id === currentUser.id, throws ForbiddenException"
+      - id: FR-030
+        summary: "Terminal Stage Immutability — Use Case checks is_terminal before any transition"
+      - id: FR-031
+        summary: "Stage Transition Audit Write — atomic transaction: UPDATE deals + INSERT deal_stage_transitions"
+
+  caching:
+    label: "6.2 Caching Behavior"
+    requirements:
+      - id: FR-032
+        summary: "Pipeline Summary Cache-Aside — Redis key pipeline:summary:{userId}, TTL 30s"
+      - id: FR-033
+        summary: "Cache Invalidation — any write (create/transition/archive/reassign) deletes Redis key"
+
+  data_presentation:
+    label: "7. Data Presentation"
+    requirements:
+      - id: FR-034
+        summary: "Currency Formatting — Intl.NumberFormat, VND → ₫1,234,567 / USD → $1,234.56, minor units in API"
+      - id: FR-035
+        summary: "Date Formatting — date-fns MMM dd yyyy, relative time tooltip via formatDistanceToNow"
+      - id: FR-036
+        summary: "Days Open / Days in Stage — computed client-side from API timestamps"
+      - id: FR-037
+        summary: "Stage Badge Color Mapping — Tailwind classes per stage name (FR-037)"
+      - id: FR-038
+        summary: "Empty State Rendering — dashed border card with + Add Deal button per column"

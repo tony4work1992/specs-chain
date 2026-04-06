@@ -1,0 +1,61 @@
+_meta:
+  feature: "FEA-001 — Deal Pipeline Management"
+  source: "02-technical-layer/03-functional-specifications.yaml + 02-technical-layer/02-functional-requirement-document.md"
+  promoted_at: "2026-04-06"
+  skill: "20"
+
+entity:
+  name: "DealStageTransition"
+  ddd_role: "Value Object / Audit Record"
+  table: "deal_stage_transitions"
+  module: "DealPipelineModule"
+  soft_delete: false
+  notes: "Immutable audit log. No @UpdateDateColumn. Once written, records cannot be edited or deleted by any user including Admin (BR-08)."
+
+columns:
+  - column: id
+    type: "uuid"
+    primary_key: true
+    nullable: false
+    default: "gen_random_uuid()"
+
+  - column: deal_id
+    type: "uuid"
+    primary_key: false
+    nullable: false
+    notes: "FK → deals.id (cascade delete if deal hard-deleted — hard delete is forbidden, so in practice this never fires)."
+
+  - column: from_stage_id
+    type: "uuid"
+    primary_key: false
+    nullable: true
+    notes: "NULL for the initial creation transition (no 'from' stage on first insert)."
+
+  - column: to_stage_id
+    type: "uuid"
+    primary_key: false
+    nullable: false
+    notes: "FK → pipeline_stages.id"
+
+  - column: transitioned_by_user_id
+    type: "uuid"
+    primary_key: false
+    nullable: false
+    notes: "Cross-BC reference to users.id. No DB FK."
+
+  - column: transitioned_at
+    type: "timestamptz"
+    primary_key: false
+    nullable: false
+    default: "NOW()"
+
+write_rules:
+  - "Written atomically with the UPDATE deals SET current_stage_id inside a single PostgreSQL transaction."
+  - "If either write (UPDATE deals OR INSERT deal_stage_transitions) fails, both are rolled back."
+  - "No application-level or DB-level update is ever permitted after insert."
+
+indexes:
+  - name: "idx_dst_deal_id"
+    columns: [deal_id]
+  - name: "idx_dst_transitioned_at"
+    columns: [transitioned_at]

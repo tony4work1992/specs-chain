@@ -1,0 +1,73 @@
+_meta:
+  feature: "FEA-001 — Deal Pipeline Management"
+  source: "02-technical-layer/03-functional-specifications.yaml"
+  promoted_at: "2026-04-06"
+  skill: "20"
+
+entity:
+  name: "PipelineStage"
+  ddd_role: "Read-only Reference Entity"
+  table: "pipeline_stages"
+  module: "DealPipelineModule"
+  soft_delete: false
+  notes: "Pre-seeded at deployment. Read-only at runtime. Stage CRUD is Admin-only config, out-of-scope for this feature."
+
+columns:
+  - column: id
+    type: "uuid"
+    primary_key: true
+    nullable: false
+    default: "gen_random_uuid()"
+    notes: "PK, pre-seeded, immutable at runtime."
+
+  - column: name
+    type: "varchar(60)"
+    primary_key: false
+    nullable: false
+    notes: "e.g. New, Qualified, Proposal Sent, Negotiation, Closed Won, Closed Lost"
+
+  - column: order
+    type: "int"
+    primary_key: false
+    nullable: false
+    notes: "1=New, 2=Qualified, 3=Proposal Sent, 4=Negotiation, 5=Closed Won, 6=Closed Lost"
+
+  - column: is_terminal
+    type: "boolean"
+    primary_key: false
+    nullable: false
+    default: "false"
+    notes: "true for Closed Won and Closed Lost — blocks further transitions."
+
+  - column: is_won
+    type: "boolean"
+    primary_key: false
+    nullable: false
+    default: "false"
+    notes: "true only for Closed Won — used in win_rate calculation."
+
+seeded_stages:
+  - order: 1
+    name: "New"
+    is_terminal: false
+    is_won: false
+  - order: 2
+    name: "Qualified"
+    is_terminal: false
+    is_won: false
+  - order: 3
+    name: "Proposal Sent"
+    is_terminal: false
+    is_won: false
+  - order: 4
+    name: "Negotiation"
+    is_terminal: false
+    is_won: false
+  - order: 5
+    name: "Closed Won"
+    is_terminal: true
+    is_won: true
+  - order: 6
+    name: "Closed Lost"
+    is_terminal: true
+    is_won: false

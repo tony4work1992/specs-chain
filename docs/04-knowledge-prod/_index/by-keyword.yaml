@@ -1,0 +1,94 @@
+_meta:
+  last_updated: "2026-04-06"
+  last_skill_run: "20"
+
+keywords:
+  deal:
+    - docs/04-knowledge-prod/domain-business/deal-pipeline-management/requirements/fea-001-biz-end-user-requirement.md
+    - docs/04-knowledge-prod/domain-business/deal-pipeline-management/requirements/fea-001-biz-business-requirement-document.md
+    - docs/04-knowledge-prod/domain-model/deal-pipeline-management/entities/fea-001-model-deal.yaml
+    - docs/04-knowledge-prod/domain-technical/deal-pipeline-management/functional-specs/fea-001-tech-functional-requirement-document.md
+
+  pipeline:
+    - docs/04-knowledge-prod/domain-business/deal-pipeline-management/requirements/fea-001-biz-end-user-requirement.md
+    - docs/04-knowledge-prod/domain-model/deal-pipeline-management/entities/fea-001-model-pipeline-stage.yaml
+    - docs/04-knowledge-prod/domain-technical/deal-pipeline-management/system-context/fea-001-tech-component-registry.yaml
+
+  stage-transition:
+    - docs/04-knowledge-prod/domain-business/deal-pipeline-management/requirements/fea-001-biz-business-rules.yaml
+    - docs/04-knowledge-prod/domain-model/deal-pipeline-management/entities/fea-001-model-deal-stage-transition.yaml
+    - docs/04-knowledge-prod/domain-technical/deal-pipeline-management/functional-specs/fea-001-tech-fr-by-module.yaml
+    - docs/04-knowledge-prod/domain-architecture/deal-pipeline-management/flows/fea-001-arch-flow-sequence.md
+
+  kanban:
+    - docs/04-knowledge-prod/domain-business/deal-pipeline-management/requirements/fea-001-biz-end-user-requirement.md
+    - docs/04-knowledge-prod/domain-technical/deal-pipeline-management/functional-specs/fea-001-tech-fr-by-module.yaml
+    - docs/04-knowledge-prod/domain-architecture/deal-pipeline-management/frontend/fea-001-arch-ui-component-architecture.yaml
+
+  drag-and-drop:
+    - docs/04-knowledge-prod/domain-technical/deal-pipeline-management/functional-specs/fea-001-tech-fr-by-module.yaml
+    - docs/04-knowledge-prod/domain-architecture/deal-pipeline-management/flows/fea-001-arch-flow-sequence.md
+    - docs/04-knowledge-prod/domain-technical/deal-pipeline-management/system-context/fea-001-tech-system-context.md
+
+  optimistic-ui:
+    - docs/04-knowledge-prod/domain-technical/deal-pipeline-management/functional-specs/fea-001-tech-fr-by-module.yaml
+    - docs/04-knowledge-prod/domain-architecture/deal-pipeline-management/flows/fea-001-arch-flow-sequence.md
+
+  rbac:
+    - docs/04-knowledge-prod/domain-business/deal-pipeline-management/requirements/fea-001-biz-business-rules.yaml
+    - docs/04-knowledge-prod/domain-technical/deal-pipeline-management/system-context/fea-001-tech-integration-map.yaml
+    - docs/04-knowledge-prod/domain-technical/deal-pipeline-management/functional-specs/fea-001-tech-fr-by-module.yaml
+
+  redis-cache:
+    - docs/04-knowledge-prod/domain-technical/deal-pipeline-management/system-context/fea-001-tech-component-registry.yaml
+    - docs/04-knowledge-prod/domain-technical/deal-pipeline-management/functional-specs/fea-001-tech-fr-by-module.yaml
+    - docs/04-knowledge-prod/domain-architecture/deal-pipeline-management/flows/fea-001-arch-flow-sequence.md
+
+  csv-export:
+    - docs/04-knowledge-prod/domain-technical/deal-pipeline-management/functional-specs/fea-001-tech-fr-by-module.yaml
+    - docs/04-knowledge-prod/domain-technical/deal-pipeline-management/system-context/fea-001-tech-component-registry.yaml
+    - docs/04-knowledge-prod/domain-architecture/deal-pipeline-management/flows/fea-001-arch-flow-sequence.md
+
+  staleness:
+    - docs/04-knowledge-prod/domain-model/deal-pipeline-management/entities/fea-001-model-deal.yaml
+    - docs/04-knowledge-prod/domain-technical/deal-pipeline-management/functional-specs/fea-001-tech-fr-by-module.yaml
+    - docs/04-knowledge-prod/domain-technical/deal-pipeline-management/system-context/fea-001-tech-component-registry.yaml
+
+  clean-architecture:
+    - docs/04-knowledge-prod/domain-technical/deal-pipeline-management/system-context/fea-001-tech-system-context.md
+    - docs/04-knowledge-prod/domain-architecture/deal-pipeline-management/backend/fea-001-arch-tactic-architecture.yaml
+    - docs/04-knowledge-prod/domain-architecture/deal-pipeline-management/backend/fea-001-arch-strategic-architecture.md
+
+  typeorm:
+    - docs/04-knowledge-prod/domain-model/deal-pipeline-management/entities/fea-001-model-deal.yaml
+    - docs/04-knowledge-prod/domain-model/deal-pipeline-management/entities/fea-001-model-deal-stage-transition.yaml
+    - docs/04-knowledge-prod/domain-technical/deal-pipeline-management/system-context/fea-001-tech-system-context.md
+
+  nestjs:
+    - docs/04-knowledge-prod/domain-technical/deal-pipeline-management/system-context/fea-001-tech-system-context.md
+    - docs/04-knowledge-prod/domain-architecture/deal-pipeline-management/backend/fea-001-arch-tactic-architecture.yaml
+
+  nextjs:
+    - docs/04-knowledge-prod/domain-technical/deal-pipeline-management/system-context/fea-001-tech-system-context.md
+    - docs/04-knowledge-prod/domain-architecture/deal-pipeline-management/frontend/fea-001-arch-ui-component-architecture.yaml
+
+  tanstack-query:
+    - docs/04-knowledge-prod/domain-technical/deal-pipeline-management/system-context/fea-001-tech-system-context.md
+    - docs/04-knowledge-prod/domain-technical/deal-pipeline-management/functional-specs/fea-001-tech-fr-by-module.yaml
+
+  business-rules:
+    - docs/04-knowledge-prod/domain-business/deal-pipeline-management/requirements/fea-001-biz-business-rules.yaml
+
+  test-scope:
+    - docs/04-knowledge-prod/domain-testing/deal-pipeline-management/scope/fea-001-test-scope.yaml
+
+  test-impact:
+    - docs/04-knowledge-prod/domain-testing/deal-pipeline-management/impact/fea-001-test-impact.yaml
+
+  sales-rep:
+    - docs/04-knowledge-prod/domain-business/deal-pipeline-management/requirements/fea-001-biz-end-user-requirement.md
+    - docs/04-knowledge-prod/domain-business/deal-pipeline-management/requirements/fea-001-biz-business-rules.yaml
+
+  sales-manager:
+    - docs/04-knowledge-prod/domain-business/deal-pipeline-management/requirements/fea-001-biz-end-user-requirement.md
+    - docs/04-knowledge-prod/domain-technical/deal-pipeline-management/functional-specs/fea-001-tech-fr-by-module.yaml

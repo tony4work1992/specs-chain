@@ -1,0 +1,54 @@
+_meta:
+  feature: "FEA-001 — Deal Pipeline Management"
+  source: "01-business-layer/02-business-requirement-document.md § 6"
+  promoted_at: "2026-04-06"
+  skill: "20"
+
+business_rules:
+  - id: BR-01
+    name: "Sequential Stage Progression"
+    rule: "A deal MUST move through stages in the defined order: New → Qualified → Proposal Sent → Negotiation → Closed Won | Closed Lost. Skipping non-terminal stages is strictly forbidden."
+    exception: "Any active stage MAY transition directly to Closed Lost (loss can happen at any point)."
+    enforcement_layer: "Application (TransitionDealStageUseCase)"
+
+  - id: BR-02
+    name: "Ownership Mandate"
+    rule: "Every deal MUST have exactly one assigned Sales Rep at all times. A deal cannot exist in an unassigned state."
+    exception: "When a rep is deactivated, their deals must be automatically flagged for reassignment."
+    enforcement_layer: "Application (CreateDealUseCase, UpdateDealUseCase)"
+
+  - id: BR-03
+    name: "Value Non-Negotiable"
+    rule: "Deal Value MUST be a positive number greater than zero. Zero-value deals are not permitted."
+    exception: "Use deal archival instead of setting value to 0."
+    enforcement_layer: "Application (class-validator @IsPositive)"
+
+  - id: BR-04
+    name: "Future Close Date"
+    rule: "Expected Close Date MUST be set to today or a future date at the time of creation. It may be updated to any future date afterward."
+    exception: null
+    enforcement_layer: "Application (Zod schema + UpdateDealUseCase)"
+
+  - id: BR-05
+    name: "Terminal Stage Immutability"
+    rule: "Once a deal reaches Closed Won or Closed Lost, its stage CANNOT be changed. To reopen a lost deal, the user must create a new deal."
+    exception: null
+    enforcement_layer: "Application (TransitionDealStageUseCase — checks is_terminal flag)"
+
+  - id: BR-06
+    name: "Rep Scope Restriction"
+    rule: "A Sales Rep MUST NOT be able to view, edit, or transition deals owned by other reps. Attempting to access another rep's deal URL directly must return a 403 Forbidden response."
+    exception: null
+    enforcement_layer: "Application (OwnershipGuard + Use Case level check)"
+
+  - id: BR-07
+    name: "Duplicate Warning"
+    rule: "If a new deal is created with the same title and contact as an existing active deal, the system MUST display a non-blocking warning to the user before allowing save."
+    exception: "It MUST NOT auto-block creation — user must explicitly confirm."
+    enforcement_layer: "Frontend (DuplicateWarningBanner) + API (GET /deals/check-duplicate)"
+
+  - id: BR-08
+    name: "Audit Immutability"
+    rule: "Stage transition history records are immutable. Once written, they cannot be edited or deleted by any user including Admin."
+    exception: null
+    enforcement_layer: "Domain (DealStageTransitionEntity has no @UpdateDateColumn)"

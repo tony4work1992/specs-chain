@@ -1,0 +1,31 @@
+_meta:
+  feature: "FEA-001 — Deal Pipeline Management"
+  source: "01-business-layer/02-business-requirement-document.md § 4"
+  promoted_at: "2026-04-06"
+  skill: "20"
+
+business_objectives:
+  - id: BO-01
+    name: "Eliminate Spreadsheet Dependency"
+    objective: "Replace all manual deal tracking in Excel/Google Sheets with a structured system, reducing data inconsistency and version conflicts to zero within 30 days of launch."
+    related_frs: [FR-001, FR-002, FR-018]
+
+  - id: BO-02
+    name: "Enforce Sales Process Consistency"
+    objective: "Ensure 100% of active deals follow the defined stage sequence. No deal may skip stages, preventing premature close reporting."
+    related_frs: [FR-009, FR-010, FR-030]
+
+  - id: BO-03
+    name: "Improve Pipeline Visibility"
+    objective: "Sales Managers must have real-time access to full team pipeline value and stage distribution at all times — no manual aggregation required."
+    related_frs: [FR-024, FR-025, FR-026]
+
+  - id: BO-04
+    name: "Increase Sales Rep Accountability"
+    objective: "Every deal must have a named owner and an expected close date. Deals without an activity logged in the last 14 days must surface as visually flagged to the rep."
+    related_frs: [FR-027, FR-028]
+
+  - id: BO-05
+    name: "Enable Data-Driven Decisions"
+    objective: "Provide win rate and average cycle time metrics to allow managers to identify process bottlenecks and coach reps based on objective data."
+    related_frs: [FR-024]

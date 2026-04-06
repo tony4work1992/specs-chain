@@ -1,0 +1,27 @@
+_meta:
+  last_updated: "2026-04-06"
+  last_skill_run: "20"
+  total_files: 24
+
+features:
+  deal-pipeline-management:
+    feature_code: "FEA-001"
+    feature_name: "Deal Pipeline Management"
+    synced_at: "2026-04-06"
+    domains:
+      domain-business:
+        path: "docs/04-knowledge-prod/domain-business/deal-pipeline-management/"
+        fileCount: 6
+      domain-technical:
+        path: "docs/04-knowledge-prod/domain-technical/deal-pipeline-management/"
+        fileCount: 5
+      domain-model:
+        path: "docs/04-knowledge-prod/domain-model/deal-pipeline-management/"
+        fileCount: 3
+      domain-architecture:
+        path: "docs/04-knowledge-prod/domain-architecture/deal-pipeline-management/"
+        fileCount: 4
+      domain-testing:
+        path: "docs/04-knowledge-prod/domain-testing/deal-pipeline-management/"
+        fileCount: 5
+      total: 23

@@ -1,0 +1,131 @@
+_meta:
+  feature: "FEA-001 — Deal Pipeline Management"
+  source: "02-technical-layer/03-functional-specifications.yaml + 02-technical-layer/01-system-context.md"
+  promoted_at: "2026-04-06"
+  skill: "20"
+
+entity:
+  name: "Deal"
+  ddd_role: "Aggregate Root"
+  table: "deals"
+  module: "DealPipelineModule"
+  soft_delete: true
+  soft_delete_column: "deleted_at"
+
+columns:
+  - column: id
+    type: "uuid"
+    primary_key: true
+    nullable: false
+    default: "gen_random_uuid()"
+    notes: "UUID v4. Exposed in all URLs. Never sequential integer."
+
+  - column: title
+    type: "varchar(120)"
+    primary_key: false
+    nullable: false
+    notes: "Max 120 chars. Full-text search via pg_trgm index."
+
+  - column: contact_id
+    type: "uuid"
+    primary_key: false
+    nullable: false
+    notes: "Cross-BC reference to contacts.id. No DB FK constraint — enforced at Application layer."
+
+  - column: company_id
+    type: "uuid"
+    primary_key: false
+    nullable: true
+    default: "null"
+    notes: "Optional. Auto-resolved from contact's linked company."
+
+  - column: current_stage_id
+    type: "uuid"
+    primary_key: false
+    nullable: false
+    notes: "FK → pipeline_stages.id (internal FK — same module)."
+
+  - column: assigned_rep_id
+    type: "uuid"
+    primary_key: false
+    nullable: false
+    notes: "Cross-BC reference to users.id. No DB FK. Must always be populated."
+
+  - column: value
+    type: "bigint"
+    primary_key: false
+    nullable: false
+    default: "0"
+    notes: "Stored in minor units (cents for USD, VND integer). Must be > 0."
+
+  - column: currency
+    type: "varchar(3)"
+    primary_key: false
+    nullable: false
+    default: "VND"
+    notes: "ISO 4217. System-level config default."
+
+  - column: source
+    type: "enum"
+    enum_values: [INBOUND, OUTBOUND, REFERRAL, EVENT, OTHER]
+    primary_key: false
+    nullable: true
+
+  - column: expected_close_date
+    type: "date"
+    primary_key: false
+    nullable: false
+    notes: "Must be today or future on creation."
+
+  - column: description
+    type: "text"
+    primary_key: false
+    nullable: true
+
+  - column: stage_entered_at
+    type: "timestamptz"
+    primary_key: false
+    nullable: false
+    notes: "Updated on every stage transition. Used to compute staleness_level."
+
+  - column: staleness_level
+    type: "enum"
+    enum_values: [NORMAL, WARNING, CRITICAL]
+    primary_key: false
+    nullable: false
+    default: "NORMAL"
+    notes: "Computed by UpdateDealStalenessUseCase cron (hourly). NORMAL < 14d, WARNING 14-30d, CRITICAL > 30d."
+
+  - column: created_at
+    type: "timestamptz"
+    primary_key: false
+    nullable: false
+    default: "NOW()"
+    notes: "@CreateDateColumn"
+
+  - column: updated_at
+    type: "timestamptz"
+    primary_key: false
+    nullable: false
+    notes: "@UpdateDateColumn"
+
+  - column: deleted_at
+    type: "timestamptz"
+    primary_key: false
+    nullable: true
+    notes: "@DeleteDateColumn. Soft-delete. NULL = active."
+
+indexes:
+  - name: "idx_deals_assigned_rep_id"
+    columns: [assigned_rep_id]
+  - name: "idx_deals_current_stage_id"
+    columns: [current_stage_id]
+  - name: "idx_deals_contact_id"
+    columns: [contact_id]
+  - name: "idx_deals_title_trgm"
+    type: "GIN"
+    expression: "title gin_trgm_ops"
+    notes: "Full-text search via pg_trgm"
+  - name: "idx_deals_deleted_at"
+    columns: [deleted_at]
+    notes: "Partial index for active deals: WHERE deleted_at IS NULL"

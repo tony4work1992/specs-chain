@@ -1,0 +1,336 @@
+# FEA-001 — Test Scope
+# Defines the exact boundaries of what is IN-SCOPE and OUT-OF-SCOPE for testing.
+# Schema: SCO-XXXXXX items mapped to UI Item | API | UI Validation rules components.
+
+- code: SCO-000001
+  systemName: "Deal Pipeline Management"
+  componentName: "UI Item"
+  elementName: "PipelineBoardPage — Kanban Column Render"
+  description: "Verify that the Pipeline Board renders exactly 6 columns in fixed order: New, Qualified, Proposal Sent, Negotiation, Closed Won, Closed Lost. Each column must display the stage name, deal count, and aggregate value. Columns must be rendered even when empty. Column order must never change regardless of user role."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: SCO-000002
+  systemName: "Deal Pipeline Management"
+  componentName: "UI Item"
+  elementName: "PipelineBoardPage — Drag-and-Drop Stage Transition (Optimistic Update)"
+  description: "Verify that dragging a deal card from one column to the next valid adjacent stage column applies an optimistic UI update immediately (card visually moves before server confirmation). The card must display a loading indicator while PATCH /deals/:id/stage is in-flight. On server 200 response, the card must remain in the new column."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: SCO-000003
+  systemName: "Deal Pipeline Management"
+  componentName: "UI Item"
+  elementName: "PipelineBoardPage — Drag-and-Drop Rollback on Server Rejection"
+  description: "Verify that when PATCH /deals/:id/stage returns HTTP 400 (e.g., stage skip or terminal stage violation), the deal card reverts to its original column and an error toast notification is displayed to the user. The board state must be fully consistent with the server state after rollback."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: SCO-000004
+  systemName: "Deal Pipeline Management"
+  componentName: "UI Item"
+  elementName: "PipelineSummaryBar — Manager/Admin-Only Visibility"
+  description: "Verify that the Pipeline Summary Bar component (showing total_active_deals, total_value, value_by_stage, win_rate_30d, avg_cycle_time_30d) is rendered exclusively for users with SALES_MANAGER or ADMIN roles. Users with SALES_REP role must not see the Summary Bar or any part of its DOM. The bar must not be hidden via CSS only; it must be conditionally rendered."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: SCO-000005
+  systemName: "Deal Pipeline Management"
+  componentName: "UI Item"
+  elementName: "PipelineSummaryBar — 30-Second Auto-Refresh Polling"
+  description: "Verify that the Pipeline Summary Bar triggers a fresh GET /deals/summary request every 30 seconds. The displayed metrics must update without a full page reload. If the polling request fails (network error), the previous data must remain visible with a 'last updated' timestamp, and no crash or blank state must occur."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: SCO-000006
+  systemName: "Deal Pipeline Management"
+  componentName: "UI Item"
+  elementName: "DealDetailPage — Inline Editing of Deal Fields"
+  description: "Verify that title, value, expected_close_date, source, description, and assigned_rep_id fields on the Deal Detail Page support inline editing via PATCH /deals/:id. Clicking an editable field must transition it to an input/edit state. On save, the PATCH request is issued and the updated value is reflected. On cancel, the original value is restored. Contact field must be read-only (not editable after creation)."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: SCO-000007
+  systemName: "Deal Pipeline Management"
+  componentName: "UI Item"
+  elementName: "DealCard — Staleness Warning Alert (14-day threshold)"
+  description: "Verify that any deal card where (NOW() - stage_entered_at) >= 14 days AND < 30 days displays a yellow/amber visual warning indicator (e.g., warning icon, colored border). The staleness_level returned by the API must be 'WARNING'. This indicator must be visible on both the Kanban deal card and the Deal Detail Page."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: SCO-000008
+  systemName: "Deal Pipeline Management"
+  componentName: "UI Item"
+  elementName: "DealCard — Staleness Critical Alert (30-day threshold)"
+  description: "Verify that any deal card where (NOW() - stage_entered_at) >= 30 days displays a red/critical visual indicator. The staleness_level returned by the API must be 'CRITICAL'. This indicator must be visible on both the Kanban deal card and the Deal Detail Page header. Terminal-stage deals (Closed Won/Lost) must NOT display staleness indicators regardless of age."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: SCO-000009
+  systemName: "Deal Pipeline Management"
+  componentName: "UI Item"
+  elementName: "DealCard / DealDetailPage — Days in Current Stage Counter"
+  description: "Verify that every deal card on the Kanban board and the Deal Detail Page shows an accurate 'Days in Current Stage' counter computed from stage_entered_at to the current date. The counter must update on page load. Counter must display '0 days' when stage_entered_at is today."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: SCO-000010
+  systemName: "Deal Pipeline Management"
+  componentName: "UI Item"
+  elementName: "CreateDealModal — Duplicate Deal Non-Blocking Warning"
+  description: "Verify that when a user submits a new deal with the same title and same contact_id as an existing active deal, the system displays a non-blocking warning dialog (e.g., 'A deal with this name already exists for this contact'). The user must be able to dismiss the warning and proceed with saving, OR cancel and go back to edit. The system must NOT auto-block creation."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: SCO-000011
+  systemName: "Deal Pipeline Management"
+  componentName: "UI Item"
+  elementName: "DestructiveActionDialogs — Archive & Bulk Reassign Confirmation"
+  description: "Verify that all destructive actions (archiving a deal, bulk archive, bulk rep reassignment) require a confirmation dialog before execution. The dialog must explicitly describe the action (e.g., 'Archive 3 deals? This cannot be undone via this view.'). Clicking Cancel must abort the action. Clicking Confirm must proceed with the API call."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: SCO-000012
+  systemName: "Deal Pipeline Management"
+  componentName: "UI Item"
+  elementName: "DealDetailPage — Activity Timeline Embed"
+  description: "Verify that the Deal Detail Page embeds a chronological Activity Timeline showing all linked activities (Call, Email, Meeting, Note). Each activity entry must display: activity type icon, subject, logged date, and logging user name. The 'Log Activity' button must open a form to create a new activity linked to the current deal via the Activity Module API."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: SCO-000013
+  systemName: "Deal Pipeline Management"
+  componentName: "UI Item"
+  elementName: "DealDetailPage — Stage Transition History Log"
+  description: "Verify that the Deal Detail Page displays an immutable stage transition history log. Each record must show: from_stage_name, to_stage_name, transitioned_by_user_name, and transitioned_at timestamp. The log must be ordered chronologically (oldest first). No edit or delete controls must be present on any history record for any user role including Admin."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: SCO-000014
+  systemName: "Deal Pipeline Management"
+  componentName: "UI Item"
+  elementName: "DealListView — Tabular View with Sort, Filter, Pagination"
+  description: "Verify that the Deal List View renders a paginated table with columns: title, contact, company, stage, assigned rep, value, expected close date, days open, last activity date. Multi-column sort must function. Filters by stage_ids[], rep_ids[], value_min/max, created_from/to, close_date_from/to must apply and combine. Pagination must correctly navigate pages and reflect total count."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: SCO-000015
+  systemName: "Deal Pipeline Management"
+  componentName: "UI Item"
+  elementName: "DealListView — CSV Export Button (Manager/Admin Only)"
+  description: "Verify that the CSV Export button is visible only to SALES_MANAGER and ADMIN users. Clicking it triggers POST /deals/export. For ≤500 filtered rows, the browser must receive a file download immediately. For >500 rows, a toast notification must appear: 'Export is being processed. You will be notified when ready.' Sales Reps must not see the export button."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: SCO-000016
+  systemName: "Deal Pipeline Management"
+  componentName: "API"
+  elementName: "POST /deals — CreateDeal Endpoint"
+  description: "Test the deal creation endpoint: validates CreateDealDto (title, contact_id, value, currency, expected_close_date, assigned_rep_id, source). Verifies contact_id exists via IContactQueryService. Validates initial stage is order=1 (New). Checks duplicate title+contact combination. Persists DealEntity with soft-delete support. Returns HTTP 201 with DealResponseDto. Requires JWT authentication."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: SCO-000017
+  systemName: "Deal Pipeline Management"
+  componentName: "API"
+  elementName: "GET /deals/:id — GetDealById Endpoint"
+  description: "Test the deal retrieval endpoint: fetches a single deal by UUID. Loads full DealDetailResponseDto including stage transition history, contact summary, company summary, assigned rep summary. Applies JwtAuthGuard + OwnershipGuard: SALES_REP accessing another rep's deal UUID must receive HTTP 403 DEAL_ACCESS_FORBIDDEN. Non-existent UUID must return HTTP 404."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: SCO-000018
+  systemName: "Deal Pipeline Management"
+  componentName: "API"
+  elementName: "PATCH /deals/:id — UpdateDeal Endpoint"
+  description: "Test the partial update endpoint: accepts UpdateDealDto (all fields optional except contact_id which is immutable). Validates expected_close_date is a future date if provided. Persists changes via IDealRepository.save(). Invalidates pipeline summary Redis cache. Returns HTTP 200 with updated DealResponseDto. Must reject updates to deals in terminal stages (Closed Won/Lost) — fields are frozen."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: SCO-000019
+  systemName: "Deal Pipeline Management"
+  componentName: "API"
+  elementName: "PATCH /deals/:id/stage — TransitionDealStage Endpoint"
+  description: "Test the stage transition endpoint (critical path): (1) Validates current stage is NOT terminal, else HTTP 400 DEAL_STAGE_TERMINAL. (2) Validates target stage is next in sequential order (order+1) OR is Closed Lost stage. (3) Executes DB transaction: UPDATE deals.current_stage_id + INSERT deal_stage_transitions. (4) Invalidates Redis cache. Returns HTTP 200 DealResponseDto. Transaction must rollback completely on any step failure."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: SCO-000020
+  systemName: "Deal Pipeline Management"
+  componentName: "API"
+  elementName: "GET /deals — ListDeals Endpoint"
+  description: "Test the deal list endpoint: parses ListDealsQueryDto from query params (page, limit, stage_ids[], rep_ids[], value_min, value_max, sort_by, sort_dir, search, date filters). For SALES_REP role, controller must force rep_ids=[currentUser.id] regardless of query param. Returns PaginatedResponseDto<DealListItemDto> with total, page, limit, total_pages. Search must use pg_trgm full-text on title. Must respond within 500ms (P99)."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: SCO-000021
+  systemName: "Deal Pipeline Management"
+  componentName: "API"
+  elementName: "GET /deals/board — GetPipelineBoard Endpoint"
+  description: "Test the board query endpoint: fetches all pipeline stages in order, then fetches deals per stage (max 50 per column per request). Returns PipelineBoardResponseDto with stage columns each containing: stage_id, stage_name, deal_count, total_value, deals[]. SALES_REP must only see deals assigned to them. Board must render initial load within 2 seconds for 200 active deals."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: SCO-000022
+  systemName: "Deal Pipeline Management"
+  componentName: "API"
+  elementName: "GET /deals/summary — GetPipelineSummary Endpoint"
+  description: "Test the pipeline summary endpoint (Manager/Admin only via RolesGuard): implements cache-aside pattern. On Redis HIT: returns deserialized cached PipelineSummaryResponseDto. On Redis MISS: runs aggregate SQL (total_active_deals, total_value, value_by_stage, win_rate_30d, avg_cycle_time_30d), serializes + stores in Redis with EX 30s, returns result. SALES_REP calling this endpoint must receive HTTP 403."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: SCO-000023
+  systemName: "Deal Pipeline Management"
+  componentName: "API"
+  elementName: "POST /deals/export — ExportDeals Endpoint"
+  description: "Test the CSV export endpoint (Manager/Admin only): If filtered row count ≤500, returns synchronous HTTP 200 with Content-Type: text/csv and file attachment. If filtered row count is 501–1000, dispatches Bull job and returns HTTP 202 with { job_id }. If filtered row count >1000, returns HTTP 422 EXPORT_LIMIT_EXCEEDED. Async export must upload CSV to S3 and store pre-signed URL in Redis key deal_export:{jobId}."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: SCO-000024
+  systemName: "Deal Pipeline Management"
+  componentName: "API"
+  elementName: "OwnershipGuard — SALES_REP Deal Isolation Enforcement"
+  description: "Test the OwnershipGuard applied to GET /deals/:id, PATCH /deals/:id, PATCH /deals/:id/stage: A SALES_REP with JWT role=SALES_REP attempting to access a deal where deals.assigned_rep_id != currentUser.id must receive HTTP 403 with error code DEAL_ACCESS_FORBIDDEN. SALES_MANAGER and ADMIN roles must bypass the guard and access any deal. The guard must query the DB to resolve deal ownership, not trust query params."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: SCO-000025
+  systemName: "Deal Pipeline Management"
+  componentName: "API"
+  elementName: "RolesGuard — Manager/Admin Restricted Endpoints"
+  description: "Test RolesGuard enforcement on GET /deals/summary and POST /deals/export: Any request with JWT role=SALES_REP to these endpoints must receive HTTP 403. Bulk action endpoints (bulk archive, bulk reassign) must also reject SALES_REP. Requests without JWT token must receive HTTP 401 (JwtAuthGuard fires before RolesGuard)."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: SCO-000026
+  systemName: "Deal Pipeline Management"
+  componentName: "API"
+  elementName: "JwtAuthGuard — Unauthenticated Request Rejection"
+  description: "Test that all Deal module endpoints (POST /deals, GET /deals, GET /deals/:id, PATCH /deals/:id, PATCH /deals/:id/stage, GET /deals/board, GET /deals/summary, POST /deals/export) return HTTP 401 when called without a valid JWT Bearer token or with an expired token. UUID deal IDs must be validated as UUID v4 format; sequential integer IDs must return HTTP 400."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: SCO-000027
+  systemName: "Deal Pipeline Management"
+  componentName: "API"
+  elementName: "UpdateDealStaleness — Hourly Cron Job"
+  description: "Test the @Cron('0 * * * *') staleness update job: it must query all active (non-soft-deleted, non-terminal) deals, compute staleness_level as NORMAL (< 14 days), WARNING (14–29 days), or CRITICAL (>= 30 days) based on (NOW() - stage_entered_at), then execute a single bulk UPDATE via bulkUpdateStaleness(). Must log { scanned: N, updated: M } summary. Must not affect archived or terminal-stage deals."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: SCO-000028
+  systemName: "Deal Pipeline Management"
+  componentName: "UI Validation rules"
+  elementName: "Deal Value — Must Be Greater Than Zero"
+  description: "Validate that the deal creation and update forms reject a value field of 0 or any negative number. The API (POST /deals, PATCH /deals/:id) must return HTTP 400 with a validation error message 'value must be a positive number greater than 0' when value <= 0. The UI form must show inline validation error before submission. Fractional positive values (e.g., 0.01) must be accepted."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: SCO-000029
+  systemName: "Deal Pipeline Management"
+  componentName: "UI Validation rules"
+  elementName: "Expected Close Date — Must Be Today or Future"
+  description: "Validate that expected_close_date on deal creation must be today's date or a future date. A past date (yesterday or earlier) must be rejected with HTTP 400 at the API layer and a UI inline error 'Expected close date cannot be in the past'. On update, the field may be changed to any future date. The constraint must be validated server-side (not solely in the UI) using the server's UTC date at the time of request."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: SCO-000030
+  systemName: "Deal Pipeline Management"
+  componentName: "UI Validation rules"
+  elementName: "Deal Title — Required, Non-Empty"
+  description: "Validate that the title field in CreateDealDto and UpdateDealDto is required and cannot be an empty string or whitespace-only string. API must return HTTP 400 'title should not be empty' on blank title. Maximum length constraint (if defined in DTO) must be validated. UI form must block submission when title is empty."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: SCO-000031
+  systemName: "Deal Pipeline Management"
+  componentName: "UI Validation rules"
+  elementName: "contact_id — Required UUID, Must Reference Existing Contact"
+  description: "Validate that contact_id in CreateDealDto is a non-empty UUID v4 format and references a Contact that exists in the Contact Module. API must return HTTP 400 for invalid UUID format and HTTP 422 or 404 for a valid UUID that references a non-existent contact (IContactQueryService returns null). contact_id must not be changeable after deal creation (must be rejected in PATCH /deals/:id)."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: SCO-000032
+  systemName: "Deal Pipeline Management"
+  componentName: "UI Validation rules"
+  elementName: "assigned_rep_id — Required UUID, Must Reference Active User with SALES_REP Role"
+  description: "Validate that assigned_rep_id in CreateDealDto is a valid UUID referencing an active user with SALES_REP role. Assigning to a non-existent user, an ADMIN, or a deactivated rep must return HTTP 422 with appropriate error. On rep deactivation, existing deals must be automatically flagged (staleness_level or a flag) for reassignment without being auto-reassigned."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: SCO-000033
+  systemName: "Deal Pipeline Management"
+  componentName: "UI Validation rules"
+  elementName: "target_stage_id — UUID v4, Sequential Order Enforcement"
+  description: "Validate that target_stage_id in TransitionDealStageDto is a non-empty UUID v4 string (@IsUUID('4') @IsNotEmpty()). Non-UUID values must return HTTP 400 immediately. Semantically, the target stage must be exactly (current_stage.order + 1) OR the Closed Lost stage. Attempting to skip stages (e.g., New → Proposal Sent, skipping Qualified) must return HTTP 400 with error code INVALID_STAGE_TRANSITION."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: SCO-000034
+  systemName: "Deal Pipeline Management"
+  componentName: "UI Validation rules"
+  elementName: "Sequential Stage Progression — No Stage Skipping (BR-01)"
+  description: "Validate the business rule BR-01: stage transitions must strictly follow New(1) → Qualified(2) → Proposal Sent(3) → Negotiation(4) → Closed Won(5). Any skip (order delta > 1) must be rejected with HTTP 400. Exception: any stage at order 1-4 may transition directly to Closed Lost (order 6, is_won=false, is_terminal=true). Backward transitions (e.g., Negotiation → Qualified) must be rejected."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: SCO-000035
+  systemName: "Deal Pipeline Management"
+  componentName: "UI Validation rules"
+  elementName: "Terminal Stage Immutability (BR-05)"
+  description: "Validate that once a deal reaches Closed Won or Closed Lost (is_terminal=true), no further stage transition is permitted. PATCH /deals/:id/stage with any target_stage_id must return HTTP 400 DEAL_STAGE_TERMINAL for terminal deals. Additionally, field updates (PATCH /deals/:id) must be rejected for terminal-stage deals. The UI must hide/disable the stage transition control for terminal deals."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: SCO-000036
+  systemName: "Deal Pipeline Management"
+  componentName: "UI Validation rules"
+  elementName: "CSV Export Row Limit — Maximum 1,000 Rows (C-03)"
+  description: "Validate that POST /deals/export rejects requests where the filtered result set exceeds 1,000 rows with HTTP 422 and error code EXPORT_LIMIT_EXCEEDED. The system must count rows before generating CSV. Requests for exactly 1,000 rows must succeed. Requests for 1,001 rows must fail. The error response must include the actual row count so the user knows how to narrow the filter."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: SCO-000037
+  systemName: "Deal Pipeline Management"
+  componentName: "UI Validation rules"
+  elementName: "Rep Scope Restriction — SALES_REP Can Only Access Own Deals (BR-06)"
+  description: "Validate that GET /deals with role=SALES_REP always scopes results to the authenticated user's deals only, regardless of rep_ids[] query param. SALES_REP passing rep_ids=[other_user_uuid] in the query must receive only their own deals (controller forces override). Direct URL access to GET /deals/:id for another rep's deal must return HTTP 403 DEAL_ACCESS_FORBIDDEN. This must be enforced server-side, not via UI filtering only."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"

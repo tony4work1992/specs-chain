@@ -1,0 +1,48 @@
+_meta:
+  feature: "FEA-001 — Deal Pipeline Management"
+  source: "01-business-layer/02-business-requirement-document.md § 7"
+  promoted_at: "2026-04-06"
+  skill: "20"
+
+non_functional_requirements:
+  performance:
+    - id: NFR-P01
+      requirement: "Pipeline board initial load within 2 seconds for up to 200 active deals on standard broadband."
+    - id: NFR-P02
+      requirement: "Stage transition (drag-and-drop server confirmation) must complete within 800ms (P99)."
+    - id: NFR-P03
+      requirement: "Deal list filtering/search must respond within 500ms (P99)."
+
+  usability:
+    - id: NFR-U01
+      requirement: "All interactive elements must meet WCAG 2.1 AA contrast requirements."
+    - id: NFR-U02
+      requirement: "Drag-and-drop must function correctly on touchpad and mouse input. Mobile touch not required for MVP."
+    - id: NFR-U03
+      requirement: "All destructive actions (archive, bulk reassign) must require a confirmation dialog."
+
+  security:
+    - id: NFR-S01
+      requirement: "All Deal API endpoints MUST be protected by JWT authentication (JwtAuthGuard)."
+    - id: NFR-S02
+      requirement: "All role-based restrictions (BR-06) MUST be enforced at the API layer, NOT solely via UI hiding."
+    - id: NFR-S03
+      requirement: "Deal IDs in URLs must be UUIDs (not sequential integers) to prevent enumeration attacks."
+
+  reliability:
+    - id: NFR-R01
+      requirement: "Optimistic UI updates for stage transitions must include a rollback mechanism on server failure, with a user-visible error toast."
+    - id: NFR-R02
+      requirement: "CSV export for lists > 500 rows must be processed asynchronously (background job) to avoid request timeout."
+
+  constraints:
+    - id: C-01
+      constraint: "Deals must never be permanently deleted through the UI. Archival is the only supported removal mechanism."
+    - id: C-02
+      constraint: "Stage Configuration is Admin-Only. Sales Reps and Managers cannot add, rename, reorder, or remove pipeline stages."
+    - id: C-03
+      constraint: "CSV exports are capped at 1,000 rows per request."
+    - id: C-04
+      constraint: "All schema changes for the deals table MUST be generated via typeorm migration:generate. Hand-authored migrations are forbidden."
+    - id: C-05
+      constraint: "No Real-Time WebSocket for MVP Board — uses 30-second polling for summary bar only."

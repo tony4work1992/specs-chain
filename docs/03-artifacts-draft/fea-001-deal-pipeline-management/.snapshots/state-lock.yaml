@@ -1,3 +1,11 @@
+skill_20_knowledge_sync:
+  feature: "fea-001-deal-pipeline-management"
+  version: "20260406_000000"
+  source_hash: "f9525aaad717cceda46393ccd2d719904d03cc071666019ac8fd4316ebf12b72"
+  timestamp: "2026-04-06T00:00:00Z"
+  files_promoted: 24
+  knowledge_base_root: "docs/04-knowledge-prod/"
+
 idempotency_lock:
   fea-001-deal-pipeline-management:
     completed_skills:

@@ -1,0 +1,28 @@
+_meta:
+  feature: "FEA-001 — Deal Pipeline Management"
+  source: "01-business-layer/02-business-requirement-document.md § 2"
+  promoted_at: "2026-04-06"
+  skill: "20"
+
+in_scope:
+  - "Full CRUD lifecycle for Deal entities (Create, Read, Update, Archive)"
+  - "Kanban-style Pipeline Board with drag-and-drop stage transitions"
+  - "Enforced sequential stage progression: New → Qualified → Proposal Sent → Negotiation → Closed Won | Closed Lost"
+  - "Deal ownership model: assigned to a specific Sales Rep; managers can view and edit all deals"
+  - "Deal Detail Page with inline editing, linked Contact/Company, and embedded Activity Timeline"
+  - "Deal List View with sorting, filtering, pagination, and CSV export"
+  - "Pipeline Summary Bar for Sales Managers (aggregate metrics, win rate, avg cycle time)"
+  - "Role-Based Access Control enforcement: Sales Rep / Sales Manager / Admin"
+  - "Stage transition history audit trail (who moved the deal, when, from → to)"
+  - "Duplicate deal detection warning on creation"
+
+out_of_scope:
+  - "Email integration (Gmail / Outlook sync to auto-log activities)"
+  - "AI-powered lead scoring or deal probability prediction"
+  - "Revenue forecasting models or quota tracking"
+  - "Mobile native application (web-only for MVP)"
+  - "Multi-currency conversion logic (display only; no FX rate calculation)"
+  - "Integration with external CRM systems (Salesforce, HubSpot)"
+  - "Deal approval workflows (manager approval above a value threshold)"
+  - "Automated deal assignment / routing rules"
+  - "Real-time WebSocket board sync between concurrent users"

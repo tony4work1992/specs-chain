@@ -1,0 +1,66 @@
+_meta:
+  feature: "FEA-001 — Deal Pipeline Management"
+  source: "02-technical-layer/01-system-context.md § 10"
+  promoted_at: "2026-04-06"
+  skill: "20"
+
+components:
+  - id: COMP-01
+    name: "Next.js Web Client"
+    type: "Frontend"
+    runtime: "Next.js 14 App Router / TypeScript 5.4.x"
+    hosting: "Vercel CDN"
+    responsibilities:
+      - "Renders Pipeline Board (Kanban), Deal Detail Page, Deal List View, Pipeline Summary Bar"
+      - "Handles optimistic UI for stage transitions via Zustand usePipelineBoardStore"
+      - "Server state management via TanStack Query v5"
+      - "Drag-and-drop via @dnd-kit/core + @dnd-kit/sortable"
+
+  - id: COMP-02
+    name: "NestJS REST API Gateway"
+    type: "Backend"
+    runtime: "NestJS v10 / TypeScript 5.4.x / Node.js v20 LTS"
+    hosting: "AWS ECS Fargate (ap-southeast-1)"
+    responsibilities:
+      - "Hosts DealPipelineModule with 4 Clean Architecture layers"
+      - "Enforces JWT RS256 auth, RBAC, ownership checks"
+      - "Exposes deal CRUD, stage transition, board, summary, export endpoints"
+      - "Runs Stale Deal Cron job in-process"
+
+  - id: COMP-03
+    name: "PostgreSQL 16 Database"
+    type: "Primary Database"
+    runtime: "PostgreSQL 16"
+    hosting: "AWS RDS Multi-AZ (ap-southeast-1)"
+    tables: [deals, pipeline_stages, deal_stage_transitions]
+    notes: "pg_trgm extension for full-text search on deal titles."
+
+  - id: COMP-04
+    name: "Redis 7 Cache"
+    type: "Cache / Queue"
+    runtime: "Redis 7 / ioredis v5"
+    hosting: "AWS ElastiCache"
+    responsibilities:
+      - "Caches pipeline summary aggregates. Key: pipeline:summary:{managerId}. TTL: 30s."
+      - "Stores async CSV export job status hashes: deal_export:{jobId}"
+      - "Backs Bull queue for async export jobs"
+
+  - id: COMP-05
+    name: "Stale Deal Cron Worker"
+    type: "Background Job"
+    runtime: "NestJS @Cron (in-process with API)"
+    schedule: "0 * * * * (every hour)"
+    responsibilities:
+      - "Scans all active deals (non-terminal, not deleted)"
+      - "Computes staleness_level: NORMAL < 14d | WARNING 14-30d | CRITICAL > 30d"
+      - "Bulk UPDATE deals.staleness_level in single SQL statement"
+
+  - id: COMP-06
+    name: "S3 Export Storage"
+    type: "Object Storage"
+    runtime: "AWS S3"
+    bucket: "deal-exports"
+    responsibilities:
+      - "Stores async CSV export files"
+      - "Pre-signed URLs (1-hour expiry) returned to client for download"
+      - "Used only for exports > 500 rows"
