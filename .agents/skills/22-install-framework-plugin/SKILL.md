@@ -1,6 +1,6 @@
 ---
 skill-id: "22"
-name: Install Framework Plugin
+name: 22. Install Framework Plugin
 domain: "00-project-foundation"
 stage: execution
 description: "Triggers the framework-agnostic boundary protocol to copy technical code-gen artifacts (mappings, templates, linters) from the OS vaults down into the Project's configuration space."

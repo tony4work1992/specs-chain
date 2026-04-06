@@ -1,5 +1,5 @@
 ---
-name: Generate project foundation
+name: 02. Generate project foundation
 description: F1. Trigger interactive Q&A to define and generate the 9 Project Foundation System files.
 ---
 

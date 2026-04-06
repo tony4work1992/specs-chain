@@ -1,6 +1,6 @@
 ---
 skill-id: "24"
-name: Code Reflection Auditor
+name: 24. Code Reflection Auditor
 domain: "00-project-foundation"
 stage: execution
 description: "Ast-based Reflection Engine that verifies if the physical codebase perfectly maps to the Knowledge Base Architecture Spec."
