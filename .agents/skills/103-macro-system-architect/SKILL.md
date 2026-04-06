@@ -72,13 +72,14 @@ Before generating ANY files, you MUST stop and ask the user to confirm the techn
 **Target Path:** `docs/03-artifacts-draft/{exact-slug}/02-technical-layer/01-system-context.md`
 **Action:** Write exactly according to `01-system-context-information-template.md`. Execute `write_to_file` and AWAIT COMPLETION.
 
-**STEP 4.2: FUNCTIONAL SPECIFICATIONS**
-**Target Path:** `docs/03-artifacts-draft/{exact-slug}/02-technical-layer/02-functional-specifications.yaml`
-**Action:** Expand all Data Objects (Entities, DTOs, Payload Schemas) very deeply based on tech stack limits. Execute `write_to_file` and AWAIT COMPLETION.
-
-**STEP 4.3: FUNCTIONAL REQUIREMENT DOCUMENT**
-**Target Path:** `docs/03-artifacts-draft/{exact-slug}/02-technical-layer/03-functional-requirement-document.md`
+**STEP 4.2: FUNCTIONAL REQUIREMENT DOCUMENT**
+**Target Path:** `docs/03-artifacts-draft/{exact-slug}/02-technical-layer/02-functional-requirement-document.md`
 **Action:** Exhaustively compile Engineering Business Rules. Execute `write_to_file` and AWAIT COMPLETION.
+
+**STEP 4.3: FUNCTIONAL SPECIFICATIONS**
+**Target Path:** `docs/03-artifacts-draft/{exact-slug}/02-technical-layer/03-functional-specifications.yaml`
+**Action:** Expand all Data Objects (Entities, DTOs, Payload Schemas) very deeply based on tech stack limits. 
+**Rule: Every explicitly defined functional point in the FRD MUST be fully mapped to its complete Vertical Slice of specifications (e.g. Models + Request DTOs + Response DTOs + Event Payloads). No function can be left without its underlying specs.** Execute `write_to_file` and AWAIT COMPLETION.
 
 **STEP 4.4: STRATEGIC ARCHITECTURE**
 **Target Path:** `docs/03-artifacts-draft/{exact-slug}/04-architecture-layer/01-strategic-architecture.md`

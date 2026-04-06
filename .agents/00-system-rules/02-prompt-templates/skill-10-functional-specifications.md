@@ -15,6 +15,7 @@ You will be provided with:
 1. **Absolute JSON Template Compliance:** You MUST strictly follow the fields, constraints, and array structures. `items.items` can ONLY contain flat primitive values (String, Boolean, Number). Deep object nesting is forbidden.
 2. **Foreign Key Tracing (Relational DB Design):** To represent complex structures (like nested API JSON payload objects), you must create a parent record in an API Table (e.g., `id: "API_01"`), and then create multiple rows in the Payload Table referencing `api_ref_id: "API_01"`. Every technical item must trace back to the System Context via `component_ref` (e.g., `Component 2: NestJS Gateway`).
 3. **No Hallucination:** Only list explicit specifications that physically correspond to the functionality discussed in the upstream input.
+4. **Complete Vertical Slice Tracing:** Every single business function or rule explicitly defined in the Functional Requirement Document (FRD) MUST be fully fleshed out with a complete vertical slice of schemas (Entities, Request DTOs, Response DTOs, Webhook Payloads, etc.). You must cross-reference the FRD point-by-point to ensure no function is left "orphaned" without its underlying technical specifications.
 
 # Specific Goal Instructions
 - **Dynamic Relational Universal Modeler:** You must NOT restrict yourself to a predefined number of tables. Extract EVERYTHING that must be coded (from Frontend to DB) into dedicated Relational Tables using Foreign Keys.
