@@ -1,0 +1,680 @@
+# FEA-001 — Test Steps
+# Concrete sequential execution steps per Test Case.
+# Structure: TES-XXXXXX > CAS-XXXXXX > [STE-XXXXXX, ...]
+# Each step: action -> precondition/input -> expected output
+
+requestVersion: "2026.04.06 21.00.00"
+version: "2026.04.06 21.00.00"
+parentVersion: "2026.04.06 21.00.00"
+
+TES-000001:
+  # Suite: Create Deal — Happy Path (CAS-000001)
+  CAS-000001:
+    - id: "ste-0001-0001-4000-a000-000000000001"
+      stepNumber: STE-000001
+      description: "Precondition: Seed DB with 1 Contact (id=CONTACT_UUID_1) and 1 active SALES_REP (id=REP_UUID_1). Seed pipeline_stages with 6 rows ordered 1–6. Authenticate as SALES_MANAGER and obtain JWT_MANAGER."
+      expectedResults:
+        - id: 1
+          description: "DB has contacts row with id=CONTACT_UUID_1."
+        - id: 2
+          description: "DB has users row with id=REP_UUID_1, role=SALES_REP, status=ACTIVE."
+        - id: 3
+          description: "pipeline_stages table has 6 rows with orders 1–6."
+        - id: 4
+          description: "JWT_MANAGER is a valid signed token with role=SALES_MANAGER."
+
+    - id: "ste-0001-0001-4000-a000-000000000002"
+      stepNumber: STE-000002
+      description: "Send POST /deals with Authorization: Bearer JWT_MANAGER and body: { title: 'Acme Q1 Deal', contact_id: CONTACT_UUID_1, value: 25000, currency: 'USD', expected_close_date: '2026-07-01', assigned_rep_id: REP_UUID_1, source: 'Referral', description: 'High priority deal' }. Target: POST /deals controller → CreateDealUseCase."
+      expectedResults:
+        - id: 1
+          description: "HTTP 201 Created."
+        - id: 2
+          description: "Response body: DealResponseDto with id matching UUID v4 pattern."
+        - id: 3
+          description: "Response body: current_stage.name = 'New', current_stage.order = 1."
+        - id: 4
+          description: "Response body: value = 25000, title = 'Acme Q1 Deal'."
+
+    - id: "ste-0001-0001-4000-a000-000000000003"
+      stepNumber: STE-000003
+      description: "Query DB: SELECT * FROM deals WHERE title='Acme Q1 Deal'. Target: deals table (TypeORM DealEntity)."
+      expectedResults:
+        - id: 1
+          description: "1 row returned with id=UUID (not integer)."
+        - id: 2
+          description: "current_stage_id = id of pipeline_stages row with order=1 (New)."
+        - id: 3
+          description: "deleted_at IS NULL (not archived)."
+        - id: 4
+          description: "assigned_rep_id = REP_UUID_1."
+
+    - id: "ste-0001-0001-4000-a000-000000000004"
+      stepNumber: STE-000004
+      description: "Query DB: SELECT * FROM deal_stage_transitions WHERE deal_id=<new_deal_id>. Target: deal_stage_transitions table."
+      expectedResults:
+        - id: 1
+          description: "0 rows returned (no transition on initial creation — deal starts at stage 1 with no prior stage)."
+
+TES-000002:
+  # Suite: Stage Transition — Happy Path + Transaction Atomicity (CAS-000015 + CAS-000020)
+  CAS-000015:
+    - id: "ste-0002-0015-4000-a000-000000000001"
+      stepNumber: STE-000005
+      description: "Precondition: Seed deal DEAL_UUID_1 in 'New' stage (current_stage_id=NEW_STAGE_UUID). Authenticate as deal owner REP_UUID_1 to get JWT_REP_1."
+      expectedResults:
+        - id: 1
+          description: "deals row exists: id=DEAL_UUID_1, current_stage_id=NEW_STAGE_UUID, assigned_rep_id=REP_UUID_1."
+        - id: 2
+          description: "JWT_REP_1 is valid with userId=REP_UUID_1, role=SALES_REP."
+
+    - id: "ste-0002-0015-4000-a000-000000000002"
+      stepNumber: STE-000006
+      description: "Send PATCH /deals/DEAL_UUID_1/stage with Authorization: Bearer JWT_REP_1 and body: { target_stage_id: QUALIFIED_STAGE_UUID }. Target: PATCH /deals/:id/stage → TransitionDealStageUseCase → DB transaction."
+      expectedResults:
+        - id: 1
+          description: "HTTP 200 OK."
+        - id: 2
+          description: "Response body: DealResponseDto with current_stage.name='Qualified', current_stage.order=2."
+        - id: 3
+          description: "Response time < 800ms."
+
+    - id: "ste-0002-0015-4000-a000-000000000003"
+      stepNumber: STE-000007
+      description: "Query DB: SELECT current_stage_id, stage_entered_at FROM deals WHERE id=DEAL_UUID_1. Target: deals table."
+      expectedResults:
+        - id: 1
+          description: "current_stage_id = QUALIFIED_STAGE_UUID."
+        - id: 2
+          description: "stage_entered_at is approximately NOW() (within 5 seconds of test execution time)."
+
+    - id: "ste-0002-0015-4000-a000-000000000004"
+      stepNumber: STE-000008
+      description: "Query DB: SELECT * FROM deal_stage_transitions WHERE deal_id=DEAL_UUID_1. Target: deal_stage_transitions table."
+      expectedResults:
+        - id: 1
+          description: "Exactly 1 row returned."
+        - id: 2
+          description: "from_stage_id = NEW_STAGE_UUID."
+        - id: 3
+          description: "to_stage_id = QUALIFIED_STAGE_UUID."
+        - id: 4
+          description: "transitioned_by_user_id = REP_UUID_1."
+        - id: 5
+          description: "transitioned_at is approximately NOW()."
+
+    - id: "ste-0002-0015-4000-a000-000000000005"
+      stepNumber: STE-000009
+      description: "Verify Redis cache invalidation: Query Redis GET pipeline:summary:{MANAGER_UUID}. Target: Redis (PipelineSummaryCacheRepository)."
+      expectedResults:
+        - id: 1
+          description: "Key pipeline:summary:{MANAGER_UUID} does NOT exist (was deleted by CacheInvalidationService)."
+
+  CAS-000020:
+    - id: "ste-0002-0020-4000-a000-000000000001"
+      stepNumber: STE-000010
+      description: "Precondition: Seed deal DEAL_UUID_2 in 'New' stage. Inject fault: configure test DB transaction interceptor to throw ConstraintViolationException after the UPDATE to deals.current_stage_id but before the INSERT to deal_stage_transitions."
+      expectedResults:
+        - id: 1
+          description: "Fault injection is active for this test only."
+        - id: 2
+          description: "deals row DEAL_UUID_2 exists with current_stage_id=NEW_STAGE_UUID."
+
+    - id: "ste-0002-0020-4000-a000-000000000002"
+      stepNumber: STE-000011
+      description: "Send PATCH /deals/DEAL_UUID_2/stage with { target_stage_id: QUALIFIED_STAGE_UUID }. Target: TransitionDealStageUseCase → DataSource transaction."
+      expectedResults:
+        - id: 1
+          description: "HTTP 500 or HTTP 503 returned (transaction failure propagated)."
+        - id: 2
+          description: "Response body contains an error message (not empty body)."
+
+    - id: "ste-0002-0020-4000-a000-000000000003"
+      stepNumber: STE-000012
+      description: "Query DB: SELECT current_stage_id FROM deals WHERE id=DEAL_UUID_2. Target: deals table."
+      expectedResults:
+        - id: 1
+          description: "current_stage_id = NEW_STAGE_UUID (unchanged — full rollback occurred)."
+
+    - id: "ste-0002-0020-4000-a000-000000000004"
+      stepNumber: STE-000013
+      description: "Query DB: SELECT COUNT(*) FROM deal_stage_transitions WHERE deal_id=DEAL_UUID_2. Target: deal_stage_transitions table."
+      expectedResults:
+        - id: 1
+          description: "COUNT = 0 (no transition record was committed)."
+
+TES-000003:
+  # Suite: Stage Transition — Invalid (CAS-000017 skip, CAS-000018 backward, CAS-000019 terminal)
+  CAS-000017:
+    - id: "ste-0003-0017-4000-a000-000000000001"
+      stepNumber: STE-000014
+      description: "Precondition: Seed deal DEAL_UUID_3 in 'New' stage (order=1). Authenticated as deal owner."
+      expectedResults:
+        - id: 1
+          description: "Deal exists in New stage. current_stage.order = 1."
+
+    - id: "ste-0003-0017-4000-a000-000000000002"
+      stepNumber: STE-000015
+      description: "Send PATCH /deals/DEAL_UUID_3/stage with { target_stage_id: PROPOSAL_SENT_UUID } (order=3, skipping Qualified order=2). Target: TransitionDealStageUseCase → sequential order validation."
+      expectedResults:
+        - id: 1
+          description: "HTTP 400 Bad Request."
+        - id: 2
+          description: "Response body: { error: 'INVALID_STAGE_TRANSITION', message: 'Target stage must be the next sequential stage or Closed Lost.' }."
+
+    - id: "ste-0003-0017-4000-a000-000000000003"
+      stepNumber: STE-000016
+      description: "Query DB: SELECT current_stage_id FROM deals WHERE id=DEAL_UUID_3. Target: deals table."
+      expectedResults:
+        - id: 1
+          description: "current_stage_id = NEW_STAGE_UUID (unchanged)."
+
+    - id: "ste-0003-0017-4000-a000-000000000004"
+      stepNumber: STE-000017
+      description: "Query DB: SELECT COUNT(*) FROM deal_stage_transitions WHERE deal_id=DEAL_UUID_3."
+      expectedResults:
+        - id: 1
+          description: "COUNT = 0 (no transition record written on rejection)."
+
+  CAS-000019:
+    - id: "ste-0003-0019-4000-a000-000000000001"
+      stepNumber: STE-000018
+      description: "Precondition: Seed deal DEAL_UUID_4. Transition it to Closed Won (current_stage.is_terminal=true, is_won=true). Verify closed_at IS NOT NULL in DB."
+      expectedResults:
+        - id: 1
+          description: "deals row: current_stage_id=CLOSED_WON_UUID, closed_at IS NOT NULL."
+
+    - id: "ste-0003-0019-4000-a000-000000000002"
+      stepNumber: STE-000019
+      description: "Send PATCH /deals/DEAL_UUID_4/stage with { target_stage_id: CLOSED_LOST_UUID }. Target: TransitionDealStageUseCase → is_terminal check."
+      expectedResults:
+        - id: 1
+          description: "HTTP 400 Bad Request."
+        - id: 2
+          description: "Response body: { error: 'DEAL_STAGE_TERMINAL', message: 'Cannot transition a deal that is already in a terminal stage.' }."
+
+    - id: "ste-0003-0019-4000-a000-000000000003"
+      stepNumber: STE-000020
+      description: "Send PATCH /deals/DEAL_UUID_4 with { value: 99000 }. Target: UpdateDealUseCase → terminal check."
+      expectedResults:
+        - id: 1
+          description: "HTTP 400 Bad Request."
+        - id: 2
+          description: "Response body: { error: 'DEAL_STAGE_TERMINAL', message: 'Cannot update a deal in a terminal stage.' }."
+
+    - id: "ste-0003-0019-4000-a000-000000000004"
+      stepNumber: STE-000021
+      description: "Query DB: SELECT value, current_stage_id FROM deals WHERE id=DEAL_UUID_4."
+      expectedResults:
+        - id: 1
+          description: "value is unchanged from original (99000 was NOT applied)."
+        - id: 2
+          description: "current_stage_id = CLOSED_WON_UUID (not changed to Closed Lost)."
+
+TES-000004:
+  # Suite: RBAC — OwnershipGuard + RolesGuard (CAS-000014 + CAS-000032)
+  CAS-000014:
+    - id: "ste-0004-0014-4000-a000-000000000001"
+      stepNumber: STE-000022
+      description: "Precondition: Create REP_A (JWT_REP_A) and REP_B (JWT_REP_B). Seed DEAL_A owned by REP_A."
+      expectedResults:
+        - id: 1
+          description: "deals row DEAL_A: assigned_rep_id=REP_A_UUID."
+        - id: 2
+          description: "JWT_REP_A: userId=REP_A_UUID, role=SALES_REP."
+        - id: 3
+          description: "JWT_REP_B: userId=REP_B_UUID, role=SALES_REP."
+
+    - id: "ste-0004-0014-4000-a000-000000000002"
+      stepNumber: STE-000023
+      description: "Send PATCH /deals/DEAL_A_UUID with Authorization: Bearer JWT_REP_B and body { value: 99999 }. Target: OwnershipGuard → checks deal.assigned_rep_id vs JWT userId."
+      expectedResults:
+        - id: 1
+          description: "HTTP 403 Forbidden."
+        - id: 2
+          description: "Response body: { error: 'DEAL_ACCESS_FORBIDDEN', message: 'You do not have permission to access this deal.' }."
+        - id: 3
+          description: "DB: deals.value is unchanged (REP_B's update was rejected before reaching UseCase)."
+
+    - id: "ste-0004-0014-4000-a000-000000000003"
+      stepNumber: STE-000024
+      description: "Send same PATCH /deals/DEAL_A_UUID with Authorization: Bearer JWT_MANAGER and body { value: 99999 }. Target: OwnershipGuard bypass for SALES_MANAGER role."
+      expectedResults:
+        - id: 1
+          description: "HTTP 200 OK."
+        - id: 2
+          description: "DB: deals.value = 99999 (update applied)."
+
+  CAS-000032:
+    - id: "ste-0004-0032-4000-a000-000000000001"
+      stepNumber: STE-000025
+      description: "Send GET /deals/summary with Authorization: Bearer JWT_REP_A (SALES_REP). Target: RolesGuard on GetPipelineSummary endpoint."
+      expectedResults:
+        - id: 1
+          description: "HTTP 403 Forbidden."
+        - id: 2
+          description: "Response body does NOT contain any summary metric fields (total_active_deals, win_rate_30d, etc.)."
+
+    - id: "ste-0004-0032-4000-a000-000000000002"
+      stepNumber: STE-000026
+      description: "Send GET /deals/summary with Authorization: Bearer JWT_MANAGER (SALES_MANAGER). Target: RolesGuard bypass + GetPipelineSummaryQueryHandler."
+      expectedResults:
+        - id: 1
+          description: "HTTP 200 OK."
+        - id: 2
+          description: "Response body contains: total_active_deals (integer ≥ 0), total_value (number), win_rate_30d (number 0–100), avg_cycle_time_30d (number ≥ 0)."
+
+TES-000005:
+  # Suite: CSV Export (CAS-000033 sync + CAS-000034 async + CAS-000035 limit)
+  CAS-000033:
+    - id: "ste-0005-0033-4000-a000-000000000001"
+      stepNumber: STE-000027
+      description: "Precondition: Seed exactly 100 deals (all active, no filter needed). Authenticate as SALES_MANAGER."
+      expectedResults:
+        - id: 1
+          description: "100 active deals in DB."
+        - id: 2
+          description: "JWT_MANAGER is valid."
+
+    - id: "ste-0005-0033-4000-a000-000000000002"
+      stepNumber: STE-000028
+      description: "Send POST /deals/export with Authorization: Bearer JWT_MANAGER and empty body (no filter — all 100 deals). Target: ExportDealsCommand → synchronous path (count ≤ 500)."
+      expectedResults:
+        - id: 1
+          description: "HTTP 200 OK."
+        - id: 2
+          description: "Response header Content-Type = 'text/csv'."
+        - id: 3
+          description: "Response header Content-Disposition contains 'attachment' and a .csv filename."
+        - id: 4
+          description: "Response body is non-empty CSV text."
+
+    - id: "ste-0005-0033-4000-a000-000000000003"
+      stepNumber: STE-000029
+      description: "Parse response CSV body: split by newline. Target: CSV output validation."
+      expectedResults:
+        - id: 1
+          description: "First row (header row) contains column names matching DealListItemDto: id, title, contact_name, company_name, assigned_rep_name, stage_name, value, currency, expected_close_date, days_open, last_activity_date."
+        - id: 2
+          description: "Total data rows (excluding header) = 100."
+        - id: 3
+          description: "No empty rows within the 100 data rows."
+
+  CAS-000034:
+    - id: "ste-0005-0034-4000-a000-000000000001"
+      stepNumber: STE-000030
+      description: "Precondition: Seed 600 active deals. Bull queue worker is running. S3Client mock returns success. JWT_MANAGER authenticated."
+      expectedResults:
+        - id: 1
+          description: "600 deals in DB."
+        - id: 2
+          description: "Bull 'deal-exports' queue is active."
+
+    - id: "ste-0005-0034-4000-a000-000000000002"
+      stepNumber: STE-000031
+      description: "Send POST /deals/export with JWT_MANAGER and empty body. Record request start time. Target: ExportDealsController → Bull dispatch path (count > 500)."
+      expectedResults:
+        - id: 1
+          description: "HTTP 202 Accepted."
+        - id: 2
+          description: "Response body: { job_id: <UUID v4 string> }."
+        - id: 3
+          description: "Total response time < 500ms (controller returns before job completes)."
+
+    - id: "ste-0005-0034-4000-a000-000000000003"
+      stepNumber: STE-000032
+      description: "Wait for Bull job to complete (poll job status or use Bull job.finished() promise). Target: Bull queue 'deal-exports' worker → ExportDealsCommand execution."
+      expectedResults:
+        - id: 1
+          description: "Bull job status = 'completed' (not 'failed' or 'stalled')."
+
+    - id: "ste-0005-0034-4000-a000-000000000004"
+      stepNumber: STE-000033
+      description: "Query Redis: GET deal_export:{job_id}. Target: Redis key written by ExportDealsCommand after S3 upload."
+      expectedResults:
+        - id: 1
+          description: "Key exists (not null)."
+        - id: 2
+          description: "Value is a string starting with 'https://' (pre-signed S3 URL)."
+        - id: 3
+          description: "URL contains S3 bucket name and expiry parameter (X-Amz-Expires)."
+
+  CAS-000035:
+    - id: "ste-0005-0035-4000-a000-000000000001"
+      stepNumber: STE-000034
+      description: "Precondition: Seed 1001 active deals. JWT_MANAGER authenticated."
+      expectedResults:
+        - id: 1
+          description: "1001 deals in DB (SELECT COUNT(*) FROM deals WHERE deleted_at IS NULL = 1001)."
+
+    - id: "ste-0005-0035-4000-a000-000000000002"
+      stepNumber: STE-000035
+      description: "Send POST /deals/export with JWT_MANAGER and empty body (no filter, returns all 1001). Target: ExportDealsCommand → row count check before CSV generation."
+      expectedResults:
+        - id: 1
+          description: "HTTP 422 Unprocessable Entity."
+        - id: 2
+          description: "Response body: { error: 'EXPORT_LIMIT_EXCEEDED', actual_count: 1001, limit: 1000, message: 'Export exceeds 1000 row limit. Please apply filters to narrow the results.' }."
+        - id: 3
+          description: "No CSV content in response body."
+        - id: 4
+          description: "No Bull job enqueued (verify Bull queue length unchanged)."
+
+TES-000006:
+  # Suite: Cache-Aside Pattern (CAS-000030 + CAS-000031)
+  CAS-000030:
+    - id: "ste-0006-0030-4000-a000-000000000001"
+      stepNumber: STE-000036
+      description: "Precondition: Flush Redis (FLUSHDB on test Redis instance). Seed 50 active deals. Authenticate as SALES_MANAGER (JWT_MANAGER). Spy on IDealRepository aggregate query execution."
+      expectedResults:
+        - id: 1
+          description: "Redis is empty — no pipeline:summary key exists."
+        - id: 2
+          description: "50 active deals in DB."
+
+    - id: "ste-0006-0030-4000-a000-000000000002"
+      stepNumber: STE-000037
+      description: "Send GET /deals/summary with JWT_MANAGER (first call — cache miss). Target: GetPipelineSummaryQueryHandler → Redis GET (miss) → DB aggregate → Redis SET."
+      expectedResults:
+        - id: 1
+          description: "HTTP 200 OK."
+        - id: 2
+          description: "IDealRepository aggregate query was called (spy count = 1)."
+        - id: 3
+          description: "Response: total_active_deals = 50."
+        - id: 4
+          description: "Response: all metrics are non-null numbers."
+
+    - id: "ste-0006-0030-4000-a000-000000000003"
+      stepNumber: STE-000038
+      description: "Query Redis: GET pipeline:summary:{MANAGER_UUID}. Target: Redis key written after cache miss."
+      expectedResults:
+        - id: 1
+          description: "Key exists."
+        - id: 2
+          description: "Value is valid JSON containing total_active_deals=50."
+        - id: 3
+          description: "TTL of key is between 25–30 seconds (EX 30 was applied)."
+
+    - id: "ste-0006-0030-4000-a000-000000000004"
+      stepNumber: STE-000039
+      description: "Send GET /deals/summary again with JWT_MANAGER (second call — cache hit). Target: GetPipelineSummaryQueryHandler → Redis GET (hit) → return cached value."
+      expectedResults:
+        - id: 1
+          description: "HTTP 200 OK."
+        - id: 2
+          description: "IDealRepository aggregate query was NOT called again (spy count still = 1)."
+        - id: 3
+          description: "Response is identical to first call."
+
+  CAS-000031:
+    - id: "ste-0006-0031-4000-a000-000000000001"
+      stepNumber: STE-000040
+      description: "Precondition: pipeline:summary:{MANAGER_UUID} exists in Redis (warm cache state). Seeded deal exists."
+      expectedResults:
+        - id: 1
+          description: "Redis key exists and is valid."
+
+    - id: "ste-0006-0031-4000-a000-000000000002"
+      stepNumber: STE-000041
+      description: "Send POST /deals with valid payload. Target: CreateDealUseCase → CacheInvalidationService.invalidatePipelineSummary()."
+      expectedResults:
+        - id: 1
+          description: "HTTP 201 OK."
+
+    - id: "ste-0006-0031-4000-a000-000000000003"
+      stepNumber: STE-000042
+      description: "Query Redis: GET pipeline:summary:{MANAGER_UUID}. Target: Redis after CreateDeal write."
+      expectedResults:
+        - id: 1
+          description: "Key does NOT exist (was deleted by CacheInvalidationService)."
+
+    - id: "ste-0006-0031-4000-a000-000000000004"
+      stepNumber: STE-000043
+      description: "Send GET /deals/summary (next call after invalidation). Target: GetPipelineSummaryQueryHandler."
+      expectedResults:
+        - id: 1
+          description: "HTTP 200 OK."
+        - id: 2
+          description: "DB aggregate query is executed (cache miss)."
+        - id: 3
+          description: "total_active_deals reflects the newly created deal (count incremented by 1 vs prior)."
+
+TES-000007:
+  # Suite: Staleness Cron (CAS-000037)
+  CAS-000037:
+    - id: "ste-0007-0037-4000-a000-000000000001"
+      stepNumber: STE-000044
+      description: "Precondition: Seed 10 active deals with specified stage_entered_at values: 2 deals at NOW()-5d, 4 deals at NOW()-15d, 4 deals at NOW()-31d. Seed 2 archived deals (deleted_at IS NOT NULL) with stage_entered_at=NOW()-31d. Seed 1 Closed Won deal with stage_entered_at=NOW()-31d. Current staleness_level for all = 'NORMAL'."
+      expectedResults:
+        - id: 1
+          description: "13 total deals in DB (10 active + 2 archived + 1 terminal)."
+        - id: 2
+          description: "All deals have staleness_level = 'NORMAL' initially."
+
+    - id: "ste-0007-0037-4000-a000-000000000002"
+      stepNumber: STE-000045
+      description: "Manually invoke UpdateDealStaleness cron use-case (bypass @Cron schedule decorator in test). Target: UpdateDealStaleness.execute() → IDealRepository.findAllActiveForStalenessUpdate() → bulkUpdateStaleness()."
+      expectedResults:
+        - id: 1
+          description: "Method executes without throwing exception."
+
+    - id: "ste-0007-0037-4000-a000-000000000003"
+      stepNumber: STE-000046
+      description: "Query DB: SELECT id, staleness_level FROM deals WHERE deleted_at IS NULL AND stage.is_terminal = false. Target: active non-terminal deals."
+      expectedResults:
+        - id: 1
+          description: "2 deals with stage_entered_at=NOW()-5d have staleness_level = 'NORMAL'."
+        - id: 2
+          description: "4 deals with stage_entered_at=NOW()-15d have staleness_level = 'WARNING'."
+        - id: 3
+          description: "4 deals with stage_entered_at=NOW()-31d have staleness_level = 'CRITICAL'."
+
+    - id: "ste-0007-0037-4000-a000-000000000004"
+      stepNumber: STE-000047
+      description: "Query DB: SELECT staleness_level FROM deals WHERE deleted_at IS NOT NULL (archived deals). Target: archived deals."
+      expectedResults:
+        - id: 1
+          description: "Both archived deals still have staleness_level = 'NORMAL' (cron did not update them)."
+
+    - id: "ste-0007-0037-4000-a000-000000000005"
+      stepNumber: STE-000048
+      description: "Query DB: SELECT staleness_level FROM deals WHERE current_stage_id = CLOSED_WON_UUID. Target: terminal stage deal."
+      expectedResults:
+        - id: 1
+          description: "Closed Won deal still has staleness_level = 'NORMAL' (cron did not update terminal deals)."
+
+    - id: "ste-0007-0037-4000-a000-000000000006"
+      stepNumber: STE-000049
+      description: "Capture cron job log output. Target: UpdateDealStaleness log statement."
+      expectedResults:
+        - id: 1
+          description: "Log contains: { scanned: 10, updated: 8 }."
+
+TES-000008:
+  # Suite: Redis Failure Degradation (CAS-000046)
+  CAS-000046:
+    - id: "ste-0008-0046-4000-a000-000000000001"
+      stepNumber: STE-000050
+      description: "Precondition: Configure Redis mock to throw ConnectionRefusedError on all commands. Seed valid deal DEAL_UUID_5 in 'New' stage. Authenticate as deal owner."
+      expectedResults:
+        - id: 1
+          description: "Redis mock is active and will throw on any call."
+        - id: 2
+          description: "Deal exists in DB."
+
+    - id: "ste-0008-0046-4000-a000-000000000002"
+      stepNumber: STE-000051
+      description: "Send PATCH /deals/DEAL_UUID_5/stage with { target_stage_id: QUALIFIED_STAGE_UUID }. Target: TransitionDealStageUseCase → DB transaction (succeeds) → CacheInvalidationService (Redis fails)."
+      expectedResults:
+        - id: 1
+          description: "HTTP 200 OK (DB write succeeded)."
+        - id: 2
+          description: "Response body: DealResponseDto with current_stage = Qualified."
+        - id: 3
+          description: "Response does NOT contain any Redis error message."
+
+    - id: "ste-0008-0046-4000-a000-000000000003"
+      stepNumber: STE-000052
+      description: "Query DB: SELECT current_stage_id FROM deals WHERE id=DEAL_UUID_5. Also check application error logs. Target: deals table + application log output."
+      expectedResults:
+        - id: 1
+          description: "current_stage_id = QUALIFIED_STAGE_UUID (DB write persisted despite Redis failure)."
+        - id: 2
+          description: "Application log contains ERROR entry: 'CacheInvalidationService: Failed to invalidate pipeline summary cache - ConnectionRefusedError'."
+        - id: 3
+          description: "No unhandled exception in application logs."
+
+TES-000009:
+  # Suite: Duplicate Detection (CAS-000007)
+  CAS-000007:
+    - id: "ste-0009-0007-4000-a000-000000000001"
+      stepNumber: STE-000053
+      description: "Precondition: Seed Deal A: { title: 'Acme Q2 Deal', contact_id: CONTACT_UUID_1, status: active }. Authenticate as SALES_MANAGER."
+      expectedResults:
+        - id: 1
+          description: "Deal A exists in DB with title='Acme Q2 Deal' and contact_id=CONTACT_UUID_1."
+
+    - id: "ste-0009-0007-4000-a000-000000000002"
+      stepNumber: STE-000054
+      description: "Open Create Deal UI form. Enter title='Acme Q2 Deal', contact_id=CONTACT_UUID_1. Before clicking Save, the form triggers duplicate check. Target: IDealRepository.checkDuplicate(title, contact_id) via CreateDealUseCase or pre-save validation."
+      expectedResults:
+        - id: 1
+          description: "checkDuplicate returns isDuplicate=true."
+        - id: 2
+          description: "UI displays warning dialog: 'A deal with this name already exists for this contact. Do you want to continue?'"
+        - id: 3
+          description: "Warning includes the name of the existing duplicate deal."
+
+    - id: "ste-0009-0007-4000-a000-000000000003"
+      stepNumber: STE-000055
+      description: "Click 'Continue & Save' in the warning dialog. Target: POST /deals API call with duplicate title+contact."
+      expectedResults:
+        - id: 1
+          description: "HTTP 201 Created."
+        - id: 2
+          description: "New deal ID is different from Deal A's ID."
+
+    - id: "ste-0009-0007-4000-a000-000000000004"
+      stepNumber: STE-000056
+      description: "Query DB: SELECT COUNT(*) FROM deals WHERE title='Acme Q2 Deal' AND contact_id=CONTACT_UUID_1 AND deleted_at IS NULL."
+      expectedResults:
+        - id: 1
+          description: "COUNT = 2 (both Deal A and the new deal exist)."
+
+TES-000010:
+  # Suite: UUID Enumeration Prevention (CAS-000039)
+  CAS-000039:
+    - id: "ste-0010-0039-4000-a000-000000000001"
+      stepNumber: STE-000057
+      description: "Send GET /deals/1 (integer ID) with JWT_MANAGER. Target: ParseUUIDPipe on :id route param."
+      expectedResults:
+        - id: 1
+          description: "HTTP 400 Bad Request."
+        - id: 2
+          description: "Response body: { message: 'Validation failed (uuid is expected)' }."
+
+    - id: "ste-0010-0039-4000-a000-000000000002"
+      stepNumber: STE-000058
+      description: "Send GET /deals/not-a-uuid with JWT_MANAGER."
+      expectedResults:
+        - id: 1
+          description: "HTTP 400 Bad Request."
+        - id: 2
+          description: "No DB query executed (UUID validation fails before repository call)."
+
+    - id: "ste-0010-0039-4000-a000-000000000003"
+      stepNumber: STE-000059
+      description: "Send GET /deals/00000000-0000-0000-0000-000000000000 (nil UUID — valid format, nonexistent record) with JWT_MANAGER."
+      expectedResults:
+        - id: 1
+          description: "HTTP 404 Not Found."
+        - id: 2
+          description: "Response body: { error: 'DEAL_NOT_FOUND' }."
+
+    - id: "ste-0010-0039-4000-a000-000000000004"
+      stepNumber: STE-000060
+      description: "Inspect all DealResponseDto and DealListItemDto responses in prior test suite. Target: id field in all deal API responses."
+      expectedResults:
+        - id: 1
+          description: "All id fields in responses match UUID v4 pattern: [0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}."
+        - id: 2
+          description: "No integer or sequential ID appears in any deal API response."
+
+TES-000011:
+  # Suite: Full E2E Deal Lifecycle (CAS-000059)
+  CAS-000059:
+    - id: "ste-0011-0059-4000-a000-000000000001"
+      stepNumber: STE-000061
+      description: "Precondition: Browser environment. Contact (CONTACT_UUID_E2E) exists. REP_A (REP_UUID_E2E) exists. Authenticate in UI as SALES_MANAGER."
+      expectedResults:
+        - id: 1
+          description: "UI shows Pipeline Board with empty columns."
+        - id: 2
+          description: "No existing deals for this test contact."
+
+    - id: "ste-0011-0059-4000-a000-000000000002"
+      stepNumber: STE-000062
+      description: "Click 'Create Deal' button. Fill form: title='E2E Test Deal', contact=CONTACT_UUID_E2E, value=10000, expected_close_date=2026-07-01, assigned_rep=REP_A. Submit. Target: POST /deals → UI."
+      expectedResults:
+        - id: 1
+          description: "POST /deals returns HTTP 201."
+        - id: 2
+          description: "New deal card appears in 'New' column on Pipeline Board."
+        - id: 3
+          description: "Deal card shows title='E2E Test Deal', value=$10,000."
+
+    - id: "ste-0011-0059-4000-a000-000000000003"
+      stepNumber: STE-000063
+      description: "Drag 'E2E Test Deal' card from 'New' column to 'Qualified' column. Target: PATCH /deals/:id/stage → TransitionDealStageUseCase."
+      expectedResults:
+        - id: 1
+          description: "Card moves to Qualified column."
+        - id: 2
+          description: "deal_stage_transitions has 1 new record: New→Qualified."
+        - id: 3
+          description: "Stage History on Detail Page shows 1 entry."
+
+    - id: "ste-0011-0059-4000-a000-000000000004"
+      stepNumber: STE-000064
+      description: "Click on deal card to open Deal Detail Page. Click on 'value' field. Change value to 15000. Click Save. Target: PATCH /deals/:id with { value: 15000 }."
+      expectedResults:
+        - id: 1
+          description: "PATCH returns HTTP 200."
+        - id: 2
+          description: "Detail Page shows updated value = $15,000."
+        - id: 3
+          description: "DB: deals.value = 15000."
+
+    - id: "ste-0011-0059-4000-a000-000000000005"
+      stepNumber: STE-000065
+      description: "Transition deal through all stages: Qualified → Proposal Sent → Negotiation via drag-and-drop. Then transition Negotiation → Closed Won. Target: 3x PATCH /deals/:id/stage calls."
+      expectedResults:
+        - id: 1
+          description: "All 3 transitions return HTTP 200."
+        - id: 2
+          description: "deal_stage_transitions table has 4 total records (New→Qualified, Qualified→Proposal Sent, Proposal Sent→Negotiation, Negotiation→Closed Won)."
+        - id: 3
+          description: "DB: deals.current_stage_id = CLOSED_WON_UUID, closed_at IS NOT NULL."
+
+    - id: "ste-0011-0059-4000-a000-000000000006"
+      stepNumber: STE-000066
+      description: "Verify terminal lock in UI and API: attempt to drag Closed Won card to another column. Also attempt PATCH /deals/:id with { value: 20000 } via API. Target: UI drag prevention + UpdateDealUseCase terminal check."
+      expectedResults:
+        - id: 1
+          description: "UI: drag-and-drop is disabled on Closed Won card (no drag handle or card is non-draggable)."
+        - id: 2
+          description: "API PATCH /deals/:id returns HTTP 400 DEAL_STAGE_TERMINAL."
+        - id: 3
+          description: "DB: deals.value remains 15000."
+
+    - id: "ste-0011-0059-4000-a000-000000000007"
+      stepNumber: STE-000067
+      description: "Verify stage history completeness: navigate to Deal Detail Page stage history log. Target: GET /deals/:id → stage_transitions array."
+      expectedResults:
+        - id: 1
+          description: "Stage History Log displays 4 entries in chronological order."
+        - id: 2
+          description: "Each entry shows: from_stage, to_stage, transitioned_by (SALES_MANAGER name), timestamp."
+        - id: 3
+          description: "No edit or delete button is present on any history entry."

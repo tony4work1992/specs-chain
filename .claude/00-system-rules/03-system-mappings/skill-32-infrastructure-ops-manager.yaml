@@ -1,0 +1,16 @@
+_description: System Mapping for Skill 32 — Infrastructure Ops Manager
+skill-id: '32'
+name: Infrastructure Ops Manager
+inputs:
+  rules:
+    - 00-system-rules/01-governance/00-idempotency-lock-rule.md
+  prompts:
+    - 00-system-rules/02-prompt-templates/skill-32-infrastructure-ops-manager.md
+  knowledge:
+    - docs/04-knowledge-prod/domain-architecture/_system/strategic-architecture.yaml
+  tickets:
+    - docs/01-execution-tickets/
+output:
+  knowledge_base: docs/04-knowledge-prod/domain-architecture/_system/strategic-architecture.yaml
+  infrastructure: ./
+execution_rule: Patch physical infra config files to mitigate incident, and sync the limits back to strategic-architecture.yaml.

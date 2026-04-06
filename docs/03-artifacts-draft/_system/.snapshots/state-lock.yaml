@@ -1,0 +1,17 @@
+idempotency_lock:
+  _system:
+    completed_skills:
+      - "101"
+    last_executed_at: "2026-04-06T21:00:00Z"
+    project_context: "Sales Management"
+    output_path: "docs/03-artifacts-draft/_system/00-project-foundation/"
+    files_generated:
+      - 01-business-and-constraints.md
+      - 02-architecture-patterns.md
+      - 03-technology-stack.md
+      - 04-project-structure-and-conventions.md
+      - 05-infrastructure-and-cicd.md
+      - 06-networking-and-security.md
+      - 07-cost-management.md
+      - 08-design-system-and-ui.md
+      - 09-observability-and-monitoring.md

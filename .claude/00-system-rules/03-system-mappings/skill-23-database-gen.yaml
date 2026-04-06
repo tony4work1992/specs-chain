@@ -1,0 +1,15 @@
+_description: System Mapping for Skill 23 — Database Code Gen
+skill-id: '23'
+name: Database Code Generation
+inputs:
+  rules:
+    - 00-system-rules/01-governance/00-idempotency-lock-rule.md
+  prompts:
+    - 00-system-rules/02-prompt-templates/skill-23-database-gen.md
+  knowledge:
+    - docs/04-knowledge-prod/domain-model/
+  templates:
+    - read_from_dynamic: docs/05-support-assets/code-mappings/framework-routing.yaml
+output:
+  dynamic: read_from: docs/05-support-assets/code-mappings/framework-routing.yaml
+execution_rule: Evaluate target framework routing and generate physical code logic based on injected Knowledge constraints.

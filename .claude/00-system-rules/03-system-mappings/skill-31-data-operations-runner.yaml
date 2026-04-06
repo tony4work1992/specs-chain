@@ -1,0 +1,15 @@
+_description: System Mapping for Skill 31 — Data Operations Runner
+skill-id: '31'
+name: Data Operations Runner
+inputs:
+  rules:
+    - 00-system-rules/01-governance/00-idempotency-lock-rule.md
+  prompts:
+    - 00-system-rules/02-prompt-templates/skill-31-data-operations-runner.md
+  knowledge:
+    - docs/04-knowledge-prod/domain-model/
+  tickets:
+    - docs/01-execution-tickets/
+output:
+  draft: docs/03-artifacts-draft/
+execution_rule: Review ticket and target schema to generate one-off idempotent execution scripts (Do not auto-execute).

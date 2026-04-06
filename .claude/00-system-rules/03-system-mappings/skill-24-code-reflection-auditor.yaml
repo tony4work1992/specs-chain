@@ -1,0 +1,15 @@
+_description: System Mapping for Skill 24 — Code Reflection Auditor
+skill-id: '24'
+name: Code Reflection Auditor
+inputs:
+  rules:
+    - 00-system-rules/01-governance/00-idempotency-lock-rule.md
+  prompts:
+    - 00-system-rules/02-prompt-templates/skill-24-code-reflection-auditor.md
+  knowledge:
+    - docs/04-knowledge-prod/
+  scripts:
+    - docs/05-support-assets/scripts/
+output:
+  history: docs/06-records-history/
+execution_rule: Run trace scanner JS and compare physical traces to the Knowledge Base. Output result logs.

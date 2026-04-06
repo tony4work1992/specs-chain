@@ -1,0 +1,120 @@
+# FEA-001 — Test Impact Analysis
+# Defines the Blast Radius: how FEA-001 changes affect existing modules and infrastructure.
+# Schema: IMP-XXXXXX items mapped to exact system components.
+
+- code: IMP-000001
+  systemName: "Contact & Company Module"
+  componentName: "API"
+  elementName: "IContactQueryService — contact_id FK Resolution on Deal Creation"
+  description: "POST /deals calls IContactQueryService.findById(contact_id) before persisting. If the Contact Module's API contract changes (renamed method, changed return type, or database migration drift causing FK constraint failure), CreateDealUseCase will throw an unhandled exception and return HTTP 500. Regression risk: any Contact Module schema migration that alters the contacts.id column type or removes contacts records used as FK references will cascade-fail deal creation silently."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: IMP-000002
+  systemName: "Contact & Company Module"
+  componentName: "API"
+  elementName: "DealMapper — ContactSummaryDto & CompanySummaryDto Resolution"
+  description: "DealMapper.toDealDetailResponseDto() injects IContactQueryService and ICompanyQueryService to resolve contact_name, company_name, and company fields on every DealDetailResponseDto and DealListItemDto. If either service's response schema changes (field renamed, field removed), the mapper will produce null or undefined values for contact/company fields across ALL deal read endpoints (GET /deals/:id, GET /deals, GET /deals/board). This is a silent data corruption risk with no hard error thrown."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: IMP-000003
+  systemName: "User & Auth Module"
+  componentName: "API"
+  elementName: "JwtAuthGuard — JWT Token Payload Structure Dependency"
+  description: "All 8 Deal module endpoints depend on JwtAuthGuard extracting req.user.id and req.user.role from the JWT payload. If the Auth Module changes the JWT payload structure (e.g., renames 'role' to 'roles' array, changes 'id' to 'sub'), all Deal guards (OwnershipGuard, RolesGuard) will read undefined values. OwnershipGuard will default to allowing access (fail-open risk) or crash with TypeError. This is a critical security regression: role-based isolation breaks silently."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: IMP-000004
+  systemName: "User & Auth Module"
+  componentName: "API"
+  elementName: "OwnershipGuard — IUserQueryService.getManagerForRep() Cross-Module Call"
+  description: "CacheInvalidationService calls IUserQueryService.getManagerForRep(assignedRepId) to resolve the manager's userId for cache key invalidation after every write (CreateDeal, UpdateDeal, TransitionDealStage). If the User Module decommissions or renames this method, ALL write operations will fail with a runtime injection error at cache invalidation step — effectively breaking deal creation and updates in production. Cache invalidation failure must degrade gracefully (log + continue) rather than crash the use-case."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: IMP-000005
+  systemName: "User & Auth Module"
+  componentName: "API"
+  elementName: "assigned_rep_id Validation — User Role & Status Lookup"
+  description: "CreateDealUseCase and UpdateDealUseCase validate that assigned_rep_id references an active user with SALES_REP role via IUserQueryService. If the User Module's user status enum changes (e.g., 'ACTIVE' renamed to 'ENABLED') or the role enum changes, the validation logic will produce false negatives or false positives — allowing assignment to deactivated/wrong-role users or incorrectly blocking valid assignments."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: IMP-000006
+  systemName: "Activity Module (FEA-002)"
+  componentName: "API"
+  elementName: "IActivityQueryService — Activity Timeline on DealDetailPage"
+  description: "DealDetailPage fetches activities linked to the deal via IActivityQueryService (FEA-002 boundary). If FEA-002's API contract changes (endpoint renamed, payload schema changed, activity types renamed), the Deal Detail Page activity timeline will render empty or crash. This is a cross-module regression: FEA-001 tests must include a mock of IActivityQueryService to assert that activity fetch failure returns a graceful empty state (not an uncaught exception)."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: IMP-000007
+  systemName: "Activity Module (FEA-002)"
+  componentName: "UI Item"
+  elementName: "Log Activity Button — Cross-Module Activity Creation from DealDetailPage"
+  description: "The 'Log Activity' button on DealDetailPage triggers the FEA-002 activity creation form, pre-populated with the current deal_id as the linked entity. If the Activity Module's create form or its API (POST /activities) changes its deal_id linkage parameter, activities logged from the Deal Detail Page will be created without the deal association, breaking the timeline and deal-activity link permanently. Regression tests must verify the activity creation request includes the correct deal_id payload."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: IMP-000008
+  systemName: "Redis Infrastructure"
+  componentName: "API"
+  elementName: "PipelineSummaryCacheRepository — Redis OOM / Connection Drop on Write Operations"
+  description: "Every write use-case (CreateDeal, UpdateDeal, TransitionDealStage, ExportDeals) calls CacheInvalidationService.invalidatePipelineSummary(). If Redis is unavailable (OOM eviction, network drop, connection timeout), the ioredis client will throw. If this error is not caught and swallowed, the write use-case will return HTTP 500 to the client even though the DB write succeeded — causing phantom failures. Test must verify that Redis errors in cache invalidation are caught, logged, and do NOT propagate to the HTTP response."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: IMP-000009
+  systemName: "Redis Infrastructure"
+  componentName: "API"
+  elementName: "ExportDealsCommand — Redis Job Status Key deal_export:{jobId}"
+  description: "After Bull dispatches async CSV export jobs, ExportDealsCommand stores the download_url in Redis key deal_export:{jobId} with a TTL. If Redis evicts this key before the user retrieves the download link (due to LRU eviction under memory pressure), the user will receive a cache miss on job status lookup with no download link available. Tests must verify: (1) key is written with correct TTL after S3 upload, (2) key expiry scenario returns a 'export expired, please re-export' error rather than a generic 500."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: IMP-000010
+  systemName: "Bull Queue Infrastructure"
+  componentName: "API"
+  elementName: "BullModule deal-exports Queue — Job Dispatch & Worker Failure"
+  description: "POST /deals/export for >500 rows dispatches a Bull job to the 'deal-exports' queue and returns HTTP 202. If the Bull worker crashes mid-job (e.g., S3 upload timeout, memory error), the job must be retried per Bull's retry policy. If all retries fail, the job must transition to 'failed' state and the user must receive a failure notification (or the job status endpoint must return 'FAILED'). Tests must verify the controller returns 202 immediately regardless of queue health, and that failed jobs do not silently disappear."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: IMP-000011
+  systemName: "AWS S3 Infrastructure"
+  componentName: "API"
+  elementName: "DealCsvExportAdapter — S3 PutObject & Pre-Signed URL Generation"
+  description: "DealCsvExportAdapter uses AWS SDK v3 S3Client to upload CSV buffer (PutObjectCommand) and generate a 1-hour pre-signed download URL (GetSignedUrlCommand). Regression risks: (1) AWS credentials rotation causes S3Client auth failure mid-job; (2) S3 bucket policy change blocks PutObject; (3) Pre-signed URL TTL (1hr) expires before user downloads — download link returns HTTP 403 from S3. Tests must mock S3Client to verify adapter error handling and assert download_url is a valid pre-signed URL string."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: IMP-000012
+  systemName: "Deal Pipeline Management"
+  componentName: "API"
+  elementName: "PipelineStageRepository — In-Memory Stage Cache on Module Init"
+  description: "pipeline-stage.typeorm-repository.ts caches all pipeline stages in-memory on NestJS module initialization. If Admin modifies stage configuration (add/rename/reorder stages) after deployment, the in-memory cache will serve stale stage data until the module is restarted. Stage transition validation (order+1 check) will operate on stale order values, potentially accepting invalid transitions or rejecting valid ones. Tests must cover module restart + cache refresh scenario and verify stage data consistency."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: IMP-000013
+  systemName: "Deal Pipeline Management"
+  componentName: "API"
+  elementName: "TypeORM Migration — deals Table Schema Integrity"
+  description: "All schema changes for the deals, pipeline_stages, and deal_stage_transitions tables must be generated via 'typeorm migration:generate' (C-04). Hand-authored migrations risk column type mismatches, missing indexes (especially on deals.assigned_rep_id, deals.current_stage_id for FK + performance), and missing @DeleteDateColumn (deleted_at) that enables soft-delete. Tests must verify: soft-delete works (DELETE request sets deleted_at, not removes row), all FK constraints exist, and pg_trgm index on title exists for full-text search performance."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"

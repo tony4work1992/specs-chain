@@ -1,0 +1,45 @@
+_description: Keyword → File paths for semantic search
+_version: '2026-04-06'
+keywords:
+  business:
+    - domain-architecture/_system/01-business-and-constraints/01-business-and-constraints.md
+  constraints:
+    - domain-architecture/_system/01-business-and-constraints/01-business-and-constraints.md
+  architecture:
+    - domain-architecture/_system/02-architecture-patterns/02-architecture-patterns.md
+  patterns:
+    - domain-architecture/_system/02-architecture-patterns/02-architecture-patterns.md
+  technology:
+    - domain-architecture/_system/03-technology-stack/03-technology-stack.md
+  stack:
+    - domain-architecture/_system/03-technology-stack/03-technology-stack.md
+  project:
+    - domain-architecture/_system/04-project-structure-and-conventions/04-project-structure-and-conventions.md
+  structure:
+    - domain-architecture/_system/04-project-structure-and-conventions/04-project-structure-and-conventions.md
+  conventions:
+    - domain-architecture/_system/04-project-structure-and-conventions/04-project-structure-and-conventions.md
+  infrastructure:
+    - domain-architecture/_system/05-infrastructure-and-cicd/05-infrastructure-and-cicd.md
+  cicd:
+    - domain-architecture/_system/05-infrastructure-and-cicd/05-infrastructure-and-cicd.md
+  networking:
+    - domain-architecture/_system/06-networking-and-security/06-networking-and-security.md
+  security:
+    - domain-architecture/_system/06-networking-and-security/06-networking-and-security.md
+  cost:
+    - domain-architecture/_system/07-cost-management/07-cost-management.md
+  management:
+    - domain-architecture/_system/07-cost-management/07-cost-management.md
+  design:
+    - domain-architecture/_system/08-design-system-and-ui/08-design-system-and-ui.md
+  system:
+    - domain-architecture/_system/08-design-system-and-ui/08-design-system-and-ui.md
+  ui:
+    - domain-architecture/_system/08-design-system-and-ui/08-design-system-and-ui.md
+  observability:
+    - domain-architecture/_system/09-observability-and-monitoring/09-observability-and-monitoring.md
+  monitoring:
+    - domain-architecture/_system/09-observability-and-monitoring/09-observability-and-monitoring.md
+  schemas:
+    - domain-model/_system/shared-schemas.md

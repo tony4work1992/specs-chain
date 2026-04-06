@@ -1,0 +1,1160 @@
+# FEA-001 — Test Cases
+# Concrete test scenarios with priority, complexity, type, and traceability to checklist items.
+# Total cases = 75 (>= 65 checklist items). UUIDs are stable deterministic identifiers.
+
+# ─── GROUP: Deal Creation ──────────────────────────────────────────────────────
+
+- testcase_id: "11111111-0001-4000-a000-000000000001"
+  group: "Deal Lifecycle Management"
+  suite: "Create Deal"
+  code: CAS-000001
+  pre_condition: "Authenticated as SALES_MANAGER. Valid contact_id and assigned_rep_id exist."
+  tc_description: "POST /deals with all valid required fields returns HTTP 201 and DealResponseDto with UUID id, current_stage=New."
+  priority: High
+  complexity: Low
+  test_type: Functional
+  core_custom: Core
+  reason: "New feature — baseline happy path for deal creation"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0001-4000-a000-000000000002"
+  group: "Deal Lifecycle Management"
+  suite: "Create Deal"
+  code: CAS-000002
+  pre_condition: "Authenticated as SALES_MANAGER."
+  tc_description: "POST /deals with value=0 returns HTTP 400 with validation error 'value must be a positive number greater than 0'. Covers BR-03."
+  priority: High
+  complexity: Low
+  test_type: Functional
+  core_custom: Core
+  reason: "Business rule BR-03 enforcement — zero-value deals are not permitted"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0001-4000-a000-000000000003"
+  group: "Deal Lifecycle Management"
+  suite: "Create Deal"
+  code: CAS-000003
+  pre_condition: "Authenticated as SALES_MANAGER."
+  tc_description: "POST /deals with value=-500 returns HTTP 400. POST /deals with value=0.01 returns HTTP 201 (fractional positive accepted). Covers CHE-000032."
+  priority: Medium
+  complexity: Low
+  test_type: Functional
+  core_custom: Core
+  reason: "Edge case boundary on value constraint — negative and fractional values"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0001-4000-a000-000000000004"
+  group: "Deal Lifecycle Management"
+  suite: "Create Deal"
+  code: CAS-000004
+  pre_condition: "Authenticated. Server UTC date is 2026-04-06."
+  tc_description: "POST /deals with expected_close_date='2026-04-05' (yesterday) returns HTTP 400 'Expected close date cannot be in the past'. POST with '2026-04-06' (today) returns HTTP 201. Covers BR-04 + CHE-000033."
+  priority: High
+  complexity: Low
+  test_type: Functional
+  core_custom: Core
+  reason: "Business rule BR-04 — future close date enforcement"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0001-4000-a000-000000000005"
+  group: "Deal Lifecycle Management"
+  suite: "Create Deal"
+  code: CAS-000005
+  pre_condition: "Authenticated as SALES_MANAGER."
+  tc_description: "POST /deals with title='' returns HTTP 400. POST with title='   ' (whitespace) returns HTTP 400. POST with title=null returns HTTP 400. Covers CHE-000034."
+  priority: High
+  complexity: Low
+  test_type: Functional
+  core_custom: Core
+  reason: "Title is required field — empty/null titles must be rejected"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0001-4000-a000-000000000006"
+  group: "Deal Lifecycle Management"
+  suite: "Create Deal"
+  code: CAS-000006
+  pre_condition: "Authenticated as SALES_MANAGER. contact_id=NONEXISTENT_UUID_V4."
+  tc_description: "POST /deals with contact_id referencing non-existent contact returns HTTP 422 CONTACT_NOT_FOUND. POST with contact_id='not-a-uuid' returns HTTP 400 format error. Covers CHE-000035."
+  priority: High
+  complexity: Medium
+  test_type: Functional
+  core_custom: Core
+  reason: "Contact FK integrity — deal must reference existing contact"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0001-4000-a000-000000000007"
+  group: "Deal Lifecycle Management"
+  suite: "Create Deal"
+  code: CAS-000007
+  pre_condition: "Deal A exists: title='Acme Q2 Deal', contact_id=CONTACT_UUID_1, status=active."
+  tc_description: "POST /deals with title='Acme Q2 Deal' + contact_id=CONTACT_UUID_1 → POST /deals/checkDuplicate returns isDuplicate=true. UI shows warning. User confirms save → HTTP 201. Both deals exist in DB. Covers BR-07 + CHE-000010."
+  priority: High
+  complexity: Medium
+  test_type: Functional
+  core_custom: Core
+  reason: "Duplicate detection must warn but not block (BR-07)"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0001-4000-a000-000000000008"
+  group: "Deal Lifecycle Management"
+  suite: "Create Deal"
+  code: CAS-000008
+  pre_condition: "Deal A exists: title='Acme Q2 Deal', contact_id=CONTACT_UUID_1."
+  tc_description: "POST /deals with title='Acme Q2 Deal' + contact_id=CONTACT_UUID_2 (different contact) → isDuplicate=false. No warning shown. Deal created immediately. Covers CHE-000011."
+  priority: Medium
+  complexity: Low
+  test_type: Functional
+  core_custom: Core
+  reason: "Duplicate check is contact-scoped — same title + different contact must not trigger warning"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0001-4000-a000-000000000009"
+  group: "Deal Lifecycle Management"
+  suite: "Create Deal"
+  code: CAS-000009
+  pre_condition: "Authenticated. assigned_rep_id = UUID of deactivated SALES_REP."
+  tc_description: "POST /deals with assigned_rep_id referencing deactivated rep → HTTP 422 'Assigned user is not active'. POST with UUID of ADMIN user → HTTP 422 'Assigned user must have SALES_REP role'. Covers CHE-000036."
+  priority: High
+  complexity: Medium
+  test_type: Functional
+  core_custom: Core
+  reason: "Assignment validation — only active SALES_REPs can own deals (BR-02)"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0001-4000-a000-000000000010"
+  group: "Deal Lifecycle Management"
+  suite: "Create Deal"
+  code: CAS-000010
+  pre_condition: "No Authorization header sent."
+  tc_description: "POST /deals without JWT returns HTTP 401. POST with expired JWT returns HTTP 401. POST with malformed Bearer token returns HTTP 401. Covers CHE-000029."
+  priority: High
+  complexity: Low
+  test_type: Functional
+  core_custom: Core
+  reason: "All endpoints require JWT authentication — unauthenticated requests must be rejected"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+# ─── GROUP: Deal Update ────────────────────────────────────────────────────────
+
+- testcase_id: "11111111-0002-4000-a000-000000000011"
+  group: "Deal Lifecycle Management"
+  suite: "Update Deal"
+  code: CAS-000011
+  pre_condition: "Deal in 'Qualified' stage exists. Authenticated as deal owner (SALES_REP)."
+  tc_description: "PATCH /deals/:id with { value: 75000 } returns HTTP 200. Only value field updated; all other fields unchanged. Redis pipeline summary cache is invalidated. Covers CHE-000020."
+  priority: High
+  complexity: Low
+  test_type: Functional
+  core_custom: Core
+  reason: "Partial update must only modify specified fields"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0002-4000-a000-000000000012"
+  group: "Deal Lifecycle Management"
+  suite: "Update Deal"
+  code: CAS-000012
+  pre_condition: "Authenticated. Deal exists with contact_id=CONTACT_UUID_1."
+  tc_description: "PATCH /deals/:id with { contact_id: NEW_UUID } returns HTTP 400 'contact_id cannot be changed after creation'. contact_id in DB remains CONTACT_UUID_1. Covers CHE-000020."
+  priority: High
+  complexity: Low
+  test_type: Functional
+  core_custom: Core
+  reason: "Contact is immutable after deal creation — update must be rejected"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0002-4000-a000-000000000013"
+  group: "Deal Lifecycle Management"
+  suite: "Update Deal"
+  code: CAS-000013
+  pre_condition: "Deal is in 'Closed Won' terminal stage."
+  tc_description: "PATCH /deals/:id with { value: 99000 } returns HTTP 400 'Cannot update a terminal-stage deal'. PATCH /deals/:id/stage with any target_stage_id returns HTTP 400 DEAL_STAGE_TERMINAL. Covers BR-05 + CHE-000039."
+  priority: High
+  complexity: Medium
+  test_type: Functional
+  core_custom: Core
+  reason: "Terminal stage immutability (BR-05) — both field edits and transitions must be blocked"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0002-4000-a000-000000000014"
+  group: "Deal Lifecycle Management"
+  suite: "Update Deal"
+  code: CAS-000014
+  pre_condition: "SALES_REP_A owns Deal_A. SALES_REP_B is authenticated."
+  tc_description: "SALES_REP_B sends PATCH /deals/{deal_a_id} → HTTP 403 DEAL_ACCESS_FORBIDDEN. SALES_MANAGER sends same request → HTTP 200. Confirms OwnershipGuard fires on update. Covers CHE-000027."
+  priority: High
+  complexity: Medium
+  test_type: Functional
+  core_custom: Core
+  reason: "Cross-rep write isolation — reps must not update other reps' deals (BR-06)"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+# ─── GROUP: Stage Transition ───────────────────────────────────────────────────
+
+- testcase_id: "11111111-0003-4000-a000-000000000015"
+  group: "Stage Transition"
+  suite: "Valid Transitions"
+  code: CAS-000015
+  pre_condition: "Deal in 'New' stage. Authenticated as deal owner."
+  tc_description: "PATCH /deals/:id/stage { target_stage_id: QUALIFIED_STAGE_UUID } → HTTP 200. DB: deals.current_stage_id=QUALIFIED_UUID, stage_entered_at=NOW(). DB: deal_stage_transitions has new record with from_stage=New, to_stage=Qualified. Redis pipeline cache invalidated. Covers CHE-000021."
+  priority: High
+  complexity: High
+  test_type: Functional
+  core_custom: Core
+  reason: "Core stage transition happy path with transaction verification"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0003-4000-a000-000000000016"
+  group: "Stage Transition"
+  suite: "Valid Transitions"
+  code: CAS-000016
+  pre_condition: "Deal in 'Qualified' stage."
+  tc_description: "PATCH /deals/:id/stage { target_stage_id: CLOSED_LOST_UUID } → HTTP 200 (Closed Lost exception skip is valid per BR-01). DB: current_stage=Closed Lost, closed_at=NOW(). Transition record created. Covers CHE-000038."
+  priority: High
+  complexity: Medium
+  test_type: Functional
+  core_custom: Core
+  reason: "Any active stage may transition directly to Closed Lost (BR-01 exception)"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0003-4000-a000-000000000017"
+  group: "Stage Transition"
+  suite: "Invalid Transitions"
+  code: CAS-000017
+  pre_condition: "Deal in 'New' stage."
+  tc_description: "PATCH /deals/:id/stage { target_stage_id: PROPOSAL_SENT_UUID } (skip Qualified) → HTTP 400 INVALID_STAGE_TRANSITION. DB: deals.current_stage_id unchanged (still New). No new deal_stage_transitions record. Covers CHE-000022."
+  priority: High
+  complexity: Medium
+  test_type: Functional
+  core_custom: Core
+  reason: "Stage skip prevention (BR-01) — must not allow skipping intermediate stages"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0003-4000-a000-000000000018"
+  group: "Stage Transition"
+  suite: "Invalid Transitions"
+  code: CAS-000018
+  pre_condition: "Deal in 'Proposal Sent' stage."
+  tc_description: "PATCH /deals/:id/stage { target_stage_id: QUALIFIED_UUID } (backward transition) → HTTP 400 INVALID_STAGE_TRANSITION. DB: current_stage unchanged. Covers CHE-000022."
+  priority: High
+  complexity: Medium
+  test_type: Functional
+  core_custom: Core
+  reason: "Backward stage transitions are strictly forbidden"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0003-4000-a000-000000000019"
+  group: "Stage Transition"
+  suite: "Invalid Transitions"
+  code: CAS-000019
+  pre_condition: "Deal in 'Closed Won' terminal stage."
+  tc_description: "PATCH /deals/:id/stage with any target_stage_id (including Closed Lost) → HTTP 400 DEAL_STAGE_TERMINAL. DB: current_stage unchanged. No new transition record. Covers CHE-000039."
+  priority: High
+  complexity: Low
+  test_type: Functional
+  core_custom: Core
+  reason: "Terminal stage immutability — Closed Won deals cannot transition to any stage (BR-05)"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0003-4000-a000-000000000020"
+  group: "Stage Transition"
+  suite: "Transaction Integrity"
+  code: CAS-000020
+  pre_condition: "Deal in 'New' stage. DB transaction injection available in test environment."
+  tc_description: "Simulate INSERT to deal_stage_transitions failing after UPDATE to deals.current_stage_id. Assert entire transaction rolls back: deals.current_stage_id remains 'New', no deal_stage_transitions record exists. Assert HTTP 500 or 503 is returned to client. Covers CHE-000021."
+  priority: High
+  complexity: High
+  test_type: Functional
+  core_custom: Core
+  reason: "DB transaction atomicity — partial state corruption must not occur on transition failure"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0003-4000-a000-000000000021"
+  group: "Stage Transition"
+  suite: "Concurrency"
+  code: CAS-000021
+  pre_condition: "Deal in 'New' stage. Two concurrent API clients authenticated."
+  tc_description: "Fire 2 simultaneous PATCH /deals/:id/stage { target_stage_id: QUALIFIED_UUID } requests. Assert exactly 1 returns HTTP 200 and exactly 1 returns HTTP 409/400. Assert DB has exactly 1 deal_stage_transitions record. Assert deals.current_stage_id=QUALIFIED (consistent state). Covers CHE-000062."
+  priority: High
+  complexity: High
+  test_type: Functional
+  core_custom: Core
+  reason: "Race condition safety — concurrent transitions on same deal must not corrupt state"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0003-4000-a000-000000000022"
+  group: "Stage Transition"
+  suite: "DTO Validation"
+  code: CAS-000022
+  pre_condition: "Deal in 'New' stage. Authenticated."
+  tc_description: "PATCH /deals/:id/stage { target_stage_id: 'not-a-uuid' } → HTTP 400 'target_stage_id must be a UUID'. PATCH with { target_stage_id: null } → HTTP 400. PATCH with missing target_stage_id → HTTP 400. Covers CHE-000037."
+  priority: Medium
+  complexity: Low
+  test_type: Functional
+  core_custom: Core
+  reason: "DTO input validation on transition endpoint"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+# ─── GROUP: Deal List & Board ──────────────────────────────────────────────────
+
+- testcase_id: "11111111-0004-4000-a000-000000000023"
+  group: "Pipeline Board & List"
+  suite: "Pipeline Board"
+  code: CAS-000023
+  pre_condition: "30 deals seeded: 5 per stage. Authenticated as SALES_MANAGER."
+  tc_description: "GET /deals/board returns PipelineBoardResponseDto with 6 stages in correct order. Each stage has deal_count=5 and correct total_value sum. Each DealCardDto contains: id (UUID), title, value, contact_name, staleness_level, current_stage_id. Covers CHE-000024."
+  priority: High
+  complexity: Medium
+  test_type: Functional
+  core_custom: Core
+  reason: "Board data structure and stage ordering correctness"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0004-4000-a000-000000000024"
+  group: "Pipeline Board & List"
+  suite: "Pipeline Board"
+  code: CAS-000024
+  pre_condition: "200 deals seeded across 6 stages. Authenticated as SALES_MANAGER."
+  tc_description: "GET /deals/board with 200 active deals must return HTTP 200 within 2000ms (P99). Use performance timing assertion. Assert no N+1 query: DB query count ≤ 8. Covers CHE-000055."
+  priority: High
+  complexity: High
+  test_type: Functional
+  core_custom: Core
+  reason: "Performance NFR — board must load within 2s for 200 deals"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0004-4000-a000-000000000025"
+  group: "Pipeline Board & List"
+  suite: "Pipeline Board"
+  code: CAS-000025
+  pre_condition: "REP_A has 3 deals. REP_B has 5 deals. Authenticated as REP_A."
+  tc_description: "GET /deals/board as SALES_REP returns only REP_A's 3 deals distributed across columns. REP_B's 5 deals are not present in any column. deal_count values reflect only REP_A's deals. Covers CHE-000024."
+  priority: High
+  complexity: Medium
+  test_type: Functional
+  core_custom: Core
+  reason: "SALES_REP board scope restriction — only own deals visible"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0004-4000-a000-000000000026"
+  group: "Pipeline Board & List"
+  suite: "Deal List"
+  code: CAS-000026
+  pre_condition: "20 deals seeded. Authenticated as SALES_MANAGER."
+  tc_description: "GET /deals?page=1&limit=10 returns 10 items, total=20, total_pages=2, page=1. GET /deals?page=2&limit=10 returns next 10 items. GET /deals?page=3&limit=10 returns empty data array with total=20. Covers CHE-000015."
+  priority: High
+  complexity: Low
+  test_type: Functional
+  core_custom: Core
+  reason: "Pagination correctness and boundary handling"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0004-4000-a000-000000000027"
+  group: "Pipeline Board & List"
+  suite: "Deal List"
+  code: CAS-000027
+  pre_condition: "15 deals: 5 in New, 5 in Qualified, 5 in Proposal Sent. Authenticated as SALES_MANAGER."
+  tc_description: "GET /deals?stage_ids[]=QUALIFIED_UUID returns exactly 5 deals all in Qualified stage. Add filter &value_min=10000&value_max=50000: returns only deals within that value range AND in Qualified stage. Assert filters are applied with AND logic. Covers CHE-000015."
+  priority: High
+  complexity: Medium
+  test_type: Functional
+  core_custom: Core
+  reason: "Filter combination correctness — AND logic between multiple filter params"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0004-4000-a000-000000000028"
+  group: "Pipeline Board & List"
+  suite: "Deal List"
+  code: CAS-000028
+  pre_condition: "10000 deals seeded in DB with pg_trgm index on title. Authenticated as MANAGER."
+  tc_description: "GET /deals?search=Acme returns matching deals within 500ms (P99). Run EXPLAIN ANALYZE and assert query uses GIN index (not Seq Scan). Covers CHE-000057."
+  priority: High
+  complexity: High
+  test_type: Functional
+  core_custom: Core
+  reason: "Performance NFR — full-text search must use pg_trgm index"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0004-4000-a000-000000000029"
+  group: "Pipeline Board & List"
+  suite: "Deal List"
+  code: CAS-000029
+  pre_condition: "REP_A has 5 deals. Authenticated as REP_A."
+  tc_description: "GET /deals?rep_ids[]=REP_B_UUID as SALES_REP returns only REP_A's 5 deals (controller forces override). rep_ids filter param is ignored. Covers CHE-000016 + SCO-000037."
+  priority: High
+  complexity: Medium
+  test_type: Functional
+  core_custom: Core
+  reason: "SALES_REP isolation — rep_ids param must be overridden server-side (BR-06)"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+# ─── GROUP: Pipeline Summary ───────────────────────────────────────────────────
+
+- testcase_id: "11111111-0005-4000-a000-000000000030"
+  group: "Pipeline Summary"
+  suite: "Cache-Aside Pattern"
+  code: CAS-000030
+  pre_condition: "Redis cache is empty. 50 active deals seeded. Authenticated as SALES_MANAGER."
+  tc_description: "First GET /deals/summary (cache miss): assert DB aggregate queries execute, assert Redis key 'pipeline:summary:{managerId}' is written with EX=30. Assert response: total_active_deals=50, non-null values for win_rate_30d and avg_cycle_time_30d. Second GET within 30s (cache hit): assert DB is NOT queried (mock spy), response is identical. Covers CHE-000025."
+  priority: High
+  complexity: High
+  test_type: Functional
+  core_custom: Core
+  reason: "Cache-aside correctness — DB must not be hit on cache hit"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0005-4000-a000-000000000031"
+  group: "Pipeline Summary"
+  suite: "Cache Invalidation"
+  code: CAS-000031
+  pre_condition: "Pipeline summary cached in Redis. Deal exists."
+  tc_description: "POST /deals (create new deal) → assert Redis key pipeline:summary:{managerId} is deleted (DEL command issued). GET /deals/summary → assert fresh DB query executes (cache miss, new deal included in total). Assert cache is invalidated by all write operations: CreateDeal, UpdateDeal, TransitionDealStage. Covers CHE-000025."
+  priority: High
+  complexity: High
+  test_type: Functional
+  core_custom: Core
+  reason: "Cache invalidation on writes — stale summary data must not persist after modifications"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0005-4000-a000-000000000032"
+  group: "Pipeline Summary"
+  suite: "Access Control"
+  code: CAS-000032
+  pre_condition: "Authenticated as SALES_REP."
+  tc_description: "GET /deals/summary with SALES_REP JWT → HTTP 403 'Insufficient role: requires SALES_MANAGER or ADMIN'. Response does not contain any summary data. Covers CHE-000028."
+  priority: High
+  complexity: Low
+  test_type: Functional
+  core_custom: Core
+  reason: "Summary endpoint is Manager/Admin restricted — RolesGuard must reject SALES_REP"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+# ─── GROUP: CSV Export ────────────────────────────────────────────────────────
+
+- testcase_id: "11111111-0006-4000-a000-000000000033"
+  group: "CSV Export"
+  suite: "Synchronous Export"
+  code: CAS-000033
+  pre_condition: "100 deals seeded. Authenticated as SALES_MANAGER."
+  tc_description: "POST /deals/export with filter returning 100 rows → HTTP 200, Content-Type: text/csv, Content-Disposition: attachment; filename=deals_export.csv. CSV body: first row = headers matching DealListItemDto fields. Row count = 100. Covers CHE-000017 + CHE-000026."
+  priority: High
+  complexity: Medium
+  test_type: Functional
+  core_custom: Core
+  reason: "Synchronous export for ≤500 rows must return file immediately"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0006-4000-a000-000000000034"
+  group: "CSV Export"
+  suite: "Asynchronous Export"
+  code: CAS-000034
+  pre_condition: "600 deals seeded. Authenticated as SALES_MANAGER. Bull queue running."
+  tc_description: "POST /deals/export with filter returning 600 rows → HTTP 202 { job_id: UUID }. Assert controller returns 202 within 500ms (does not wait for job). Assert Bull job is enqueued. After job completes, assert Redis key deal_export:{job_id} contains a valid pre-signed S3 URL. Assert URL is accessible (HEAD request returns 200). Covers CHE-000026."
+  priority: High
+  complexity: High
+  test_type: Functional
+  core_custom: Core
+  reason: "Async export for 501-1000 rows must use Bull queue + S3 upload"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0006-4000-a000-000000000035"
+  group: "CSV Export"
+  suite: "Export Limit"
+  code: CAS-000035
+  pre_condition: "1001 deals seeded. Authenticated as SALES_MANAGER."
+  tc_description: "POST /deals/export with filter returning 1001 rows → HTTP 422 { error: 'EXPORT_LIMIT_EXCEEDED', actual_count: 1001 }. Assert CSV is NOT generated. Assert no Bull job is enqueued. POST with exactly 1000 rows → succeeds (HTTP 200 or 202). Covers CHE-000040."
+  priority: High
+  complexity: Medium
+  test_type: Functional
+  core_custom: Core
+  reason: "Export row cap enforcement (C-03) — 1001+ rows must be rejected"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0006-4000-a000-000000000036"
+  group: "CSV Export"
+  suite: "Access Control"
+  code: CAS-000036
+  pre_condition: "Authenticated as SALES_REP."
+  tc_description: "POST /deals/export with SALES_REP JWT → HTTP 403. Assert no CSV is generated. Assert no Bull job is dispatched. Covers CHE-000028."
+  priority: High
+  complexity: Low
+  test_type: Functional
+  core_custom: Core
+  reason: "Export is restricted to Manager/Admin — SALES_REP must be rejected"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+# ─── GROUP: Staleness Cron ────────────────────────────────────────────────────
+
+- testcase_id: "11111111-0007-4000-a000-000000000037"
+  group: "Staleness Management"
+  suite: "Cron Job Execution"
+  code: CAS-000037
+  pre_condition: "10 active deals: 2 with stage_entered_at=5 days ago (NORMAL), 4 with 15 days ago (WARNING), 4 with 31 days ago (CRITICAL). 2 archived deals with 31 days ago. 1 Closed Won deal with 31 days ago."
+  tc_description: "Trigger UpdateDealStaleness cron manually. Assert DB: 4 deals updated to WARNING, 4 updated to CRITICAL, 2 NORMAL unchanged. Archived deals: staleness_level unchanged. Closed Won deal: staleness_level unchanged (is_terminal=true excluded). Job log: { scanned: 10, updated: 8 }. Covers CHE-000031."
+  priority: High
+  complexity: High
+  test_type: Functional
+  core_custom: Core
+  reason: "Staleness cron must correctly compute and bulk-update deal staleness levels"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0007-4000-a000-000000000038"
+  group: "Staleness Management"
+  suite: "Cron Job Execution"
+  code: CAS-000038
+  pre_condition: "0 active deals in DB."
+  tc_description: "Trigger UpdateDealStaleness cron on empty dataset. Assert no DB UPDATE is executed (bulkUpdateStaleness not called with empty array). Assert job log: { scanned: 0, updated: 0 }. Assert no exception thrown. Covers CHE-000031."
+  priority: Low
+  complexity: Low
+  test_type: Functional
+  core_custom: Core
+  reason: "Cron edge case — empty dataset must not crash or produce empty SQL errors"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+# ─── GROUP: RBAC & Security ───────────────────────────────────────────────────
+
+- testcase_id: "11111111-0008-4000-a000-000000000039"
+  group: "Security & RBAC"
+  suite: "UUID Enumeration Prevention"
+  code: CAS-000039
+  pre_condition: "Authenticated as SALES_MANAGER."
+  tc_description: "GET /deals/1 (integer ID) → HTTP 400. GET /deals/abc → HTTP 400. GET /deals/00000000-0000-0000-0000-000000000000 (nil UUID, valid format, nonexistent) → HTTP 404. GET /deals/00000000-xxxx-xxxx-xxxx-xxxxxxxxxxxx (invalid UUID chars) → HTTP 400. Assert all deal IDs in API responses are UUID v4 format (no sequential integers). Covers CHE-000030 + CHE-000058."
+  priority: High
+  complexity: Medium
+  test_type: Functional
+  core_custom: Core
+  reason: "Security — UUID IDs prevent deal enumeration attacks"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0008-4000-a000-000000000040"
+  group: "Security & RBAC"
+  suite: "JWT Manipulation"
+  code: CAS-000040
+  pre_condition: "Valid JWT structure known. Test environment access."
+  tc_description: "Forge a JWT (valid format but wrong signature) with role=ADMIN. Send to any deal endpoint. Assert HTTP 401 (signature verification fails before role check). Forge JWT with role=SALES_MANAGER but userId of a SALES_REP. Assert OwnershipGuard uses the role from JWT (MANAGER → bypass allowed). Assert no endpoint accepts role from query param (?role=ADMIN). Covers CHE-000059."
+  priority: High
+  complexity: High
+  test_type: Functional
+  core_custom: Core
+  reason: "Security — JWT signature must be validated; role escalation via query param must be impossible"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0008-4000-a000-000000000041"
+  group: "Security & RBAC"
+  suite: "Soft Delete"
+  code: CAS-000041
+  pre_condition: "Deal exists (active). Authenticated as SALES_MANAGER."
+  tc_description: "Archive deal via archive endpoint. Assert DB: deals.deleted_at IS NOT NULL (soft delete). Assert no DELETE SQL executed against deals table. Assert GET /deals does NOT return archived deal. Assert GET /deals?include_archived=true DOES return it. Assert GET /deals/:id for archived deal ID returns HTTP 404. Covers CHE-000060 + C-01."
+  priority: High
+  complexity: Medium
+  test_type: Functional
+  core_custom: Core
+  reason: "Soft-delete must never hard-delete deals — audit history preservation (C-01)"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0008-4000-a000-000000000042"
+  group: "Security & RBAC"
+  suite: "Audit Trail Immutability"
+  code: CAS-000042
+  pre_condition: "Deal has 2 stage transition records in deal_stage_transitions."
+  tc_description: "Assert IDealStageTransitionRepository interface has no delete() method. Assert no API endpoint exists for DELETE /deals/:id/transitions/:tid. Assert the application cannot update a deal_stage_transitions record (no UPDATE query). Assert transition records have no @UpdateDateColumn in the entity. Covers CHE-000061 + BR-08."
+  priority: High
+  complexity: Medium
+  test_type: Functional
+  core_custom: Core
+  reason: "Audit trail must be immutable at application layer (BR-08)"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+# ─── GROUP: Impact & Regression ───────────────────────────────────────────────
+
+- testcase_id: "11111111-0009-4000-a000-000000000043"
+  group: "Impact & Regression"
+  suite: "Contact Module Integration"
+  code: CAS-000043
+  pre_condition: "IContactQueryService mock configured to return null."
+  tc_description: "POST /deals with valid UUID contact_id but IContactQueryService returns null → HTTP 422 CONTACT_NOT_FOUND. Assert no HTTP 500 is thrown. Assert DealResponseDto is NOT partially created in DB. Covers CHE-000042 + IMP-000001."
+  priority: High
+  complexity: Medium
+  test_type: Regression
+  core_custom: Core
+  reason: "Contact Module API contract regression — null return must produce 422, not 500"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0009-4000-a000-000000000044"
+  group: "Impact & Regression"
+  suite: "Contact Module Integration"
+  code: CAS-000044
+  pre_condition: "IContactQueryService mock configured to return null. Deal exists."
+  tc_description: "GET /deals/:id when IContactQueryService returns null for contact resolution → HTTP 200 with contact_name=null (graceful degradation). Assert response body is valid DealDetailResponseDto (no 500). Assert company fields are null/empty string. Covers CHE-000043 + IMP-000002."
+  priority: Medium
+  complexity: Medium
+  test_type: Regression
+  core_custom: Core
+  reason: "DealMapper graceful degradation when Contact Module is unavailable"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0009-4000-a000-000000000045"
+  group: "Impact & Regression"
+  suite: "Auth Module Integration"
+  code: CAS-000045
+  pre_condition: "JWT payload uses 'roles' array instead of 'role' string (simulated Auth Module change)."
+  tc_description: "Send request with JWT containing roles=['SALES_REP'] (array format). Assert OwnershipGuard does NOT fail-open (must not grant access by default when role is unresolvable). Assert RolesGuard returns HTTP 403 (not 200). Fail-open is a CRITICAL security defect. Covers CHE-000044 + IMP-000003."
+  priority: High
+  complexity: High
+  test_type: Regression
+  core_custom: Core
+  reason: "JWT structure change regression — guards must not fail-open on malformed role format"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0009-4000-a000-000000000046"
+  group: "Impact & Regression"
+  suite: "Cache Resilience"
+  code: CAS-000046
+  pre_condition: "Redis is unavailable (connection refused). Deal exists."
+  tc_description: "POST /deals → Assert HTTP 201 (write operation succeeds despite Redis being down). PATCH /deals/:id → Assert HTTP 200. PATCH /deals/:id/stage → Assert HTTP 200. Assert error log entry for each cache invalidation failure. Assert no HTTP 500 is returned to client due to Redis unavailability. Covers CHE-000049 + IMP-000008."
+  priority: High
+  complexity: High
+  test_type: Regression
+  core_custom: Core
+  reason: "Redis OOM/down must not break deal writes — cache failures must degrade gracefully"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0009-4000-a000-000000000047"
+  group: "Impact & Regression"
+  suite: "Cache Resilience"
+  code: CAS-000047
+  pre_condition: "IUserQueryService.getManagerForRep() configured to throw RuntimeException."
+  tc_description: "PATCH /deals/:id/stage → Assert HTTP 200 returned (stage transition succeeds). Assert deal_stage_transitions record created. Assert error logged for cache invalidation failure. Assert HTTP response does NOT contain error about IUserQueryService failure. Covers CHE-000045 + IMP-000004."
+  priority: High
+  complexity: Medium
+  test_type: Regression
+  core_custom: Core
+  reason: "Cache invalidation failure must not cascade to break the primary write operation"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0009-4000-a000-000000000048"
+  group: "Impact & Regression"
+  suite: "Activity Module Integration"
+  code: CAS-000048
+  pre_condition: "IActivityQueryService mock configured to return empty array."
+  tc_description: "GET /deals/:id when IActivityQueryService returns empty array → HTTP 200 with activities=[] in response. Assert no HTTP 500. Assert 'No activities logged' placeholder is shown in UI. Assert other deal fields (stage, value, contact) are unaffected. Covers CHE-000047 + IMP-000006."
+  priority: Medium
+  complexity: Medium
+  test_type: Regression
+  core_custom: Core
+  reason: "Activity Module unavailability must not crash Deal Detail Page"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0009-4000-a000-000000000049"
+  group: "Impact & Regression"
+  suite: "S3 & Bull Resilience"
+  code: CAS-000049
+  pre_condition: "S3Client mock throws AccessDenied on PutObjectCommand. 600 deals for async export."
+  tc_description: "POST /deals/export → HTTP 202 { job_id }. Bull job executes, S3 throws AccessDenied. Assert Bull job is retried per policy. After max retries, assert job status = FAILED. Assert Redis key deal_export:{job_id} is NOT set (no URL written). Assert no worker crash. Assert subsequent export jobs are not blocked. Covers CHE-000051 + CHE-000052 + IMP-000010 + IMP-000011."
+  priority: High
+  complexity: High
+  test_type: Regression
+  core_custom: Core
+  reason: "S3 failure must not crash the Bull worker or block subsequent export jobs"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+# ─── GROUP: DB Schema & Migration ─────────────────────────────────────────────
+
+- testcase_id: "11111111-0010-4000-a000-000000000050"
+  group: "Database & Schema"
+  suite: "Migration Integrity"
+  code: CAS-000050
+  pre_condition: "Clean database (no migrations applied)."
+  tc_description: "Run all TypeORM migrations. Assert deals table exists with columns: id (uuid PK), title (varchar NOT NULL), value (numeric NOT NULL), contact_id (uuid FK→contacts.id), assigned_rep_id (uuid FK→users.id), current_stage_id (uuid FK→pipeline_stages.id), deleted_at (timestamp nullable), stage_entered_at (timestamp), closed_at (timestamp nullable), staleness_level (varchar). Assert GIN index on title for pg_trgm. Assert FK constraints with ON DELETE behavior. Covers CHE-000054 + IMP-000013."
+  priority: High
+  complexity: High
+  test_type: Functional
+  core_custom: Core
+  reason: "Schema integrity — migrations must produce exact required table structure"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+# ─── GROUP: UI Functional ─────────────────────────────────────────────────────
+
+- testcase_id: "11111111-0011-4000-a000-000000000051"
+  group: "UI Functional"
+  suite: "Pipeline Board UI"
+  code: CAS-000051
+  pre_condition: "Browser environment. Authenticated as SALES_MANAGER."
+  tc_description: "Drag deal card from 'New' column to 'Qualified' column. Assert card visually moves immediately (optimistic update). Assert PATCH /deals/:id/stage fires with target_stage_id=QUALIFIED. On HTTP 200, card stays. Assert no loading spinner persists after success. Assert source column deal_count decrements, target column deal_count increments. Covers CHE-000002."
+  priority: High
+  complexity: High
+  test_type: Functional
+  core_custom: Core
+  reason: "DnD optimistic update and board state consistency"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0011-4000-a000-000000000052"
+  group: "UI Functional"
+  suite: "Pipeline Board UI"
+  code: CAS-000052
+  pre_condition: "Browser. Deal in 'New' stage. PATCH /deals/:id/stage mock returns HTTP 400."
+  tc_description: "Drag deal from 'New' to 'Proposal Sent' (invalid skip). Assert card briefly appears in Proposal Sent, then reverts to New. Assert error toast is shown with server error message. Assert board state is identical to pre-drag state. Assert no ghost card left in Proposal Sent column. Covers CHE-000003."
+  priority: High
+  complexity: High
+  test_type: Functional
+  core_custom: Core
+  reason: "DnD rollback on server rejection — UI must revert to consistent state"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0011-4000-a000-000000000053"
+  group: "UI Functional"
+  suite: "Summary Bar UI"
+  code: CAS-000053
+  pre_condition: "Browser. Authenticated as SALES_MANAGER."
+  tc_description: "Assert Pipeline Summary Bar is rendered in DOM with total_active_deals, total_value, win_rate_30d, avg_cycle_time_30d from mocked GET /deals/summary response. Wait 30s (mock timer). Assert GET /deals/summary fires again. Assert bar values update. Switch to SALES_REP session. Assert Summary Bar DOM element is absent. Covers CHE-000004 + CHE-000005."
+  priority: High
+  complexity: Medium
+  test_type: Functional
+  core_custom: Core
+  reason: "Summary bar visibility and auto-refresh behavior"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0011-4000-a000-000000000054"
+  group: "UI Functional"
+  suite: "Staleness Indicators UI"
+  code: CAS-000054
+  pre_condition: "Browser. Deal card with staleness_level=WARNING in response. Deal card with staleness_level=CRITICAL in response."
+  tc_description: "Assert WARNING deal card renders amber/yellow indicator (defined CSS class or color token). Assert CRITICAL deal card renders red indicator. Assert deal card with staleness_level=NORMAL renders no indicator. Assert Closed Won card with staleness_level=CRITICAL (invalid state, defensive test) renders no indicator if terminal flag is set. Covers CHE-000007 + CHE-000008."
+  priority: High
+  complexity: Medium
+  test_type: Functional
+  core_custom: Core
+  reason: "Staleness visual indicators must match API-returned staleness_level"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0011-4000-a000-000000000055"
+  group: "UI Functional"
+  suite: "Deal Detail Page UI"
+  code: CAS-000055
+  pre_condition: "Browser. Deal Detail Page loaded for an active deal."
+  tc_description: "Click on 'value' field → assert input renders with current value. Change to 50000, click Save → assert PATCH /deals/:id fires with {value:50000}, UI shows 50000. Click on 'expected_close_date' field, enter past date → assert inline error shown before Save is clickable. Assert 'contact' field shows read-only label (no click-to-edit). Assert stage transition history list shows no edit/delete buttons. Covers CHE-000006 + CHE-000014."
+  priority: High
+  complexity: Medium
+  test_type: Functional
+  core_custom: Core
+  reason: "Inline edit behavior, read-only fields, and audit trail immutability in UI"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+# ─── GROUP: Performance ───────────────────────────────────────────────────────
+
+- testcase_id: "11111111-0012-4000-a000-000000000056"
+  group: "Performance"
+  suite: "Stage Transition Load"
+  code: CAS-000056
+  pre_condition: "50 deals in 'New' stage. 50 concurrent authenticated users (k6)."
+  tc_description: "Each user transitions their own deal New→Qualified simultaneously. Assert P99 response time < 800ms. Assert 0% error rate (no HTTP 5xx). Assert DB has exactly 50 new deal_stage_transitions records. Assert no deadlocks in PostgreSQL logs. Covers CHE-000056."
+  priority: High
+  complexity: High
+  test_type: Functional
+  core_custom: Core
+  reason: "Stage transition performance NFR — P99 < 800ms under concurrent load"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+# ─── GROUP: Accessibility ─────────────────────────────────────────────────────
+
+- testcase_id: "11111111-0013-4000-a000-000000000057"
+  group: "Accessibility"
+  suite: "WCAG 2.1 AA"
+  code: CAS-000057
+  pre_condition: "Browser. axe-core or Lighthouse accessibility audit tools available."
+  tc_description: "Run axe-core audit on Pipeline Board page. Assert 0 critical/serious WCAG 2.1 AA violations. Assert text contrast ratio ≥ 4.5:1 for deal card title and value text. Assert staleness amber indicator color (#E59866 or equivalent) passes 3:1 non-text contrast ratio. Assert all interactive elements have aria-label or visible label. Assert keyboard-tab-navigable focus indicators on all buttons. Covers CHE-000063."
+  priority: Medium
+  complexity: Medium
+  test_type: Functional
+  core_custom: Core
+  reason: "Accessibility compliance — WCAG 2.1 AA requirement"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+# ─── GROUP: Smoke Tests ────────────────────────────────────────────────────────
+
+- testcase_id: "11111111-0014-4000-a000-000000000058"
+  group: "Smoke"
+  suite: "Core API Smoke"
+  code: CAS-000058
+  pre_condition: "Post-deployment production-like environment. All services up."
+  tc_description: "Smoke test: POST /deals (valid payload) → 201. GET /deals → 200. GET /deals/board → 200. GET /deals/summary (Manager JWT) → 200. PATCH /deals/:id/stage (valid transition) → 200. Assert no 500 errors across all 5 calls. Assert response times < 3s each. Log results for deployment verification."
+  priority: High
+  complexity: Low
+  test_type: Smoke
+  core_custom: Core
+  reason: "Post-deploy smoke validation of critical endpoints"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+# ─── GROUP: E2E Full User Flows ────────────────────────────────────────────────
+
+- testcase_id: "11111111-0015-4000-a000-000000000059"
+  group: "E2E User Flows"
+  suite: "Full Deal Lifecycle"
+  code: CAS-000059
+  pre_condition: "Browser. Active Contact and SALES_REP user exist. Authenticated as SALES_MANAGER."
+  tc_description: "E2E: Create deal via UI (title, contact, value=10000, close_date=+30d, rep=REP_A). Assert appears in New column on board. Drag to Qualified. Assert stage_transitions record. Edit value to 15000 via Detail Page. Assert updated. Mark as Closed Won via stage transition. Assert terminal stage locked, edit fields disabled, history shows 3 transitions. Assert closed_at set in DB. Covers CHE-000018 + CHE-000021 + CHE-000039."
+  priority: High
+  complexity: High
+  test_type: Regression
+  core_custom: Core
+  reason: "Full happy-path E2E covering deal creation → transitions → close"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0015-4000-a000-000000000060"
+  group: "E2E User Flows"
+  suite: "RBAC Full Flow"
+  code: CAS-000060
+  pre_condition: "Browser. REP_A has 3 deals. REP_B has 2 deals. MANAGER has access to all."
+  tc_description: "E2E as REP_A: sees only 3 deals in board/list. Cannot access REP_B deal URL (403). Cannot see Summary Bar. Cannot export CSV. Logs activity on own deal. Switch to MANAGER: sees all 5 deals, Summary Bar visible, export button visible. Bulk reassign 2 of REP_A's deals to REP_B. Assert deals now owned by REP_B. Covers CHE-000027 + CHE-000028 + CHE-000041."
+  priority: High
+  complexity: High
+  test_type: Regression
+  core_custom: Custom
+  reason: "End-to-end RBAC flow validating all three role permission boundaries"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+# ─── Additional Cases for Full Coverage ───────────────────────────────────────
+
+- testcase_id: "11111111-0016-4000-a000-000000000061"
+  group: "Deal Lifecycle Management"
+  suite: "Create Deal"
+  code: CAS-000061
+  pre_condition: "No authorization header."
+  tc_description: "Call all 8 Deal module endpoints without JWT. Assert HTTP 401 for each. Endpoint list: POST /deals, GET /deals, GET /deals/:id, PATCH /deals/:id, PATCH /deals/:id/stage, GET /deals/board, GET /deals/summary, POST /deals/export. Covers CHE-000029."
+  priority: High
+  complexity: Low
+  test_type: Functional
+  core_custom: Core
+  reason: "Exhaustive authentication coverage across all endpoints"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0016-4000-a000-000000000062"
+  group: "Pipeline Board & List"
+  suite: "Deal List"
+  code: CAS-000062
+  pre_condition: "Archived deal with deleted_at set. Active deals present."
+  tc_description: "GET /deals (no params) → archived deal NOT in response. GET /deals?include_archived=true → archived deal IS in response. Assert archived deal's deleted_at field is non-null. Assert no hard DELETE row in DB after archival. Covers CHE-000060."
+  priority: High
+  complexity: Medium
+  test_type: Functional
+  core_custom: Core
+  reason: "Soft-delete visibility — archived deals excluded from default list view"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0016-4000-a000-000000000063"
+  group: "Pipeline Summary"
+  suite: "Win Rate Calculation"
+  code: CAS-000063
+  pre_condition: "10 deals closed in last 30 days: 7 Closed Won, 3 Closed Lost."
+  tc_description: "GET /deals/summary (cache miss path). Assert win_rate_30d = 70.0 (percentage). Assert avg_cycle_time_30d is a non-null positive number (days). Assert total_value sums only active (non-archived, non-terminal) deals. Covers CHE-000025."
+  priority: Medium
+  complexity: Medium
+  test_type: Functional
+  core_custom: Core
+  reason: "Win rate and avg cycle time calculation correctness"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0016-4000-a000-000000000064"
+  group: "Deal Lifecycle Management"
+  suite: "Rep Deactivation"
+  code: CAS-000064
+  pre_condition: "REP_A owns 3 active deals. REP_A is deactivated via User Module."
+  tc_description: "Assert REP_A's 3 deals are automatically flagged (needs_reassignment=true or equivalent). Assert deals are NOT auto-reassigned to another rep. Assert deals still appear in MANAGER's board/list view. Assert MANAGER can bulk reassign flagged deals. Assert REP_A cannot log in (Auth Module). Covers CHE-000065 + BR-02."
+  priority: High
+  complexity: High
+  test_type: Functional
+  core_custom: Core
+  reason: "BR-02 ownership mandate — deals must be flagged (not orphaned) on rep deactivation"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0016-4000-a000-000000000065"
+  group: "Impact & Regression"
+  suite: "Pipeline Stage Cache"
+  code: CAS-000065
+  pre_condition: "Module initialized. Pipeline stages loaded in-memory cache."
+  tc_description: "Assert PipelineStageRepository.findAll() returns 6 stages without hitting DB. Assert stage order is correct (1=New, 2=Qualified, 3=Proposal Sent, 4=Negotiation, 5=Closed Won, 6=Closed Lost). Update stage order in DB (Admin action). Assert findAll() still returns stale order (cache not refreshed). Document: requires module restart to pick up changes. Covers CHE-000053 + IMP-000012."
+  priority: Medium
+  complexity: Medium
+  test_type: Regression
+  core_custom: Core
+  reason: "In-memory stage cache behavior and known limitation documentation"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0016-4000-a000-000000000066"
+  group: "UI Functional"
+  suite: "Confirmation Dialogs"
+  code: CAS-000066
+  pre_condition: "Browser. Deal exists. Authenticated as SALES_MANAGER."
+  tc_description: "Click Archive on deal. Assert modal appears. Click Cancel. Assert no API call fired. Assert deal still active. Click Archive again. Assert modal appears. Click Confirm. Assert DELETE/archive API fires. Assert deal removed from active board. Repeat for bulk reassign: select 2 deals → bulk reassign → modal → Cancel → no API → Confirm → reassignment API fires. Covers CHE-000012."
+  priority: High
+  complexity: Medium
+  test_type: Functional
+  core_custom: Core
+  reason: "Destructive action confirmation dialogs must prevent accidental data loss"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0016-4000-a000-000000000067"
+  group: "Deal Lifecycle Management"
+  suite: "Create Deal"
+  code: CAS-000067
+  pre_condition: "Authenticated as SALES_MANAGER. No deals in system."
+  tc_description: "POST /deals with no assigned_rep_id field → HTTP 400 'assigned_rep_id is required'. POST with assigned_rep_id=null → HTTP 400. Verify deal cannot exist in unassigned state. Covers CHE-000065 + BR-02."
+  priority: High
+  complexity: Low
+  test_type: Functional
+  core_custom: Core
+  reason: "Ownership mandate — assigned_rep_id is required on creation (BR-02)"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0016-4000-a000-000000000068"
+  group: "UI Functional"
+  suite: "DnD Input Compatibility"
+  code: CAS-000068
+  pre_condition: "Browser on macOS with trackpad. Browser on Windows with mouse."
+  tc_description: "Drag deal card using trackpad (macOS): assert drag initiates, card follows cursor, drops into target column. Drag using mouse (Windows): same assertion. Drop deal into same column as origin (no-op): assert no API call fired, board state unchanged. Verify no JS console errors during any drag operation. Covers CHE-000064."
+  priority: Medium
+  complexity: Medium
+  test_type: Functional
+  core_custom: Core
+  reason: "Cross-input DnD compatibility — trackpad and mouse must both work"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0016-4000-a000-000000000069"
+  group: "CSV Export"
+  suite: "Export Key TTL"
+  code: CAS-000069
+  pre_condition: "Async export job completed. Redis key set."
+  tc_description: "After job completion, assert Redis key deal_export:{job_id} is written. Manually expire key (DEL). Call job status endpoint. Assert response: HTTP 404 or { status: 'EXPIRED', message: 'Export expired, please re-export' }. Assert no HTTP 500. Covers CHE-000050 + IMP-000009."
+  priority: Medium
+  complexity: Medium
+  test_type: Regression
+  core_custom: Core
+  reason: "Redis export key TTL expiry must return graceful expired error"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0016-4000-a000-000000000070"
+  group: "Deal Lifecycle Management"
+  suite: "Activity Timeline"
+  code: CAS-000070
+  pre_condition: "Browser. Deal Detail Page loaded. Activity Module running."
+  tc_description: "Click 'Log Activity' button. Assert form opens with deal_id pre-populated. Submit activity (type=Call, subject='Follow-up call'). Assert POST /activities fires with { deal_id: DEAL_UUID, type: 'Call', subject: 'Follow-up call' }. Reload Deal Detail Page. Assert new activity appears in timeline with correct type icon, subject, and timestamp. Covers CHE-000048 + IMP-000007."
+  priority: High
+  complexity: Medium
+  test_type: Functional
+  core_custom: Core
+  reason: "Cross-module activity creation from deal page with correct deal_id linkage"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0016-4000-a000-000000000071"
+  group: "Pipeline Board & List"
+  suite: "Deal List"
+  code: CAS-000071
+  pre_condition: "Deals seeded with value=5000, 15000, 25000. Authenticated as MANAGER."
+  tc_description: "GET /deals?sort_by=value&sort_dir=desc → first item has highest value. GET /deals?sort_by=value&sort_dir=asc → first item has lowest value. GET /deals?sort_by=expected_close_date&sort_dir=asc → first item is earliest close date. Assert sort is stable (consistent between calls with same params). Covers CHE-000015."
+  priority: Medium
+  complexity: Low
+  test_type: Functional
+  core_custom: Core
+  reason: "Multi-column sort correctness on deal list view"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0016-4000-a000-000000000072"
+  group: "Security & RBAC"
+  suite: "Audit Trail"
+  code: CAS-000072
+  pre_condition: "Deal has 1 stage transition record. Admin has direct DB access in test."
+  tc_description: "Assert IDealStageTransitionRepository exposes methods: save(), findByDealId() only. Assert no delete() or update() method exists. Assert no HTTP endpoint DELETE /deals/:id/transitions/:tid exists. Assert DealStageTransitionEntity has no @UpdateDateColumn. Direct DB: attempt UPDATE on deal_stage_transitions record — succeeds at DB level but assert no application pathway to reach this. Covers CHE-000061 + BR-08."
+  priority: High
+  complexity: Medium
+  test_type: Functional
+  core_custom: Core
+  reason: "Audit trail immutability at application layer — no update or delete pathways"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0016-4000-a000-000000000073"
+  group: "Deal Lifecycle Management"
+  suite: "Update Deal"
+  code: CAS-000073
+  pre_condition: "Deal in 'Negotiation' stage. Authenticated as deal owner."
+  tc_description: "PATCH /deals/:id with { expected_close_date: <future date 3 months out> } → HTTP 200. Assert updated close date in DB and response. PATCH /deals/:id with { expected_close_date: <today's date> } → HTTP 200 (today is valid on update). PATCH /deals/:id with { expected_close_date: <yesterday> } → HTTP 400. Covers CHE-000033."
+  priority: Medium
+  complexity: Low
+  test_type: Functional
+  core_custom: Core
+  reason: "Close date update validation — future date enforcement on PATCH"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0016-4000-a000-000000000074"
+  group: "Pipeline Board & List"
+  suite: "Pipeline Board"
+  code: CAS-000074
+  pre_condition: "All 6 stages are empty (no deals)."
+  tc_description: "GET /deals/board returns 6 stage columns each with deal_count=0, total_value=0, deals=[]. Assert no 500 error on empty board. Assert board renders empty columns in correct order. Assert DealCard array is empty list (not null/undefined). Covers CHE-000001."
+  priority: Medium
+  complexity: Low
+  test_type: Functional
+  core_custom: Core
+  reason: "Empty board edge case — all columns empty must render gracefully"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- testcase_id: "11111111-0016-4000-a000-000000000075"
+  group: "Deal Lifecycle Management"
+  suite: "Stage Transition"
+  code: CAS-000075
+  pre_condition: "Deal in 'Negotiation' stage. Authenticated."
+  tc_description: "PATCH /deals/:id/stage { target_stage_id: CLOSED_WON_UUID } → HTTP 200. Assert deals.closed_at = NOW() is set in DB. Assert deals.current_stage_id = CLOSED_WON_UUID. Assert deal_stage_transitions record created. Assert subsequent PATCH /deals/:id with { value: 99000 } → HTTP 400. Assert subsequent PATCH /deals/:id/stage → HTTP 400 DEAL_STAGE_TERMINAL. Covers CHE-000039 + BR-05."
+  priority: High
+  complexity: Medium
+  test_type: Functional
+  core_custom: Core
+  reason: "Closed Won transition with closed_at timestamp and subsequent immutability verification"
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"

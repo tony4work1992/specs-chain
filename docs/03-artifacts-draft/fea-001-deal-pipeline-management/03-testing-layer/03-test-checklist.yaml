@@ -1,0 +1,530 @@
+# FEA-001 — Test Checklist
+# High-level inventory of all criteria to validate before release.
+# Total items must be >= (37 SCO + 13 IMP) = 50. This checklist contains 65 items.
+# Schema: CHE-XXXXXX items typed as Scope or Impact, each referencing the source SCO/IMP.
+
+# ─── SCOPE COVERAGE ───────────────────────────────────────────────────────────
+
+- code: CHE-000001
+  type: Scope
+  item: SCO-000001
+  description: "Verify Pipeline Board renders exactly 6 columns (New, Qualified, Proposal Sent, Negotiation, Closed Won, Closed Lost) in strict fixed order. Assert that column count = 6 and column names match stage configuration. Assert that empty columns still render with deal_count=0 and total_value=0."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000002
+  type: Scope
+  item: SCO-000002
+  description: "Verify drag-and-drop of a deal card from New to Qualified triggers an optimistic UI move and fires PATCH /deals/:id/stage with { target_stage_id: <qualified_stage_uuid> }. Assert card is rendered in Qualified column before server responds. Assert loading state indicator is visible during the request."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000003
+  type: Scope
+  item: SCO-000003
+  description: "Verify optimistic UI rollback: simulate PATCH /deals/:id/stage returning HTTP 400. Assert deal card reverts to its original column. Assert an error toast is displayed with the server's error message. Assert no duplicate card exists in either column after rollback."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000004
+  type: Scope
+  item: SCO-000004
+  description: "Verify Pipeline Summary Bar is visible in DOM for SALES_MANAGER role. Verify it is visible for ADMIN role. Verify it is completely absent from DOM (not hidden via CSS) for SALES_REP role. Assert the bar renders: total_active_deals, total_value, win_rate_30d, avg_cycle_time_30d values from GET /deals/summary response."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000005
+  type: Scope
+  item: SCO-000005
+  description: "Verify Summary Bar auto-refresh polls GET /deals/summary every 30 seconds. Use timer mocking to assert the 2nd API call fires at T+30s. Verify data updates in DOM after refresh. Verify that a failed refresh (simulated network error) keeps the previous data visible with a 'last updated' timestamp rather than showing empty/null values."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000006
+  type: Scope
+  item: SCO-000006
+  description: "Verify Deal Detail Page inline editing: click on 'value' field, assert it changes to an input. Update to 50000, click Save, assert PATCH /deals/:id fires with { value: 50000 }, assert updated value is displayed. Test cancel: edit a field, click Cancel, assert original value is restored without API call. Test contact field: assert it is read-only and click does not trigger input mode."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000007
+  type: Scope
+  item: SCO-000007
+  description: "Verify 14-day staleness warning: seed a deal with stage_entered_at = NOW() - 15 days and staleness_level=WARNING. Assert deal card renders a yellow/amber warning indicator. Assert Deal Detail Page also shows the staleness indicator. Assert deals with stage_entered_at = NOW() - 5 days show NO indicator."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000008
+  type: Scope
+  item: SCO-000008
+  description: "Verify 30-day staleness critical: seed a deal with stage_entered_at = NOW() - 31 days and staleness_level=CRITICAL. Assert deal card renders a red/critical indicator. Assert Closed Won and Closed Lost deals with the same age show NO staleness indicator. Assert WARNING deals (14-29 days) do not show the CRITICAL red indicator."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000009
+  type: Scope
+  item: SCO-000009
+  description: "Verify 'Days in Current Stage' counter: seed a deal with stage_entered_at = NOW() - 7 days. Assert counter displays '7 days'. Seed another deal with stage_entered_at = TODAY. Assert counter displays '0 days'. Assert counter matches the integer difference between today's date and stage_entered_at date (no fractional days)."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000010
+  type: Scope
+  item: SCO-000010
+  description: "Verify duplicate deal warning: create Deal A with title='Acme Q2 Deal', contact_id=CONTACT_UUID. Attempt to create Deal B with same title and contact_id. Assert warning dialog appears before form is saved. Assert warning message references the duplicate deal name. Assert user can dismiss warning and Save — both deals are created. Assert no auto-block occurs."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000011
+  type: Scope
+  item: SCO-000010
+  description: "Verify no duplicate warning for same title + different contact: create Deal A with title='Acme Q2 Deal', contact_id=CONTACT_A. Create Deal B with title='Acme Q2 Deal', contact_id=CONTACT_B (different contact). Assert NO warning dialog appears. Deal B is created without interruption."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000012
+  type: Scope
+  item: SCO-000011
+  description: "Verify confirmation dialog for deal archival: click Archive on a deal, assert a modal appears with text describing the action (e.g., 'Archive this deal?'). Click Cancel, assert no API call is made and deal remains active. Click Confirm, assert DELETE/archive API call is issued. Verify same pattern for bulk reassign: selecting 3 deals + bulk reassign shows modal before API call."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000013
+  type: Scope
+  item: SCO-000012
+  description: "Verify Activity Timeline on Deal Detail Page: seed 3 activities (1 Call, 1 Email, 1 Note) linked to deal. Assert all 3 appear in timeline in chronological order. Assert each entry shows activity type icon, subject, logged date, and user name. Assert 'Log Activity' button is present and opens activity creation form pre-linked to current deal_id."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000014
+  type: Scope
+  item: SCO-000013
+  description: "Verify Stage Transition History: transition a deal New→Qualified→Proposal Sent. Assert history log on Detail Page shows 2 records. Assert each record: from_stage, to_stage, user_name, timestamp. Assert records are in chronological order (oldest first). Assert no edit/delete button exists on any history record for SALES_REP, SALES_MANAGER, and ADMIN roles."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000015
+  type: Scope
+  item: SCO-000014
+  description: "Verify Deal List View: assert table renders with all required columns. Sort by 'value' DESC: assert rows sorted by descending value. Filter by stage_ids=[Qualified_UUID]: assert only Qualified deals returned. Filter by value_min=10000&value_max=50000: assert only deals within range. Assert pagination: page=2&limit=10 returns deals 11-20. Assert total count matches database record count."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000016
+  type: Scope
+  item: SCO-000014
+  description: "Verify SALES_REP list scope restriction in Deal List View: assert SALES_REP user sees ONLY their own deals regardless of query params. Verify SALES_MANAGER sees all team deals. Verify search param 'search=Acme' returns only deals with titles matching 'Acme' via pg_trgm. Assert response time for filtered list is < 500ms at P99."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000017
+  type: Scope
+  item: SCO-000015
+  description: "Verify CSV Export visibility: assert Export button is rendered for SALES_MANAGER. Assert it is rendered for ADMIN. Assert it is NOT in DOM for SALES_REP. Click export with ≤500 rows filter: assert file download triggers. Click export with 501-1000 rows: assert 202 response + toast 'Export processing'. Verify CSV headers match DealListItemDto field names."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000018
+  type: Scope
+  item: SCO-000016
+  description: "Verify POST /deals creates a deal with all valid fields: { title, contact_id, value, currency, expected_close_date, assigned_rep_id, source }. Assert HTTP 201 response. Assert DealResponseDto contains generated UUID id (not sequential integer). Assert deal.current_stage = 'New' (order=1). Assert deals table row count +1 in DB."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000019
+  type: Scope
+  item: SCO-000017
+  description: "Verify GET /deals/:id returns full DealDetailResponseDto: assert all fields present including stage_transitions array. Verify SALES_REP A accessing SALES_REP B's deal UUID returns HTTP 403 DEAL_ACCESS_FORBIDDEN. Verify GET /deals/<random-uuid-that-doesnt-exist> returns HTTP 404. Verify SALES_MANAGER can GET any deal UUID."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000020
+  type: Scope
+  item: SCO-000018
+  description: "Verify PATCH /deals/:id partial update: send only { value: 75000 }, assert only value changes, other fields unchanged. Send { expected_close_date: yesterday }, assert HTTP 400. Attempt to send { contact_id: new_uuid } in PATCH, assert HTTP 400 (contact immutable). Verify updates to terminal-stage deals return HTTP 400."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000021
+  type: Scope
+  item: SCO-000019
+  description: "Verify PATCH /deals/:id/stage happy path: New → Qualified. Assert HTTP 200, assert deal.current_stage_id updated in DB, assert new record in deal_stage_transitions, assert cache invalidated. Verify complete DB transaction atomicity: simulate INSERT to deal_stage_transitions failing, assert deals.current_stage_id was NOT updated (full rollback)."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000022
+  type: Scope
+  item: SCO-000019
+  description: "Verify PATCH /deals/:id/stage stage skip rejection: attempt New → Proposal Sent (skip Qualified). Assert HTTP 400 INVALID_STAGE_TRANSITION. Attempt Negotiation → Closed Won (valid sequential). Assert HTTP 200. Attempt Qualified → Closed Lost (valid exception skip). Assert HTTP 200. Attempt backward transition Proposal Sent → Qualified. Assert HTTP 400."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000023
+  type: Scope
+  item: SCO-000020
+  description: "Verify GET /deals pagination and filtering: page=1&limit=5 returns 5 items with total > 5. Filter stage_ids[]=<new_stage_id> returns only New deals. Filter rep_ids[]=<rep_uuid> returns only that rep's deals. Verify SALES_REP ignores rep_ids param (always returns own deals). Assert total_pages = ceil(total / limit)."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000024
+  type: Scope
+  item: SCO-000021
+  description: "Verify GET /deals/board returns PipelineBoardResponseDto: assert stages array length = 6, each stage has stage_id, stage_name, deal_count, total_value, deals[]. Assert max 50 deals per column. Assert SALES_REP board only shows their assigned deals per column. Verify board renders within 2 seconds for 200 seeded active deals (load test assertion)."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000025
+  type: Scope
+  item: SCO-000022
+  description: "Verify GET /deals/summary cache-aside: first call (cache miss) queries DB and sets Redis key. Assert response contains valid metrics. Second call within 30s (cache hit): assert Redis GET is called, DB query is NOT executed. After cache TTL expires (30s), assert next call triggers fresh DB query and re-populates cache. Assert SALES_REP calling /deals/summary returns HTTP 403."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000026
+  type: Scope
+  item: SCO-000023
+  description: "Verify POST /deals/export: with 100 deals filtered, assert HTTP 200 + Content-Type: text/csv + Content-Disposition: attachment. With 600 deals filtered, assert HTTP 202 + { job_id: uuid }. With 1001 deals filtered, assert HTTP 422 EXPORT_LIMIT_EXCEEDED + { actual_count: 1001 }. Verify async export: after Bull job completes, assert Redis key deal_export:{job_id} contains a valid pre-signed S3 URL."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000027
+  type: Scope
+  item: SCO-000024
+  description: "Verify OwnershipGuard: create 2 reps (REP_A, REP_B). Create deal owned by REP_A. With REP_B JWT: GET /deals/{rep_a_deal_id} → HTTP 403 DEAL_ACCESS_FORBIDDEN. PATCH /deals/{rep_a_deal_id} → HTTP 403. PATCH /deals/{rep_a_deal_id}/stage → HTTP 403. With MANAGER JWT: same endpoints → HTTP 200/success. With ADMIN JWT: same endpoints → HTTP 200/success."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000028
+  type: Scope
+  item: SCO-000025
+  description: "Verify RolesGuard on restricted endpoints: SALES_REP JWT calling GET /deals/summary → HTTP 403. SALES_REP JWT calling POST /deals/export → HTTP 403. SALES_REP JWT calling bulk reassign → HTTP 403. SALES_MANAGER JWT calling all above → HTTP 200/success. Verify 401 precedes 403: unauthenticated request to all endpoints → HTTP 401."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000029
+  type: Scope
+  item: SCO-000026
+  description: "Verify JwtAuthGuard on all endpoints: send requests without Authorization header to POST /deals, GET /deals, GET /deals/:id, PATCH /deals/:id, PATCH /deals/:id/stage, GET /deals/board, GET /deals/summary, POST /deals/export — all must return HTTP 401. Send request with expired JWT → HTTP 401. Send malformed Bearer token → HTTP 401."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000030
+  type: Scope
+  item: SCO-000026
+  description: "Verify UUID format enforcement: call GET /deals/12345 (sequential integer ID) → assert HTTP 400. Call GET /deals/not-a-uuid → HTTP 400. Call PATCH /deals/9999/stage → HTTP 400. Only valid UUID v4 strings must be accepted as :id route param."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000031
+  type: Scope
+  item: SCO-000027
+  description: "Verify UpdateDealStaleness cron job: seed 10 active deals with varying stage_entered_at values (2 NORMAL, 4 WARNING 15+ days, 4 CRITICAL 31+ days). Trigger cron manually. Assert deals table: 4 rows updated to WARNING, 4 to CRITICAL, 2 unchanged. Assert job log output: { scanned: 10, updated: 8 }. Assert archived deals (deleted_at IS NOT NULL) are NOT scanned."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000032
+  type: Scope
+  item: SCO-000028
+  description: "Verify deal value > 0 constraint: POST /deals with { value: 0 } → HTTP 400 validation error. POST /deals with { value: -500 } → HTTP 400. POST /deals with { value: 0.01 } → HTTP 201 accepted. PATCH /deals/:id with { value: 0 } → HTTP 400. Assert UI form shows inline error 'Value must be greater than 0' on blur for zero/negative input."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000033
+  type: Scope
+  item: SCO-000029
+  description: "Verify expected_close_date is today or future: POST /deals with expected_close_date = yesterday's date → HTTP 400 'Expected close date cannot be in the past'. POST with today's date → HTTP 201 accepted. POST with date 1 year in future → HTTP 201 accepted. Assert validation is server-side (bypass UI and send raw API request with past date). Assert PATCH /deals/:id with past close date also returns HTTP 400."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000034
+  type: Scope
+  item: SCO-000030
+  description: "Verify title is required: POST /deals with title='' (empty string) → HTTP 400. POST /deals with title='   ' (whitespace only) → HTTP 400. POST /deals with title=null → HTTP 400. POST /deals with valid title='Deal XYZ' → HTTP 201. Assert UI form blocks submission when title field is empty."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000035
+  type: Scope
+  item: SCO-000031
+  description: "Verify contact_id is a valid existing reference: POST /deals with contact_id='not-a-uuid' → HTTP 400. POST /deals with contact_id=valid_uuid_but_nonexistent → HTTP 422 CONTACT_NOT_FOUND. POST /deals with valid existing contact_id → HTTP 201. Attempt PATCH /deals/:id with { contact_id: new_valid_uuid } → HTTP 400 (contact is immutable after creation)."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000036
+  type: Scope
+  item: SCO-000032
+  description: "Verify assigned_rep_id references active SALES_REP: POST /deals with assigned_rep_id referencing an ADMIN user → HTTP 422. POST with deactivated rep UUID → HTTP 422. POST with valid active SALES_REP UUID → HTTP 201. Deactivate a rep after deal creation: assert their existing deals are flagged (staleness or reassignment_needed=true field) without being auto-reassigned."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000037
+  type: Scope
+  item: SCO-000033
+  description: "Verify target_stage_id DTO validation: PATCH /deals/:id/stage with target_stage_id='not-uuid' → HTTP 400 'target_stage_id must be a UUID'. PATCH with target_stage_id=null → HTTP 400. PATCH with target_stage_id=valid_uuid_nonexistent_stage → HTTP 422 STAGE_NOT_FOUND. PATCH with target_stage_id=valid_uuid_skip_stage → HTTP 400 INVALID_STAGE_TRANSITION."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000038
+  type: Scope
+  item: SCO-000034
+  description: "Verify sequential stage progression (BR-01): New(1)→Qualified(2) ✓, New(1)→Proposal Sent(3) ✗ HTTP 400, New(1)→Closed Lost ✓ (exception), Negotiation(4)→Closed Won(5) ✓, Closed Won(5)→any stage ✗ HTTP 400 DEAL_STAGE_TERMINAL, Proposal Sent(3)→Qualified(2) ✗ HTTP 400 (backward), Qualified(2)→Closed Lost ✓ (exception). All transitions must write audit record on success."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000039
+  type: Scope
+  item: SCO-000035
+  description: "Verify terminal stage immutability (BR-05): transition deal to Closed Won. Assert PATCH /deals/:id/stage with any target_stage_id returns HTTP 400 DEAL_STAGE_TERMINAL. Assert PATCH /deals/:id for field edits also returns HTTP 400. Assert UI hides/disables stage transition drag on terminal deals. Assert Closed Lost also blocks all transitions. Assert deal.closed_at is set in DB when transitioning to terminal stage."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000040
+  type: Scope
+  item: SCO-000036
+  description: "Verify CSV export row limit (C-03): POST /deals/export with filter returning exactly 1000 rows → HTTP 200/202 (success). POST /deals/export with filter returning 1001 rows → HTTP 422 EXPORT_LIMIT_EXCEEDED with { actual_count: 1001 }. Verify response body includes guidance to narrow the filter. Verify the row count check happens BEFORE generating the CSV (no partial CSV generation)."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000041
+  type: Scope
+  item: SCO-000037
+  description: "Verify SALES_REP scope restriction (BR-06): REP_A calls GET /deals with rep_ids=[REP_B_UUID] → assert response contains only REP_A's deals (controller forces override). REP_A calls GET /deals/:id for REP_B's deal → HTTP 403. REP_A calls PATCH /deals/:id for REP_B's deal → HTTP 403. REP_A calls PATCH /deals/:id/stage for REP_B's deal → HTTP 403. All enforced server-side — not just hidden in UI."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+# ─── IMPACT COVERAGE ──────────────────────────────────────────────────────────
+
+- code: CHE-000042
+  type: Impact
+  item: IMP-000001
+  description: "Verify POST /deals with valid contact_id succeeds when Contact Module is healthy. Mock IContactQueryService to return null for a valid-format UUID and verify HTTP 422 CONTACT_NOT_FOUND is returned cleanly. Assert no HTTP 500 is thrown when Contact Module returns null. Verify FK constraint error at DB level produces a readable 422, not an unhandled 500."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000043
+  type: Impact
+  item: IMP-000002
+  description: "Verify DealMapper graceful degradation: mock IContactQueryService to return null on GET /deals/:id. Assert response still returns HTTP 200 with contact_name=null or empty string rather than throwing TypeError. Assert no 500 error when company summary is unavailable. Verify deal list items with unresolvable contact/company show 'Unknown' placeholder values rather than crashing."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000044
+  type: Impact
+  item: IMP-000003
+  description: "Verify JWT payload structure dependency: create a JWT with role renamed to 'roles' (array). Assert OwnershipGuard correctly fails (returns 403, does NOT allow access as fail-open). Assert RolesGuard also fails correctly. Verify that if req.user.id is undefined (malformed token), no deal data is returned. This is a security test — fail-open (allowing access when role is undefined) is a critical defect."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000045
+  type: Impact
+  item: IMP-000004
+  description: "Verify CacheInvalidationService graceful degradation: mock IUserQueryService.getManagerForRep() to throw an exception. Assert that POST /deals still returns HTTP 201 (write operation succeeds). Assert that PATCH /deals/:id/stage still returns HTTP 200. Assert that the cache invalidation failure is logged with error level but does NOT propagate as HTTP 500 to the client. Redis cache may be stale but the write must succeed."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000046
+  type: Impact
+  item: IMP-000005
+  description: "Verify assigned_rep_id validation against User Module: mock IUserQueryService to return a user with role=ADMIN for a given UUID. Assert POST /deals returns HTTP 422 'Assigned user must have SALES_REP role'. Mock deactivated user (status=INACTIVE). Assert POST /deals returns HTTP 422 'Assigned user is not active'. Mock user not found. Assert HTTP 422 'Assigned user not found'."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000047
+  type: Impact
+  item: IMP-000006
+  description: "Verify Activity Timeline graceful degradation: mock IActivityQueryService to return an empty array for a deal with seeded activities (simulates FEA-002 API failure). Assert Deal Detail Page renders with an empty activity list and a 'No activities logged' placeholder. Assert no HTTP 500 is thrown. Verify the deal's other data (fields, stage history) still renders correctly when activity service is unavailable."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000048
+  type: Impact
+  item: IMP-000007
+  description: "Verify Log Activity cross-module linkage: from Deal Detail Page, click Log Activity, submit the form. Assert the resulting POST /activities request body includes { deal_id: <current_deal_uuid> }. Verify the created activity appears in the activity timeline on reload. Assert that if the POST /activities call fails, the Deal Detail Page shows an error toast rather than crashing."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000049
+  type: Impact
+  item: IMP-000008
+  description: "Verify Redis OOM graceful degradation on write operations: mock PipelineSummaryCacheRepository.invalidate() to throw a Redis connection error. Assert POST /deals returns HTTP 201 (write succeeds). Assert PATCH /deals/:id returns HTTP 200. Assert PATCH /deals/:id/stage returns HTTP 200. Assert error is logged. Assert no HTTP 500 is propagated. The DB write must be durable even when Redis is unavailable."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000050
+  type: Impact
+  item: IMP-000009
+  description: "Verify Redis export job key TTL handling: after Bull export job completes, assert Redis key deal_export:{jobId} is written with correct download_url. Simulate TTL expiry by deleting the key. Assert the job status endpoint returns a 'Export expired, please re-export' error (not a 500). Assert the key is set with explicit TTL (not indefinite persistence). Verify TTL value matches defined expiry constant."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000051
+  type: Impact
+  item: IMP-000010
+  description: "Verify Bull queue async export resilience: dispatch export job. Mock DealCsvExportAdapter to throw on S3 upload. Assert Bull retries the job per retry policy. After max retries, assert job status transitions to 'FAILED'. Assert the controller returned HTTP 202 immediately without waiting for job completion. Verify that failed jobs are visible in Bull dashboard and do not block subsequent export jobs."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000052
+  type: Impact
+  item: IMP-000011
+  description: "Verify DealCsvExportAdapter S3 error handling: mock S3Client PutObjectCommand to throw AccessDenied error. Assert ExportDealsCommand catches the error and marks Bull job as FAILED (does not crash worker). Mock GetSignedUrlCommand to fail. Assert download_url is NOT written to Redis when URL generation fails. Assert adapter returns a typed error (not throws unhandled exception) so the caller can handle gracefully."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000053
+  type: Impact
+  item: IMP-000012
+  description: "Verify PipelineStageRepository in-memory cache: assert stage data is loaded exactly once on module init. Assert findAll() returns cached stages without a DB query on subsequent calls. Simulate Admin stage config change (update order) in DB without module restart. Assert findAll() still returns stale cache. Assert this is documented as a known limitation requiring module restart to pick up stage changes."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000054
+  type: Impact
+  item: IMP-000013
+  description: "Verify TypeORM migration integrity: run all migrations on a clean database. Assert deals table has: id (UUID, PK), title (varchar, NOT NULL), value (numeric, NOT NULL), contact_id (UUID, FK→contacts.id), assigned_rep_id (UUID, FK→users.id), current_stage_id (UUID, FK→pipeline_stages.id), deleted_at (timestamp, nullable for soft-delete), stage_entered_at (timestamp). Assert pg_trgm index exists on title column. Assert deal_stage_transitions.transitioned_at has an index."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+# ─── ADDITIONAL NFR + SECURITY + CROSS-CUTTING ITEMS ──────────────────────────
+
+- code: CHE-000055
+  type: Scope
+  item: SCO-000021
+  description: "Performance: Seed 200 active deals distributed across 6 stages. GET /deals/board with MANAGER JWT. Assert total response time < 2000ms at P99. Assert response JSON is valid PipelineBoardResponseDto. Assert each stage column contains correct deal_count and total_value. Measure DB query count (should be ≤ 8 queries: 1 for stages + 1 per stage for deals)."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000056
+  type: Scope
+  item: SCO-000019
+  description: "Performance: Execute PATCH /deals/:id/stage (New→Qualified) under load. Assert P99 response time < 800ms. Measure using k6 or Artillery: 50 concurrent users each transitioning a different deal. Assert no HTTP 500s under concurrent load. Assert deal_stage_transitions table has exactly N records matching N successful transitions."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000057
+  type: Scope
+  item: SCO-000020
+  description: "Performance: GET /deals with search=common_keyword hitting pg_trgm index on 10,000 seeded deals. Assert response time < 500ms at P99. Assert EXPLAIN ANALYZE output uses the GIN index (not sequential scan). Assert pagination limit=50 returns exactly 50 items when total > 50."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000058
+  type: Scope
+  item: SCO-000026
+  description: "Security: Attempt to enumerate deals by sequential integer ID (GET /deals/1, GET /deals/2). Assert HTTP 400 for non-UUID IDs. Assert all deal IDs in API responses are UUID v4 format. Verify no endpoint returns internal DB row IDs or sequential counters. Assert UUID validation is applied at the DTO/pipe level before any DB query is executed."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000059
+  type: Scope
+  item: SCO-000024
+  description: "Security: Craft a JWT with role=SALES_MANAGER but userId belonging to a SALES_REP. Verify OwnershipGuard uses the role from the JWT to determine bypass eligibility. Attempt privilege escalation by manually setting role=ADMIN in a forged/unsigned JWT. Assert all endpoints return HTTP 401 for invalid JWT signature. Assert no endpoint trusts role from query params or request body instead of JWT."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000060
+  type: Scope
+  item: SCO-000016
+  description: "Verify soft-delete (C-01): archive a deal via the archive endpoint. Assert deal.deleted_at is set in DB (not null). Assert GET /deals does NOT return the archived deal in active list. Assert GET /deals with archived=true filter DOES return it. Assert GET /deals/:id for archived deal returns 404 in active context. Assert no hard DELETE query is issued against the deals table."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000061
+  type: Scope
+  item: SCO-000013
+  description: "Verify audit trail immutability (BR-08): transition a deal New→Qualified. Assert deal_stage_transitions record is inserted. Attempt direct DB update on that record (simulate admin SQL access). Verify the application layer has no UPDATE/DELETE endpoint for deal_stage_transitions. Assert the repository interface (IDealStageTransitionRepository) exposes only save() and findByDealId() — no delete() method."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000062
+  type: Scope
+  item: SCO-000019
+  description: "Verify concurrent stage transition race condition: simultaneously fire 2 PATCH /deals/:id/stage requests on the same deal from 2 different clients. Assert only ONE transition succeeds (HTTP 200) and the other receives HTTP 409 CONFLICT or HTTP 400 (optimistic locking or DB transaction serialization). Assert exactly 1 new record in deal_stage_transitions. Assert deal.current_stage_id is consistent (not split-brain)."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000063
+  type: Scope
+  item: SCO-000014
+  description: "WCAG 2.1 AA: verify Pipeline Board and Deal List View meet contrast ratio ≥ 4.5:1 for text on backgrounds. Assert staleness warning (amber) and critical (red) indicator colors pass AA contrast check against card background. Verify all buttons and form inputs have visible focus indicators. Verify drag-and-drop works with keyboard navigation (keyboard trap avoidance)."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000064
+  type: Scope
+  item: SCO-000002
+  description: "Cross-input drag-and-drop: verify board drag-and-drop functions on trackpad (macOS). Verify it functions with mouse (Windows/Linux). Verify it is NOT tested for mobile touch (explicitly out of scope for MVP per BRD). Assert no JavaScript errors occur when a deal card is dropped into the same column it was dragged from (no-op drop)."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"
+
+- code: CHE-000065
+  type: Scope
+  item: SCO-000016
+  description: "Verify deal ownership mandate (BR-02): create a deal. Deactivate the assigned_rep. Assert deal is flagged (e.g., needs_reassignment=true) automatically. Assert flagged deals appear in a 'Needs Reassignment' view for Managers. Assert deal is NOT auto-reassigned. Assert creating a deal without assigned_rep_id returns HTTP 400 'assigned_rep_id is required'."
+  requestVersion: "2026.04.06 21.00.00"
+  version: "2026.04.06 21.00.00"
+  parentVersion: "2026.04.06 21.00.00"

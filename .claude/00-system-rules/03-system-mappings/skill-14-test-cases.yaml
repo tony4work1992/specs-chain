@@ -1,0 +1,25 @@
+_description: System Mapping for Skill 12 — Test Cases Generation
+skill-id: '14'
+name: Test Cases Generation
+inputs:
+  foundation:
+    - 04-knowledge-prod/domain-architecture/_system/05-infrastructure-and-cicd/05-infrastructure-and-cicd.md
+    - 04-knowledge-prod/domain-architecture/_system/09-observability-and-monitoring/09-observability-and-monitoring.md
+  rules:
+    - 00-system-rules/01-governance/00-idempotency-lock-rule.md
+    - 00-system-rules/01-governance/output-quality-rules.md
+    - 00-system-rules/01-governance/naming-conventions.md
+    - 00-system-rules/01-governance/anti-patterns.md
+  blueprints:
+    - 02-execution-workflows/scaffolding/feature-scaffold-blueprint.yaml
+  prompts:
+    - 00-system-rules/02-prompt-templates/skill-14-test-cases.md
+  knowledge:
+    - 04-knowledge-prod/_index/manifest.yaml
+    - 04-knowledge-prod/_index/by-domain.yaml
+  templates:
+    - 00-system-rules/04-artifact-templates/03-testing-requirement/05-test-cases-template.yaml
+output:
+  draft: 03-artifacts-draft/{folder-name}/03-testing-layer/test-cases.yaml
+  snapshot: 03-artifacts-draft/{folder-name}/03-testing-layer/.snapshots/
+execution_rule: Generate draft artifact based on inputs, template, and prompt. If exists, copy old version to .snapshots.

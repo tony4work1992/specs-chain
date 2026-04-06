@@ -1,0 +1,47 @@
+$schema: http://json-schema.org/draft-07/schema#
+title: Impact Item Array Schema
+type: array
+items:
+  type: object
+  required:
+    - code
+    - systemName
+    - componentName
+    - elementName
+    - description
+    - requestVersion
+    - version
+    - parentVersion
+  properties:
+    code:
+      type: string
+      pattern: ^IMP-\d{6}$
+      description: Unique identifier for the Impact item (e.g., IMP-000001)
+    systemName:
+      type: string
+      description: Applicable system name
+    componentName:
+      type: string
+      enum:
+        - UI Item
+        - API
+        - UI Validation rules
+      description: Component type of the system
+    elementName:
+      type: string
+      description: Specific element name (UI, Endpoint, or Rule)
+    description:
+      type: string
+      description: Function description or requirement of the Impact item
+    requestVersion:
+      type: string
+      pattern: ^\d{4}\.\d{2}\.\d{2} \d{2}\.\d{2}\.\d{2}$
+      description: Version of the request (e.g., 2026.04.02 11.30.00)
+    version:
+      type: string
+      pattern: ^\d{4}\.\d{2}\.\d{2} \d{2}\.\d{2}\.\d{2}$
+      description: Version of the current document (e.g., 2026.04.02 11.30.00)
+    parentVersion:
+      type: string
+      pattern: ^\d{4}\.\d{2}\.\d{2} \d{2}\.\d{2}\.\d{2}$
+      description: Version of the parent document used as source (e.g., 2026.04.02 11.30.00)

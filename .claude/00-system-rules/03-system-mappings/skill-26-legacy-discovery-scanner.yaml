@@ -1,0 +1,15 @@
+_description: System Mapping for Skill 26 — Legacy Discovery Scanner
+skill-id: '26'
+name: Legacy Discovery Scanner
+inputs:
+  rules:
+    - 00-system-rules/01-governance/00-idempotency-lock-rule.md
+  prompts:
+    - 00-system-rules/02-prompt-templates/skill-26-legacy-discovery-scanner.md
+  legacy_code:
+    - "{target_dir}" # Parameterized target directory passed by user via CLI
+  templates:
+    - 00-system-rules/04-artifact-templates/01-execution-trackers/ingestion-coverage-tracker.md
+output:
+  draft: docs/03-artifacts-draft/
+execution_rule: Execute blind globbing to find architectural patterns and output into discovery report.

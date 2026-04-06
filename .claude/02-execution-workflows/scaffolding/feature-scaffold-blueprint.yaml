@@ -1,0 +1,301 @@
+_description: |
+  Canonical folder and file structure for every new feature. When a delivery request arrives, the Agent reads this file to know what folders to scaffold, what files to generate, and in what order.
+_version: '2026-04-04'
+naming:
+  request-code: aipd-{6-digit-zero-padded}
+  feature-slug: kebab-case-descriptive-name
+  folder-name: '{request-code}-{feature-slug}'
+  file-name: kebab-case-descriptive.{yaml|md}
+  knowledge-file: '{request-code}-{artifact-code}-{slug}.{yaml|md}'
+  snapshot-file: '{artifact-name}-{YYYY-MM-DD-HH-mm-ss}.{yaml|md}'
+draft-structure:
+  root: docs/03-artifacts-draft/{folder-name}/
+  layers:
+    00-project-foundation:
+      description: SYSTEM BASE — Architectural constraints and rules
+      snapshots: false
+      files:
+        - name: 01-business-and-constraints.md
+          skill: "02"
+          required: true
+        - name: 02-architecture-patterns.md
+          skill: "02"
+          required: true
+        - name: 03-technology-stack.md
+          skill: "02"
+          required: true
+        - name: 04-project-structure-and-conventions.md
+          skill: "02"
+          required: true
+        - name: 05-infrastructure-and-cicd.md
+          skill: "02"
+          required: true
+        - name: 06-networking-and-security.md
+          skill: "02"
+          required: true
+        - name: 07-cost-management.md
+          skill: "02"
+          required: true
+        - name: 08-design-system-and-ui.md
+          skill: "02"
+          required: true
+        - name: 09-observability-and-monitoring.md
+          skill: "02"
+          required: true
+    01-business-layer:
+      description: WHY & WHAT — Business requirements and context
+      snapshots: true
+      files:
+        - name: end-user-requirement.md
+          skill: "03"
+          required: true
+        - name: end-user-requirement-auditor.md
+          skill: "04"
+          required: true
+        - name: business-requirement-document.md
+          skill: "05"
+          required: true
+    02-technical-layer:
+      description: HOW — Technical specifications and system design
+      snapshots: true
+      files:
+        - name: system-context-information.md
+          skill: "06"
+          required: true
+        - name: system-context-auditor.md
+          skill: "07"
+          required: true
+        - name: functional-requirement-document.md
+          skill: "08"
+          required: true
+        - name: functional-requirement-auditor.md
+          skill: "09"
+          required: true
+        - name: functional-specifications.yaml
+          skill: "10"
+          required: true
+    03-testing-layer:
+      description: VERIFY — Test strategy and execution specs
+      snapshots: true
+      files:
+        - name: test-scope.yaml
+          skill: "11"
+          required: true
+        - name: test-impact.yaml
+          skill: "12"
+          required: true
+        - name: test-checklist.yaml
+          skill: "13"
+          required: true
+        - name: test-cases.yaml
+          skill: "14"
+          required: true
+        - name: test-steps.yaml
+          skill: "15"
+          required: true
+    04-architecture-layer:
+      description: STRUCTURE — Software architecture and design
+      snapshots: true
+      files:
+        - name: ui-component-architecture.yaml
+          skill: "16"
+          required: false
+        - name: strategic-architecture.md
+          skill: "17"
+          required: true
+        - name: api-tactic-architecture.yaml
+          skill: "18"
+          required: true
+        - name: flow-sequence-architecture.md
+          skill: "19"
+          required: true
+knowledge-structure:
+  domain-business:
+    path: docs/04-knowledge-prod/domain-business/{feature-slug}/
+    sub-folders:
+      - requirements
+      - rules
+      - user-stories
+  domain-technical:
+    path: docs/04-knowledge-prod/domain-technical/{feature-slug}/
+    sub-folders:
+      - api-specs
+      - system-context
+      - functional-specs
+  domain-model:
+    path: docs/04-knowledge-prod/domain-model/{feature-slug}/
+    sub-folders:
+      - entities
+      - invariants
+      - queries
+  domain-architecture:
+    path: docs/04-knowledge-prod/domain-architecture/{feature-slug}/
+    sub-folders:
+      - frontend
+      - backend
+      - flows
+  domain-testing:
+    path: docs/04-knowledge-prod/domain-testing/{feature-slug}/
+    sub-folders:
+      - cases
+      - checklist
+      - impact
+      - scope
+      - steps
+      - unit
+      - integration
+      - e2e
+      - regression
+execution-workflow:
+  modes:
+    manual-sequential: Execute skills explicitly in sequential numerical order. Used for batch running without feedback loops.
+    autonomous-loop: Execute using the defined State Machine. Stop dynamically if validation fails, request input, patch, and resume.
+  phases:
+    phase-0-foundation:
+      description: Define SYSTEM ROOT before Feature implementation
+      states:
+        state-1-scaffold:
+          action: Interactive Q&A to generate 9 Foundation documents
+          skill: "02"
+        state-2-sync-foundation:
+          action: Automatically sync Foundation drafts directly into Production Knowledge Base
+          skill: "20"
+    phase-1-business:
+      description: Understand WHY and WHAT with validation gating
+      states:
+        state-1-generate:
+          action: Generate End User Requirement
+          skill: "03"
+        state-2-validate:
+          action: Check End User Requirement. If Pass -> Goto state-3. If Fail -> Goto state-2a
+          skill: "04"
+        state-2a-wait-and-patch:
+          action: Wait for User Input -> Skill 2 stores Pre-Patch Snapshot -> Skill 2 writes independent Audit Summary Log -> Skill 2 generates updated pure End User Req -> Goto state-2
+          skill: "04"
+        state-3-finalize:
+          action: Generate BRD
+          skill: "05"
+    phase-2-technical:
+      description: Define HOW with validation gating
+      states:
+        state-1-generate-context:
+          skill: "06"
+        state-2-validate-context:
+          skill: "07"
+          action: If Fail -> Wait for User Input -> Skill 5 creates Snapshot & independent Audit Log -> Skill 5 patches pure Context doc -> Verify (Goto state-2)
+        state-3-generate-functional:
+          skill: "08"
+        state-4-validate-functional:
+          skill: "09"
+          action: If Fail -> Wait for User Input -> Skill 7 creates Snapshot & independent Audit Log -> Skill 7 patches pure Functional doc -> Verify (Goto state-4)
+        state-5-specifications:
+          skill: "10"
+    phase-3-testing:
+      description: Define HOW TO VERIFY (Sequential)
+      states:
+        state-1:
+          skill: "11"
+        state-2:
+          skill: "12"
+        state-3:
+          skill: "13"
+        state-4:
+          skill: "14"
+        state-5:
+          skill: "15"
+    phase-4-architecture:
+      description: Define STRUCTURE (Sequential)
+      states:
+        state-1:
+          skill: "16"
+        state-2:
+          skill: "17"
+        state-3:
+          skill: "18"
+        state-4:
+          skill: "19"
+    phase-5-knowledge-sync:
+      description: Promote approved drafts to production knowledge
+      trigger: USER MUST explicitly request this
+      states:
+        state-1-sync:
+          skill: "20"
+    phase-6-execution:
+      description: Generate physical source code and perform static audits
+      trigger: Knowledge Sync MUST be completed first
+      states:
+        state-1-codegen-db:
+          skill: "23"
+          layer: database
+        state-2-codegen-backend:
+          skill: "23"
+          layer: backend
+        state-3-codegen-frontend:
+          skill: "23"
+          layer: frontend
+        state-4-audit:
+          skill: "24"
+done-criteria:
+  minimum-viable:
+    description: Enough to start implementation (MVP)
+    required-files:
+      - 01-business-layer/end-user-requirement.md
+      - 01-business-layer/business-requirement-document.md
+      - 02-technical-layer/functional-requirement-document.md
+      - 02-technical-layer/functional-specifications.yaml
+      - 04-architecture-layer/strategic-architecture.md
+    file-count: 5
+  implementation-ready:
+    description: Enough for AI code generation
+    required-files:
+      - all minimum-viable files
+      - 02-technical-layer/system-context-information.md
+      - 03-testing-layer/test-cases.yaml
+      - 04-architecture-layer/api-tactic-architecture.yaml
+      - 04-architecture-layer/flow-sequence-architecture.md
+    file-count: 9
+  full-completion:
+    description: Complete feature documentation
+    required-files:
+      - all implementation-ready files
+      - 01-business-layer/end-user-requirement-auditor.md
+      - 02-technical-layer/system-context-auditor.md
+      - 02-technical-layer/functional-requirement-auditor.md
+      - 03-testing-layer/test-scope.yaml
+      - 03-testing-layer/test-impact.yaml
+      - 03-testing-layer/test-checklist.yaml
+      - 03-testing-layer/test-steps.yaml
+      - 04-architecture-layer/ui-component-architecture.yaml
+      - knowledge-synced: true
+    file-count: 18
+
+# ─── QUICK START CHECKLIST ────────────────────────────────────────
+# When Agent receives a new delivery request:
+# 
+# [PRE-FLIGHT GUARDRAIL]
+# 0. STRICT DEPENDENCY DUAL-INTERLOCK: 
+#    -> GLOBAL: Before executing ANY Feature Skill (01 to 19), the AI MUST verify that Project Foundation (`03-artifacts-draft/00-project-foundation/`) exists via `FOUNDATION-TRACKER.md`. If missing, HALT.
+#    -> LOCAL: Before executing ANY Skill, the AI MUST read `docs/01-execution-tickets/_trackers/TRACKER-FEA-{request}.md` (or `FOUNDATION-TRACKER.md`). If the sequentially preceding Skill is NOT checked off `[x]`, the AI MUST refuse execution, HALT the pipeline.
+#    -> If Tracker is missing, copy `foundation-tracker-template.md` (for Foundation) or `fea-tracker-template.md` (for FEA request) from `.agents/00-system-rules/04-artifact-templates/01-execution-trackers/`.
+# [AUTONOMOUS MODE]
+# 1. READ 01-execution-tickets/{request}.md
+# 2. CREATE draft-structure folders in 03-artifacts-draft/
+# 3. Follow the execution-workflow phases using the internal State Machine loop.
+# 4. If a Validation state fails, wait for user input -> The Auditor Skill saves Snapshot & Audit Summary -> The Auditor Skill updates the pure Base Artifact -> repeat validation.
+# 5. WAIT for user to trigger Knowledge Sync (Skill 19).
+# 6. CRITICAL POST-EXECUTION TASKS:
+#    a. Check off the corresponding box in `01-execution-tickets/_trackers/TRACKER-{request}.md`
+#    b. Create an Execution Summary `.md` at: `.agents/02-execution-workflows/execution-summaries/YYYY-MM-DD-SKILL-[ID]-[request].md` (Report Input Traces, Output Traces, Effort).
+#    c. Append a new timestamped log entry to BOTH CSV Logs (Global and Project).
+#    FORMAT for CSV: "YYYY-MM-DD HH:MM:SS","SKILL-[ID]","[Status]","[Output File Paths]","[Path/To/The/Generated/Summary.md]"
+#    DO NOT dump raw summary text into the CSV! Only provide the URL/Path.
+#
+# [MANUAL MODE]
+# 1. Execute Skills exactly in order from F1, or 01 to 18 sequentially.
+# 2. Skip state machine conditional loops.
+# 3. CRITICAL POST-EXECUTION TASKS:
+#    a. Check off the corresponding box in `01-execution-tickets/_trackers/TRACKER-{request}.md`
+#    b. Create an Execution Summary `.md` at: `.agents/02-execution-workflows/execution-summaries/YYYY-MM-DD-SKILL-[ID]-[request].md` (Report Input Traces, Output Traces, Effort).
+#    c. Append a new timestamped log entry to BOTH CSV Logs (Global and Project).
+#    FORMAT for CSV: "YYYY-MM-DD HH:MM:SS","SKILL-[ID]","[Status]","[Output File Paths]","[Path/To/The/Generated/Summary.md]"
+#    DO NOT dump raw summary text into the CSV! Only provide the URL/Path.

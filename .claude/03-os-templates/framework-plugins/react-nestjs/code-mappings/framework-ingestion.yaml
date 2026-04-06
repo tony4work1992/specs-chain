@@ -1,0 +1,33 @@
+# Phase 0: Legacy Browser & Ingestion Mapping (Brownfield Projects)
+# This mapping dictates how AST Reverse Engineers extract pure signals from chaotic legacy repositories.
+# Engineers must refine this file based on the Discovery Report before triggering Skill 27.
+# ---
+
+variables:
+  backend_root: "server"    # Change if backend legacy code is in e.g. "api"
+  frontend_root: "client"   # Change if frontend legacy code is in e.g. "web"
+
+ingestion_routing:
+  # --- 1. DOMAIN MODEL INGESTION (ENTITIES / DB SCHEMA) ---
+  - source_code_dir: "{backend_root}/src/modules/{feature-slug}/domain/entities/*.entity.ts"
+    ast_parser: "typeorm-entity-analyzer"
+    extraction_layer: "PROPERTIES_AND_RELATIONS"
+    target_knowledge: "04-knowledge-prod/domain-model/{feature-slug}/"
+
+  # --- 2. API TACTIC ARCHITECTURE INGESTION ---
+  - source_code_dir: "{backend_root}/src/modules/{feature-slug}/infrastructure/controllers/*.controller.ts"
+    ast_parser: "nestjs-controller-analyzer"
+    extraction_layer: "ROUTES_DTOS_INJECTIONS"
+    target_knowledge: "04-knowledge-prod/domain-architecture/{feature-slug}/backend/"
+
+  # --- 3. UI COMPONENT ARCHITECTURE INGESTION ---
+  - source_code_dir: "{frontend_root}/src/features/{feature-slug}/ui/components/*.tsx"
+    ast_parser: "react-fsd-analyzer"
+    extraction_layer: "PROPS_STATE_HOOKS"
+    target_knowledge: "04-knowledge-prod/domain-architecture/{feature-slug}/frontend/"
+
+  # --- 4. STRATEGIC DEPENDENCY INGESTION ---
+  - source_code_dir: "./docker-compose.yml" # Or root package.json
+    ast_parser: "docker-package-analyzer"
+    extraction_layer: "SERVICES_AND_PORTS"
+    target_knowledge: "04-knowledge-prod/domain-architecture/_system/"

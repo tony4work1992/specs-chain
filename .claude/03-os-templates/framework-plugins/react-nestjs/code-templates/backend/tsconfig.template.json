@@ -1,0 +1,5 @@
+{
+  "_trace": "{strategic-architecture}",
+  "_implements": "04-knowledge-prod/domain-architecture/_system/strategic-architecture.yaml",
+  "description": "Agentic OS generated template - AI Agent to implement logic here autonomously"
+}

@@ -1,0 +1,187 @@
+# Phase 2 Framework-Specific Orchestration (The Boundaries Layer)
+# This file tells the Agentic OS where to physically place generated code based on the Knowledge Base.
+# ---
+# PROJECT ROOT CONFIGURATIONS
+# Note: These variables belong to the PROJECT. When this file is copied to docs/05-support-assets/ 
+# by Skill 22, the engineering team can modify these variables to match their Monorepo/Microservices setup.
+variables:
+  backend_root: "server"    # Change to "apps/api" or "microservices/auth" if needed
+  frontend_root: "client"   # Change to "apps/web" if needed
+
+framework: "react-nestjs-v1"
+
+backend_routing:
+  # --- 1. DOMAIN LAYER ---
+  - source_knowledge: "04-knowledge-prod/domain-model/{feature-slug}/*"
+    target_code_dir: "{backend_root}/src/modules/{feature-slug}/domain/entities/"
+    file_extension: ".entity.ts"
+    template: "backend/entity.template.ts"
+
+  - source_knowledge: "04-knowledge-prod/domain-model/{feature-slug}/*"
+    target_code_dir: "{backend_root}/src/modules/{feature-slug}/domain/repositories/"
+    file_extension: ".repository.ts"
+    template: "backend/repository.interface.ts"
+
+  - source_knowledge: "04-knowledge-prod/domain-architecture/{feature-slug}/backend/api-tactic-architecture.yaml"
+    target_code_dir: "{backend_root}/src/modules/{feature-slug}/domain/constants/"
+    file_extension: ".constant.ts"
+    template: "backend/constant.template.ts"
+
+  - source_knowledge: "04-knowledge-prod/domain-architecture/{feature-slug}/backend/api-tactic-architecture.yaml"
+    target_code_dir: "{backend_root}/src/modules/{feature-slug}/domain/interfaces/"
+    file_extension: ".interface.ts"
+    template: "backend/interface.template.ts"
+
+  # --- 2. APPLICATION LAYER ---
+  - source_knowledge: "04-knowledge-prod/domain-architecture/{feature-slug}/backend/api-tactic-architecture.yaml"
+    target_code_dir: "{backend_root}/src/modules/{feature-slug}/application/use-cases/"
+    file_extension: ".use-case.ts"
+    template: "backend/use-case.template.ts"
+
+  - source_knowledge: "04-knowledge-prod/domain-architecture/{feature-slug}/backend/api-tactic-architecture.yaml"
+    target_code_dir: "{backend_root}/src/modules/{feature-slug}/application/dtos/"
+    file_extension: ".dto.ts"
+    template: "backend/dto.template.ts"
+
+  - source_knowledge: "04-knowledge-prod/domain-model/{feature-slug}/*"
+    target_code_dir: "{backend_root}/src/modules/{feature-slug}/application/mappers/"
+    file_extension: ".mapper.ts"
+    template: "backend/mapper.template.ts"
+
+  # --- 3. INFRASTRUCTURE LAYER ---
+  - source_knowledge: "04-knowledge-prod/domain-architecture/{feature-slug}/backend/api-tactic-architecture.yaml"
+    target_code_dir: "{backend_root}/src/modules/{feature-slug}/infrastructure/controllers/"
+    file_extension: ".controller.ts"
+    template: "backend/controller.template.ts"
+
+  - source_knowledge: "04-knowledge-prod/domain-architecture/{feature-slug}/backend/api-tactic-architecture.yaml"
+    target_code_dir: "{backend_root}/src/modules/{feature-slug}/infrastructure/consumers/"
+    file_extension: ".consumer.ts"
+    template: "backend/consumer.template.ts"
+
+  - source_knowledge: "04-knowledge-prod/domain-architecture/{feature-slug}/backend/api-tactic-architecture.yaml"
+    target_code_dir: "{backend_root}/src/modules/{feature-slug}/infrastructure/adapters/"
+    file_extension: ".adapter.ts"
+    template: "backend/adapter.template.ts"
+
+  - source_knowledge: "04-knowledge-prod/domain-architecture/{feature-slug}/backend/api-tactic-architecture.yaml"
+    target_code_dir: "{backend_root}/src/modules/{feature-slug}/infrastructure/repositories/"
+    file_extension: ".repository.impl.ts"
+    template: "backend/repository.impl.ts"
+
+  - source_knowledge: "04-knowledge-prod/domain-architecture/{feature-slug}/backend/api-tactic-architecture.yaml"
+    target_code_dir: "{backend_root}/src/modules/{feature-slug}/infrastructure/configurations/"
+    file_extension: ".config.ts"
+    template: "backend/configuration.template.ts"
+
+  # --- 4. MODULE WIRING ---
+  - source_knowledge: "04-knowledge-prod/domain-architecture/{feature-slug}/backend/api-tactic-architecture.yaml"
+    target_code_dir: "{backend_root}/src/modules/{feature-slug}/"
+    file_extension: ".module.ts"
+    template: "backend/module.template.ts"
+
+frontend_routing:
+  # --- 1. MODEL & DOMAIN LAYER (FSD) ---
+  - source_knowledge: "04-knowledge-prod/domain-model/{feature-slug}/*"
+    target_code_dir: "{frontend_root}/src/features/{feature-slug}/model/entities/"
+    file_extension: ".entity.ts"
+    template: "frontend/entity.template.ts"
+
+  - source_knowledge: "04-knowledge-prod/domain-architecture/{feature-slug}/frontend/ui-component-architecture.yaml"
+    target_code_dir: "{frontend_root}/src/features/{feature-slug}/model/store/"
+    file_extension: ".store.ts"
+    template: "frontend/store.template.ts"
+
+  - source_knowledge: "04-knowledge-prod/domain-architecture/{feature-slug}/frontend/ui-component-architecture.yaml"
+    target_code_dir: "{frontend_root}/src/features/{feature-slug}/model/services/"
+    file_extension: ".service.ts"
+    template: "frontend/service.template.ts"
+
+  # --- 2. API & INFRA LAYER ---
+  - source_knowledge: "04-knowledge-prod/domain-architecture/{feature-slug}/frontend/ui-component-architecture.yaml"
+    target_code_dir: "{frontend_root}/src/features/{feature-slug}/api/"
+    file_extension: ".api.ts"
+    template: "frontend/api.template.ts"
+
+  - source_knowledge: "04-knowledge-prod/domain-model/{feature-slug}/*"
+    target_code_dir: "{frontend_root}/src/features/{feature-slug}/api/mappers/"
+    file_extension: ".mapper.ts"
+    template: "frontend/mapper.template.ts"
+
+  - source_knowledge: "04-knowledge-prod/domain-architecture/{feature-slug}/frontend/ui-component-architecture.yaml"
+    target_code_dir: "{frontend_root}/src/features/{feature-slug}/api/adapters/"
+    file_extension: ".adapter.ts"
+    template: "frontend/adapter.template.ts"
+
+  # --- 3. UI LAYER ---
+  - source_knowledge: "04-knowledge-prod/domain-architecture/{feature-slug}/frontend/ui-component-architecture.yaml"
+    target_code_dir: "{frontend_root}/src/features/{feature-slug}/ui/components/"
+    file_extension: ".tsx"
+    template: "frontend/component.template.tsx"
+
+foundation_routing:
+  # --- DEVOPS & DOCKER WIRING ---
+  - source_knowledge: "04-knowledge-prod/domain-architecture/_system/strategic-architecture.yaml"
+    target_code_dir: "./"
+    file_name: "docker-compose.yml"
+    template: "root/docker-compose.template.yml"
+
+  - source_knowledge: "04-knowledge-prod/domain-architecture/_system/strategic-architecture.yaml"
+    target_code_dir: "{backend_root}/"
+    file_name: "Dockerfile"
+    template: "backend/Dockerfile.template"
+
+  - source_knowledge: "04-knowledge-prod/domain-architecture/_system/strategic-architecture.yaml"
+    target_code_dir: "{frontend_root}/"
+    file_name: "Dockerfile"
+    template: "frontend/Dockerfile.template"
+
+  # --- CONFIGURATIONS & PACKAGE MANAGERS ---
+  - source_knowledge: "04-knowledge-prod/domain-architecture/_system/strategic-architecture.yaml"
+    target_code_dir: "{backend_root}/"
+    file_name: "package.json"
+    template: "backend/package.template.json"
+
+  - source_knowledge: "04-knowledge-prod/domain-architecture/_system/strategic-architecture.yaml"
+    target_code_dir: "{frontend_root}/"
+    file_name: "package.json"
+    template: "frontend/package.template.json"
+
+  - source_knowledge: "04-knowledge-prod/domain-architecture/_system/strategic-architecture.yaml"
+    target_code_dir: "{backend_root}/"
+    file_name: "tsconfig.json"
+    template: "backend/tsconfig.template.json"
+
+  - source_knowledge: "04-knowledge-prod/domain-architecture/_system/strategic-architecture.yaml"
+    target_code_dir: "{frontend_root}/"
+    file_name: "tsconfig.json"
+    template: "frontend/tsconfig.template.json"
+\n
+test_routing:
+  # --- UNIT TESTS CHO BACKEND ---
+  - source_knowledge: "04-knowledge-prod/test-case-suite/{feature-slug}/*"
+    target_code_dir: "{backend_root}/src/modules/{feature-slug}/application/use-cases/"
+    file_extension: ".use-case.spec.ts"
+    template: "backend-test/use-case.spec.template.ts"
+
+  - source_knowledge: "04-knowledge-prod/test-case-suite/{feature-slug}/*"
+    target_code_dir: "{backend_root}/src/modules/{feature-slug}/infrastructure/controllers/"
+    file_extension: ".controller.spec.ts"
+    template: "backend-test/controller.spec.template.ts"
+
+  # --- UNIT TESTS CHO FRONTEND ---
+  - source_knowledge: "04-knowledge-prod/test-case-suite/{feature-slug}/*"
+    target_code_dir: "{frontend_root}/src/features/{feature-slug}/ui/components/"
+    file_extension: ".test.tsx"
+    template: "frontend-test/component.test.template.tsx"
+
+  - source_knowledge: "04-knowledge-prod/test-case-suite/{feature-slug}/*"
+    target_code_dir: "{frontend_root}/src/features/{feature-slug}/model/"
+    file_extension: ".store.spec.ts"
+    template: "frontend-test/store.spec.template.ts"
+
+  # --- END-TO-END (E2E) TESTS ---
+  - source_knowledge: "04-knowledge-prod/test-case-suite/{feature-slug}/*"
+    target_code_dir: "{backend_root}/test/features/{feature-slug}/"
+    file_extension: ".e2e-spec.ts"
+    template: "root-test/e2e.template.ts"

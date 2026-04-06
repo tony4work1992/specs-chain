@@ -1,0 +1,15 @@
+_description: System Mapping for Skill 27 — AST Reverse Engineer
+skill-id: '27'
+name: AST Reverse Engineer
+inputs:
+  rules:
+    - 00-system-rules/01-governance/00-idempotency-lock-rule.md
+  prompts:
+    - 00-system-rules/02-prompt-templates/skill-27-ast-reverse-engineer.md
+  knowledge:
+    - docs/05-support-assets/framework-ingestion.yaml
+    - docs/03-artifacts-draft/INGESTION-COVERAGE-TRACKER.md
+output:
+  knowledge_base: docs/04-knowledge-prod/
+  tracker: docs/03-artifacts-draft/INGESTION-COVERAGE-TRACKER.md
+execution_rule: Translate legacy code into OS Knowledge base YAMLs using strictly provided mapping.

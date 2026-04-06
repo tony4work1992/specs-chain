@@ -1,0 +1,14 @@
+_description: System Mapping for Skill 01 — Execution Ticket Dispatcher
+skill-id: '01'
+name: Execution Ticket Dispatcher
+type: generation
+inputs:
+  rules:
+    - 00-system-rules/01-governance/00-idempotency-lock-rule.md
+  prompts:
+    - 00-system-rules/02-prompt-templates/skill-01-ticket-dispatcher.md
+  templates:
+    - 00-system-rules/04-artifact-templates/01-execution-trackers/
+output:
+  tickets: docs/01-execution-tickets/
+execution_rule: Generate a ticket markdown and matching execution tracker based on user query.

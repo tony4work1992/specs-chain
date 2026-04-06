@@ -1,0 +1,30 @@
+idempotency_lock:
+  fea-001-deal-pipeline-management:
+    completed_skills:
+      - "102"
+      - "103"
+      - "104"
+    last_executed_at: "2026-04-06T23.00.00Z"
+    project_context: "Sales Management"
+    feature_code: "FEA-001"
+    feature_name: "Deal Pipeline Management"
+    output_paths:
+      - "docs/03-artifacts-draft/fea-001-deal-pipeline-management/01-business-layer/"
+      - "docs/03-artifacts-draft/fea-001-deal-pipeline-management/02-technical-layer/"
+      - "docs/03-artifacts-draft/fea-001-deal-pipeline-management/04-architecture-layer/"
+      - "docs/03-artifacts-draft/fea-001-deal-pipeline-management/03-testing-layer/"
+    files_generated:
+      - 01-business-layer/01-end-user-requirement.md
+      - 01-business-layer/02-business-requirement-document.md
+      - 02-technical-layer/01-system-context.md
+      - 02-technical-layer/02-functional-requirement-document.md
+      - 02-technical-layer/03-functional-specifications.yaml
+      - 04-architecture-layer/01-strategic-architecture.md
+      - 04-architecture-layer/02-tactic-architecture.yaml
+      - 04-architecture-layer/03-ui-component-architecture.yaml
+      - 04-architecture-layer/04-flow-sequence.md
+      - 03-testing-layer/01-test-scope.yaml
+      - 03-testing-layer/02-test-impact.yaml
+      - 03-testing-layer/03-test-checklist.yaml
+      - 03-testing-layer/04-test-cases.yaml
+      - 03-testing-layer/05-test-steps.yaml

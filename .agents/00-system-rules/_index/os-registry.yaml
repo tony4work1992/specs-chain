@@ -239,11 +239,29 @@ skills:
       mapping: ".agents/00-system-rules/03-system-mappings/skill-32-infrastructure-ops-manager.yaml"
       prompt: ".agents/00-system-rules/02-prompt-templates/skill-32-infrastructure-ops-manager.md"
 
+  # Macro Skills
+  - id: "101"
+    name: "Initialize Project Foundation"
+    paths:
+      proxy: ".agents/skills/101-initialize-project-foundation/SKILL.md"
+  - id: "102"
+    name: "Macro Product Owner"
+    paths:
+      proxy: ".agents/skills/102-macro-product-owner/SKILL.md"
+  - id: "103"
+    name: "Macro System Architect"
+    paths:
+      proxy: ".agents/skills/103-macro-system-architect/SKILL.md"
+  - id: "104"
+    name: "Macro QA Lead"
+    paths:
+      proxy: ".agents/skills/104-macro-qa-lead/SKILL.md"
+
   # Meta Skills
   - id: "99"
     name: "System OS Evolution"
     paths:
-      proxy: ".agents/skills/system-evolution/SKILL.md"
+      proxy: ".agents/skills/99. system-evolution/SKILL.md"
       mapping: ".agents/00-system-rules/03-system-mappings/skill-99-system-evolution.yaml"
       prompt: ".agents/00-system-rules/02-prompt-templates/skill-99-system-evolution.md"
 

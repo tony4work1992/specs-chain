@@ -1,6 +1,6 @@
 ---
-name: 21. Implementation Roadmap
-description: 01. Trigger workflow for Implementation Roadmap Execution
+name: ui-component-architecture-generation
+description: Trigger workflow for UI Component Architecture Generation
 ---
 
 > [!CAUTION]
@@ -14,7 +14,7 @@ Whenever this skill ingests external artifacts, upstream variables, or `[Human I
 
 When the user runs this SKILL, you MUST use the file viewer tool to read the precise YAML mapping instructions at the path below:
 
-`./.agents/00-system-rules/03-system-mappings/skill-21-implementation-roadmap.yaml`
+`./.agents/00-system-rules/03-system-mappings/skill-16-ui-component-architecture.yaml`
 
 Additionally, you MUST strictly adhere to the execution loops and conditions explicitly defined in the State Machine Orchestrator at:
 `./.agents/02-execution-workflows/scaffolding/feature-scaffold-blueprint.yaml`

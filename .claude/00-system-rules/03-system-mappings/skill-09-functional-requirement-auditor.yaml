@@ -1,0 +1,29 @@
+_description: System Mapping for Skill 07 — Functional Requirement Auditor
+skill-id: '09'
+name: Functional Requirement Auditor
+inputs:
+  foundation:
+    - 04-knowledge-prod/domain-architecture/_system/02-architecture-patterns/02-architecture-patterns.md
+    - 04-knowledge-prod/domain-architecture/_system/03-technology-stack/03-technology-stack.md
+    - 04-knowledge-prod/domain-architecture/_system/06-networking-and-security/06-networking-and-security.md
+  rules:
+    - 00-system-rules/01-governance/00-idempotency-lock-rule.md
+    - 00-system-rules/01-governance/output-quality-rules.md
+    - 00-system-rules/01-governance/naming-conventions.md
+    - 00-system-rules/01-governance/anti-patterns.md
+  blueprints:
+    - 02-execution-workflows/scaffolding/feature-scaffold-blueprint.yaml
+  prompts:
+    - 00-system-rules/02-prompt-templates/skill-09-functional-requirement-auditor.md
+  knowledge:
+    - 04-knowledge-prod/_index/manifest.yaml
+    - 04-knowledge-prod/_index/by-domain.yaml
+  templates:
+    - 00-system-rules/04-artifact-templates/02-technical-requirement/04-functional-requirement-auditor-template.md
+output:
+  draft: 03-artifacts-draft/{folder-name}/02-technical-layer/functional-requirement-auditor.md
+  base_artifact_target: 03-artifacts-draft/{folder-name}/02-technical-layer/functional-requirement-document.md
+  snapshot_dir: 03-artifacts-draft/{folder-name}/02-technical-layer/.snapshots/
+execution_rule: |
+  phase_1_audit: Identify holes in base_artifact_target and output questions to draft.
+  phase_2_patch: Once human provides input, capture base_artifact_target to snapshot_dir, write an independent AUDIT-[name]-[timestamp].md to snapshot_dir, and output the cleanly patched base_artifact_target.

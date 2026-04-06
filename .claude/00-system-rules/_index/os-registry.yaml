@@ -1,0 +1,386 @@
+os-version: "1.0.0"
+description: "The Agentic OS self-referential registry. Used by AI Agents to prevent document drift and maintain system awareness."
+
+ontology:
+  layers:
+    - 00-project-foundation/
+    - 01-business-layer/
+    - 02-technical-layer/
+    - 03-testing-layer/
+    - 04-architecture-layer/
+    - 03-os-templates/
+  domains:
+    - domain-business/
+    - domain-technical/
+    - domain-model/
+    - domain-architecture/
+    - domain-testing/
+
+skills:
+  # Base Setup
+  - id: "00"
+    name: "Init OS Workspace"
+    paths:
+      proxy: ".claude/skills/init-os-workspace/SKILL.md"
+      mapping: ".claude/00-system-rules/03-system-mappings/skill-00-init-workspace.yaml"
+      prompt: ".claude/00-system-rules/02-prompt-templates/skill-00-init-workspace.md"
+  - id: "01"
+    name: "Execution Ticket Dispatcher"
+    paths:
+      proxy: ".claude/skills/execution-ticket-dispatcher/SKILL.md"
+      mapping: ".claude/00-system-rules/03-system-mappings/skill-01-ticket-dispatcher.yaml"
+      prompt: ".claude/00-system-rules/02-prompt-templates/skill-01-ticket-dispatcher.md"
+  - id: "02"
+    name: "Project Foundation Generation"
+    paths:
+      proxy: ".claude/skills/project-foundation-generation/SKILL.md"
+      mapping: ".claude/00-system-rules/03-system-mappings/skill-02-project-foundation.yaml"
+      prompt: ".claude/00-system-rules/02-prompt-templates/skill-02-project-foundation.md"
+
+  # Business Layer
+  - id: "03"
+    name: "End User Requirement Generation"
+    paths:
+      proxy: ".claude/skills/end-user-requirement-generation/SKILL.md"
+      mapping: ".claude/00-system-rules/03-system-mappings/skill-03-end-user-requirement.yaml"
+      prompt: ".claude/00-system-rules/02-prompt-templates/skill-03-end-user-requirement.md"
+  - id: "04"
+    name: "End User Requirement Auditor"
+    paths:
+      proxy: ".claude/skills/end-user-requirement-auditor/SKILL.md"
+      mapping: ".claude/00-system-rules/03-system-mappings/skill-04-end-user-requirement-auditor.yaml"
+      prompt: ".claude/00-system-rules/02-prompt-templates/skill-04-end-user-requirement-auditor.md"
+  - id: "05"
+    name: "Business Requirement Document Generation"
+    paths:
+      proxy: ".claude/skills/business-requirement-document-generation/SKILL.md"
+      mapping: ".claude/00-system-rules/03-system-mappings/skill-05-business-requirement-document.yaml"
+      prompt: ".claude/00-system-rules/02-prompt-templates/skill-05-business-requirement-document.md"
+
+  # Technical Layer
+  - id: "06"
+    name: "System Context Generation"
+    paths:
+      proxy: ".claude/skills/system-context-generation/SKILL.md"
+      mapping: ".claude/00-system-rules/03-system-mappings/skill-06-system-context-information.yaml"
+      prompt: ".claude/00-system-rules/02-prompt-templates/skill-06-system-context.md"
+  - id: "07"
+    name: "System Context Auditor"
+    paths:
+      proxy: ".claude/skills/system-context-auditor/SKILL.md"
+      mapping: ".claude/00-system-rules/03-system-mappings/skill-07-system-context-auditor.yaml"
+      prompt: ".claude/00-system-rules/02-prompt-templates/skill-07-system-context-auditor.md"
+  - id: "08"
+    name: "Functional Requirement Document Generation"
+    paths:
+      proxy: ".claude/skills/functional-requirement-document-generation/SKILL.md"
+      mapping: ".claude/00-system-rules/03-system-mappings/skill-08-functional-requirement-document.yaml"
+      prompt: ".claude/00-system-rules/02-prompt-templates/skill-08-functional-requirement-document.md"
+  - id: "09"
+    name: "Functional Requirement Auditor"
+    paths:
+      proxy: ".claude/skills/functional-requirement-auditor/SKILL.md"
+      mapping: ".claude/00-system-rules/03-system-mappings/skill-09-functional-requirement-auditor.yaml"
+      prompt: ".claude/00-system-rules/02-prompt-templates/skill-09-functional-requirement-auditor.md"
+  - id: "10"
+    name: "Functional Specifications Generation"
+    paths:
+      proxy: ".claude/skills/functional-specifications-generation/SKILL.md"
+      mapping: ".claude/00-system-rules/03-system-mappings/skill-10-function-specifications.yaml"
+      prompt: ".claude/00-system-rules/02-prompt-templates/skill-10-functional-specifications.md"
+
+  # Testing Layer
+  - id: "11"
+    name: "Test Scope Generation"
+    paths:
+      proxy: ".claude/skills/test-scope-generation/SKILL.md"
+      mapping: ".claude/00-system-rules/03-system-mappings/skill-11-test-scope.yaml"
+      prompt: ".claude/00-system-rules/02-prompt-templates/skill-11-test-scope.md"
+  - id: "12"
+    name: "Test Impact Generation"
+    paths:
+      proxy: ".claude/skills/test-impact-generation/SKILL.md"
+      mapping: ".claude/00-system-rules/03-system-mappings/skill-12-test-impact.yaml"
+      prompt: ".claude/00-system-rules/02-prompt-templates/skill-12-test-impact.md"
+  - id: "13"
+    name: "Test Checklist Generation"
+    paths:
+      proxy: ".claude/skills/test-checklist-generation/SKILL.md"
+      mapping: ".claude/00-system-rules/03-system-mappings/skill-13-test-checklist.yaml"
+      prompt: ".claude/00-system-rules/02-prompt-templates/skill-13-test-checklist.md"
+  - id: "14"
+    name: "Test Cases Generation"
+    paths:
+      proxy: ".claude/skills/test-cases-generation/SKILL.md"
+      mapping: ".claude/00-system-rules/03-system-mappings/skill-14-test-cases.yaml"
+      prompt: ".claude/00-system-rules/02-prompt-templates/skill-14-test-cases.md"
+  - id: "15"
+    name: "Test Steps Generation"
+    paths:
+      proxy: ".claude/skills/test-steps-generation/SKILL.md"
+      mapping: ".claude/00-system-rules/03-system-mappings/skill-15-test-steps.yaml"
+      prompt: ".claude/00-system-rules/02-prompt-templates/skill-15-test-steps.md"
+
+  # Architecture Layer
+  - id: "16"
+    name: "UI Component Architecture Generation"
+    paths:
+      proxy: ".claude/skills/ui-component-architecture-generation/SKILL.md"
+      mapping: ".claude/00-system-rules/03-system-mappings/skill-16-ui-component-architecture.yaml"
+      prompt: ".claude/00-system-rules/02-prompt-templates/skill-16-ui-component-architecture.md"
+  - id: "17"
+    name: "Strategic Architecture Generation"
+    paths:
+      proxy: ".claude/skills/strategic-architecture-generation/SKILL.md"
+      mapping: ".claude/00-system-rules/03-system-mappings/skill-17-strategic-architecture.yaml"
+      prompt: ".claude/00-system-rules/02-prompt-templates/skill-17-strategic-architecture.md"
+  - id: "18"
+    name: "Tactic Architecture Generation"
+    paths:
+      proxy: ".claude/skills/tactic-architecture-generation/SKILL.md"
+      mapping: ".claude/00-system-rules/03-system-mappings/skill-18-api-tactic-architecture.yaml"
+      prompt: ".claude/00-system-rules/02-prompt-templates/skill-18-tactic-architecture.md"
+  - id: "19"
+    name: "Flow Sequence Generation"
+    paths:
+      proxy: ".claude/skills/flow-sequence-generation/SKILL.md"
+      mapping: ".claude/00-system-rules/03-system-mappings/skill-19-flow-sequence-architecture.yaml"
+      prompt: ".claude/00-system-rules/02-prompt-templates/skill-19-flow-sequence.md"
+
+  # Finalization
+  - id: "20"
+    name: "Knowledge Sync"
+    paths:
+      proxy: ".claude/skills/knowledge-sync/SKILL.md"
+      mapping: ".claude/00-system-rules/03-system-mappings/skill-20-knowledge-sync.yaml"
+      prompt: ".claude/00-system-rules/02-prompt-templates/skill-20-knowledge-sync.md"
+  - id: "21"
+    name: "Implementation Roadmap"
+    paths:
+      proxy: ".claude/skills/implementation-roadmap/SKILL.md"
+      mapping: ".claude/00-system-rules/03-system-mappings/skill-21-implementation-roadmap.yaml"
+      prompt: ".claude/00-system-rules/02-prompt-templates/skill-21-implementation-roadmap.md"
+
+  # Execution Phase
+  - id: "22"
+    name: "Install Framework Plugin"
+    paths:
+      proxy: ".claude/skills/install-framework-plugin/SKILL.md"
+      mapping: ".claude/00-system-rules/03-system-mappings/skill-22-install-framework-plugin.yaml"
+      prompt: ".claude/00-system-rules/02-prompt-templates/skill-22-install-framework-plugin.md"
+  - id: "23"
+    name: "Autonomous Code Generation"
+    paths:
+      proxy: ".claude/skills/autonomous-code-generation/SKILL.md"
+      mappings:
+        - ".claude/00-system-rules/03-system-mappings/skill-23-backend-gen.yaml"
+        - ".claude/00-system-rules/03-system-mappings/skill-23-database-gen.yaml"
+        - ".claude/00-system-rules/03-system-mappings/skill-23-frontend-gen.yaml"
+      prompts:
+        - ".claude/00-system-rules/02-prompt-templates/skill-23-backend-gen.md"
+        - ".claude/00-system-rules/02-prompt-templates/skill-23-database-gen.md"
+        - ".claude/00-system-rules/02-prompt-templates/skill-23-frontend-gen.md"
+  - id: "24"
+    name: "Code Reflection Auditor"
+    paths:
+      proxy: ".claude/skills/code-reflection-auditor/SKILL.md"
+      mapping: ".claude/00-system-rules/03-system-mappings/skill-24-code-reflection-auditor.yaml"
+      prompt: ".claude/00-system-rules/02-prompt-templates/skill-24-code-reflection-auditor.md"
+  - id: "25"
+    name: "Autonomous Test Generation"
+    paths:
+      proxy: ".claude/skills/autonomous-test-generation/SKILL.md"
+      mapping: ".claude/00-system-rules/03-system-mappings/skill-25-autonomous-test-generation.yaml"
+      prompt: ".claude/00-system-rules/02-prompt-templates/skill-25-autonomous-test-generation.md"
+
+  # Legacy Ingestion Phase
+  - id: "26"
+    name: "Legacy Discovery Scanner"
+    paths:
+      proxy: ".claude/skills/legacy-discovery-scanner/SKILL.md"
+      mapping: ".claude/00-system-rules/03-system-mappings/skill-26-legacy-discovery-scanner.yaml"
+      prompt: ".claude/00-system-rules/02-prompt-templates/skill-26-legacy-discovery-scanner.md"
+  - id: "27"
+    name: "AST Reverse Engineer"
+    paths:
+      proxy: ".claude/skills/ast-reverse-engineer/SKILL.md"
+      mapping: ".claude/00-system-rules/03-system-mappings/skill-27-ast-reverse-engineer.yaml"
+      prompt: ".claude/00-system-rules/02-prompt-templates/skill-27-ast-reverse-engineer.md"
+  - id: "28"
+    name: "Business Rule Extractor"
+    paths:
+      proxy: ".claude/skills/business-rule-extractor/SKILL.md"
+      mapping: ".claude/00-system-rules/03-system-mappings/skill-28-business-rule-extractor.yaml"
+      prompt: ".claude/00-system-rules/02-prompt-templates/skill-28-business-rule-extractor.md"
+
+  # Operations Phase (SRE & Ops Unit)
+  - id: "29"
+    name: "Incident Triage Analyzer"
+    paths:
+      proxy: ".claude/skills/incident-triage-analyzer/SKILL.md"
+      mapping: ".claude/00-system-rules/03-system-mappings/skill-29-incident-triage-analyzer.yaml"
+      prompt: ".claude/00-system-rules/02-prompt-templates/skill-29-incident-triage-analyzer.md"
+  - id: "30"
+    name: "Hotfix Code Generator"
+    paths:
+      proxy: ".claude/skills/hotfix-code-generator/SKILL.md"
+      mapping: ".claude/00-system-rules/03-system-mappings/skill-30-hotfix-code-generator.yaml"
+      prompt: ".claude/00-system-rules/02-prompt-templates/skill-30-hotfix-code-generator.md"
+  - id: "31"
+    name: "Data Operations Runner"
+    paths:
+      proxy: ".claude/skills/data-operations-runner/SKILL.md"
+      mapping: ".claude/00-system-rules/03-system-mappings/skill-31-data-operations-runner.yaml"
+      prompt: ".claude/00-system-rules/02-prompt-templates/skill-31-data-operations-runner.md"
+  - id: "32"
+    name: "Infrastructure Ops Manager"
+    paths:
+      proxy: ".claude/skills/infrastructure-ops-manager/SKILL.md"
+      mapping: ".claude/00-system-rules/03-system-mappings/skill-32-infrastructure-ops-manager.yaml"
+      prompt: ".claude/00-system-rules/02-prompt-templates/skill-32-infrastructure-ops-manager.md"
+
+  # Macro Skills
+  - id: "101"
+    name: "Initialize Project Foundation"
+    paths:
+      proxy: ".claude/skills/initialize-project-foundation/SKILL.md"
+  - id: "102"
+    name: "Macro Product Owner"
+    paths:
+      proxy: ".claude/skills/macro-product-owner/SKILL.md"
+  - id: "103"
+    name: "Macro System Architect"
+    paths:
+      proxy: ".claude/skills/macro-system-architect/SKILL.md"
+  - id: "104"
+    name: "Macro QA Lead"
+    paths:
+      proxy: ".claude/skills/macro-qa-lead/SKILL.md"
+
+  # Meta Skills
+  - id: "99"
+    name: "System OS Evolution"
+    paths:
+      proxy: ".claude/skills/system-evolution/SKILL.md"
+      mapping: ".claude/00-system-rules/03-system-mappings/skill-99-system-evolution.yaml"
+      prompt: ".claude/00-system-rules/02-prompt-templates/skill-99-system-evolution.md"
+
+workflows:
+  - command: "/discuss"
+    path: ".agents/workflows/discuss.md"
+  - command: "/do"
+    path: ".agents/workflows/do.md"
+
+artifact_templates:
+  - path: ".claude/00-system-rules/04-artifact-templates/00-project-foundation/01-business-and-constraints.md"
+    consumed_by_skills: ["02"]
+    consumed_by_mappings:
+      - ".claude/00-system-rules/03-system-mappings/skill-02-project-foundation.yaml"
+  - path: ".claude/00-system-rules/04-artifact-templates/00-project-foundation/02-architecture-patterns.md"
+    consumed_by_skills: ["02"]
+    consumed_by_mappings:
+      - ".claude/00-system-rules/03-system-mappings/skill-02-project-foundation.yaml"
+  - path: ".claude/00-system-rules/04-artifact-templates/00-project-foundation/03-technology-stack.md"
+    consumed_by_skills: ["02"]
+    consumed_by_mappings:
+      - ".claude/00-system-rules/03-system-mappings/skill-02-project-foundation.yaml"
+  - path: ".claude/00-system-rules/04-artifact-templates/00-project-foundation/04-project-structure-and-conventions.md"
+    consumed_by_skills: ["02"]
+    consumed_by_mappings:
+      - ".claude/00-system-rules/03-system-mappings/skill-02-project-foundation.yaml"
+  - path: ".claude/00-system-rules/04-artifact-templates/00-project-foundation/05-infrastructure-and-cicd.md"
+    consumed_by_skills: ["02"]
+    consumed_by_mappings:
+      - ".claude/00-system-rules/03-system-mappings/skill-02-project-foundation.yaml"
+  - path: ".claude/00-system-rules/04-artifact-templates/00-project-foundation/06-networking-and-security.md"
+    consumed_by_skills: ["02"]
+    consumed_by_mappings:
+      - ".claude/00-system-rules/03-system-mappings/skill-02-project-foundation.yaml"
+  - path: ".claude/00-system-rules/04-artifact-templates/00-project-foundation/07-cost-management.md"
+    consumed_by_skills: ["02"]
+    consumed_by_mappings:
+      - ".claude/00-system-rules/03-system-mappings/skill-02-project-foundation.yaml"
+  - path: ".claude/00-system-rules/04-artifact-templates/00-project-foundation/08-design-system-and-ui.md"
+    consumed_by_skills: ["02"]
+    consumed_by_mappings:
+      - ".claude/00-system-rules/03-system-mappings/skill-02-project-foundation.yaml"
+  - path: ".claude/00-system-rules/04-artifact-templates/00-project-foundation/09-observability-and-monitoring.md"
+    consumed_by_skills: ["02"]
+    consumed_by_mappings:
+      - ".claude/00-system-rules/03-system-mappings/skill-02-project-foundation.yaml"
+  - path: ".claude/00-system-rules/04-artifact-templates/01-execution-trackers/"
+    consumed_by_skills: ["01"]
+    consumed_by_mappings:
+      - ".claude/00-system-rules/03-system-mappings/skill-01-ticket-dispatcher.yaml"
+  - path: ".claude/00-system-rules/04-artifact-templates/01-execution-trackers/ingestion-coverage-tracker.md"
+    consumed_by_skills: ["26"]
+    consumed_by_mappings:
+      - ".claude/00-system-rules/03-system-mappings/skill-26-legacy-discovery-scanner.yaml"
+  - path: ".claude/00-system-rules/04-artifact-templates/01-requirement-development/01-end-user-requirement-template.md"
+    consumed_by_skills: ["03"]
+    consumed_by_mappings:
+      - ".claude/00-system-rules/03-system-mappings/skill-03-end-user-requirement.yaml"
+  - path: ".claude/00-system-rules/04-artifact-templates/01-requirement-development/02-end-user-requirement-auditor-template.md"
+    consumed_by_skills: ["04"]
+    consumed_by_mappings:
+      - ".claude/00-system-rules/03-system-mappings/skill-04-end-user-requirement-auditor.yaml"
+  - path: ".claude/00-system-rules/04-artifact-templates/01-requirement-development/03-business-requirement-document-template.md"
+    consumed_by_skills: ["05"]
+    consumed_by_mappings:
+      - ".claude/00-system-rules/03-system-mappings/skill-05-business-requirement-document.yaml"
+  - path: ".claude/00-system-rules/04-artifact-templates/02-technical-requirement/01-system-context-information-template.md"
+    consumed_by_skills: ["06"]
+    consumed_by_mappings:
+      - ".claude/00-system-rules/03-system-mappings/skill-06-system-context-information.yaml"
+  - path: ".claude/00-system-rules/04-artifact-templates/02-technical-requirement/02-system-context-auditor-template.md"
+    consumed_by_skills: ["07"]
+    consumed_by_mappings:
+      - ".claude/00-system-rules/03-system-mappings/skill-07-system-context-auditor.yaml"
+  - path: ".claude/00-system-rules/04-artifact-templates/02-technical-requirement/03-functional-requirement-document-template.md"
+    consumed_by_skills: ["08"]
+    consumed_by_mappings:
+      - ".claude/00-system-rules/03-system-mappings/skill-08-functional-requirement-document.yaml"
+  - path: ".claude/00-system-rules/04-artifact-templates/02-technical-requirement/04-functional-requirement-auditor-template.md"
+    consumed_by_skills: ["09"]
+    consumed_by_mappings:
+      - ".claude/00-system-rules/03-system-mappings/skill-09-functional-requirement-auditor.yaml"
+  - path: ".claude/00-system-rules/04-artifact-templates/02-technical-requirement/05-function-specifications-template.yaml"
+    consumed_by_skills: ["10"]
+    consumed_by_mappings:
+      - ".claude/00-system-rules/03-system-mappings/skill-10-function-specifications.yaml"
+  - path: ".claude/00-system-rules/04-artifact-templates/03-testing-requirement/02-test-impact-template.yaml"
+    consumed_by_skills: ["12"]
+    consumed_by_mappings:
+      - ".claude/00-system-rules/03-system-mappings/skill-12-test-impact.yaml"
+  - path: ".claude/00-system-rules/04-artifact-templates/03-testing-requirement/03-test-scope-template.yaml"
+    consumed_by_skills: ["11"]
+    consumed_by_mappings:
+      - ".claude/00-system-rules/03-system-mappings/skill-11-test-scope.yaml"
+  - path: ".claude/00-system-rules/04-artifact-templates/03-testing-requirement/04-test-checklist-template.yaml"
+    consumed_by_skills: ["13"]
+    consumed_by_mappings:
+      - ".claude/00-system-rules/03-system-mappings/skill-13-test-checklist.yaml"
+  - path: ".claude/00-system-rules/04-artifact-templates/03-testing-requirement/05-test-cases-template.yaml"
+    consumed_by_skills: ["14"]
+    consumed_by_mappings:
+      - ".claude/00-system-rules/03-system-mappings/skill-14-test-cases.yaml"
+  - path: ".claude/00-system-rules/04-artifact-templates/03-testing-requirement/06-test-steps-template.yaml"
+    consumed_by_skills: ["15"]
+    consumed_by_mappings:
+      - ".claude/00-system-rules/03-system-mappings/skill-15-test-steps.yaml"
+  - path: ".claude/00-system-rules/04-artifact-templates/04-software-architecture/01-ui-component-architecture-template.yaml"
+    consumed_by_skills: ["16"]
+    consumed_by_mappings:
+      - ".claude/00-system-rules/03-system-mappings/skill-16-ui-component-architecture.yaml"
+  - path: ".claude/00-system-rules/04-artifact-templates/04-software-architecture/02-strategic-architecture-template.md"
+    consumed_by_skills: ["17"]
+    consumed_by_mappings:
+      - ".claude/00-system-rules/03-system-mappings/skill-17-strategic-architecture.yaml"
+  - path: ".claude/00-system-rules/04-artifact-templates/04-software-architecture/03-tactic-architecture-template.yaml"
+    consumed_by_skills: ["18"]
+    consumed_by_mappings:
+      - ".claude/00-system-rules/03-system-mappings/skill-18-api-tactic-architecture.yaml"
+  - path: ".claude/00-system-rules/04-artifact-templates/04-software-architecture/04-flow-sequence-architecture-template.md"
+    consumed_by_skills: ["19"]
+    consumed_by_mappings:
+      - ".claude/00-system-rules/03-system-mappings/skill-19-flow-sequence-architecture.yaml"

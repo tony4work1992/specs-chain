@@ -1,0 +1,16 @@
+_description: System Mapping for Skill 20 — Implementation Roadmap
+skill-id: '21'
+name: Implementation Roadmap
+inputs:
+  rules:
+    - 00-system-rules/01-governance/00-idempotency-lock-rule.md
+    - 00-system-rules/01-governance/output-quality-rules.md
+  blueprints:
+    - 02-execution-workflows/scaffolding/feature-scaffold-blueprint.yaml
+  prompts:
+    - 00-system-rules/02-prompt-templates/skill-21-implementation-roadmap.md
+  knowledge:
+    - 04-knowledge-prod/_index/manifest.yaml
+output:
+  draft: 03-artifacts-draft/{folder-name}/04-architecture-layer/implementation-roadmap.md
+execution_rule: Generate an implementation roadmap based on validated architectural artifacts.

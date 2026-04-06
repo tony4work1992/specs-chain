@@ -1,0 +1,15 @@
+_description: System Mapping for Meta Skill 99 — Agentic OS System Evolution
+skill-id: '99'
+name: Agentic OS System Evolution
+inputs:
+  rules:
+    - 00-system-rules/01-governance/00-idempotency-lock-rule.md
+  prompts:
+    - 00-system-rules/02-prompt-templates/skill-99-system-evolution.md
+  knowledge:
+    - .agents/00-system-rules/_index/os-registry.yaml
+    - .agents/agentic-os.md
+    - .agents/02-execution-workflows/scaffolding/feature-scaffold-blueprint.yaml
+output:
+  os_core: .agents/
+execution_rule: Modify Agentic OS internals. Ensure symmetrical updates across registry, MD tables, and blueprint YAMLs.
