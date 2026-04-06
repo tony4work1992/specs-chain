@@ -1,0 +1,15 @@
+_description: System Mapping for Skill 23 — Foundation Gen
+skill-id: '23'
+name: Foundation Code Generation
+inputs:
+  rules:
+    - 00-system-rules/01-governance/00-idempotency-lock-rule.md
+  prompts:
+    - 00-system-rules/02-prompt-templates/skill-23-foundation-gen.md
+  knowledge:
+    - docs/04-knowledge-prod/domain-architecture/_system/
+  templates:
+    - read_from_dynamic: docs/05-support-assets/code-mappings/framework-routing.yaml
+output:
+  dynamic: read_from: docs/05-support-assets/code-mappings/framework-routing.yaml
+execution_rule: Evaluate target framework routing under foundation_routing and STRICTLY HYDRATE the core setup logic (docker, package config for backend and frontend) based on injected Knowledge constraints. NEVER hallucinate configuration out of thin air.

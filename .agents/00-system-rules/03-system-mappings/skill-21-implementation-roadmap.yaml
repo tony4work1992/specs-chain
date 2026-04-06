@@ -12,5 +12,5 @@ inputs:
   knowledge:
     - 04-knowledge-prod/_index/manifest.yaml
 output:
-  draft: 03-artifacts-draft/{request-code}/04-architecture-layer/implementation-roadmap.md
+  draft: 03-artifacts-draft/{folder-name}/04-architecture-layer/implementation-roadmap.md
 execution_rule: Generate an implementation roadmap based on validated architectural artifacts.

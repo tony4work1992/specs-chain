@@ -3,9 +3,9 @@ skill-id: '06'
 name: System Context Generation
 inputs:
   foundation:
-    - 03-artifacts-draft/00-project-foundation/02-architecture-patterns.md
-    - 03-artifacts-draft/00-project-foundation/03-technology-stack.md
-    - 03-artifacts-draft/00-project-foundation/06-networking-and-security.md
+    - 04-knowledge-prod/domain-architecture/_system/02-architecture-patterns/02-architecture-patterns.md
+    - 04-knowledge-prod/domain-architecture/_system/03-technology-stack/03-technology-stack.md
+    - 04-knowledge-prod/domain-architecture/_system/06-networking-and-security/06-networking-and-security.md
   rules:
     - 00-system-rules/01-governance/00-idempotency-lock-rule.md
     - 00-system-rules/01-governance/output-quality-rules.md
@@ -21,6 +21,6 @@ inputs:
   templates:
     - 00-system-rules/04-artifact-templates/02-technical-requirement/01-system-context-information-template.md
 output:
-  draft: 03-artifacts-draft/{request-code}/02-technical-layer/system-context-information.md
-  snapshot: 03-artifacts-draft/{request-code}/02-technical-layer/.snapshots/
+  draft: 03-artifacts-draft/{folder-name}/02-technical-layer/system-context-information.md
+  snapshot: 03-artifacts-draft/{folder-name}/02-technical-layer/.snapshots/
 execution_rule: Generate draft artifact based on inputs, template, and prompt. If exists, copy old version to .snapshots.

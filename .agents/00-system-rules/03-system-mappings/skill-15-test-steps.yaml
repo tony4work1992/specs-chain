@@ -3,8 +3,8 @@ skill-id: '15'
 name: Test Steps Generation
 inputs:
   foundation:
-    - 03-artifacts-draft/00-project-foundation/05-infrastructure-and-cicd.md
-    - 03-artifacts-draft/00-project-foundation/09-observability-and-monitoring.md
+    - 04-knowledge-prod/domain-architecture/_system/05-infrastructure-and-cicd/05-infrastructure-and-cicd.md
+    - 04-knowledge-prod/domain-architecture/_system/09-observability-and-monitoring/09-observability-and-monitoring.md
   rules:
     - 00-system-rules/01-governance/00-idempotency-lock-rule.md
     - 00-system-rules/01-governance/output-quality-rules.md
@@ -20,6 +20,6 @@ inputs:
   templates:
     - 00-system-rules/04-artifact-templates/03-testing-requirement/06-test-steps-template.yaml
 output:
-  draft: 03-artifacts-draft/{request-code}/03-testing-layer/test-steps.yaml
-  snapshot: 03-artifacts-draft/{request-code}/03-testing-layer/.snapshots/
+  draft: 03-artifacts-draft/{folder-name}/03-testing-layer/test-steps.yaml
+  snapshot: 03-artifacts-draft/{folder-name}/03-testing-layer/.snapshots/
 execution_rule: Generate draft artifact based on inputs, template, and prompt. If exists, copy old version to .snapshots.

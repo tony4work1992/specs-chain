@@ -8,11 +8,11 @@ inputs:
   prompts:
     - 00-system-rules/02-prompt-templates/skill-20-knowledge-sync.md
   drafts:
-    - 03-artifacts-draft/{request-code}/00-project-foundation/*
-    - 03-artifacts-draft/{request-code}/01-business-layer/*
-    - 03-artifacts-draft/{request-code}/02-technical-layer/*
-    - 03-artifacts-draft/{request-code}/03-testing-layer/*
-    - 03-artifacts-draft/{request-code}/04-architecture-layer/*
+    - 03-artifacts-draft/_system/00-project-foundation/*
+    - 03-artifacts-draft/{folder-name}/01-business-layer/*
+    - 03-artifacts-draft/{folder-name}/02-technical-layer/*
+    - 03-artifacts-draft/{folder-name}/03-testing-layer/*
+    - 03-artifacts-draft/{folder-name}/04-architecture-layer/*
 output:
   routing_table:
     - from: 00-project-foundation/01-business-and-constraints
@@ -47,7 +47,7 @@ output:
       to: 04-knowledge-prod/domain-technical/{feature-slug}/functional-specs/
     - from: 02-technical-layer/additional-functional-information
       to: 04-knowledge-prod/domain-technical/{feature-slug}/functional-specs/
-    - from: 02-technical-layer/function-specifications
+    - from: 02-technical-layer/functional-specifications
       to: 04-knowledge-prod/domain-technical/{feature-slug}/functional-specs/
     - from: 03-testing-layer/test-scope
       to: 04-knowledge-prod/domain-testing/{feature-slug}/scope/
@@ -69,4 +69,4 @@ output:
       to: 04-knowledge-prod/domain-architecture/{feature-slug}/flows/
     - from: models_extracted_from_technical
       to: 04-knowledge-prod/domain-model/{feature-slug}/entities/
-execution_rule: Decompose and route large feature drafts into granular files per the routing table. Update the _index files explicitly after promoting.
+execution_rule: Decompose and route large feature drafts into granular files per the routing table. You MUST explicitly PURGE and UPDATE all 4 index files (manifest.yaml, by-feature.yaml, by-domain.yaml, by-keyword.yaml) after promoting.

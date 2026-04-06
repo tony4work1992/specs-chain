@@ -1,6 +1,6 @@
 ---
 skill-id: "23"
-name: Autonomous Code Generation (Polymorphic)
+name: 23. Autonomous Code Generation (Polymorphic)
 domain: "00-project-foundation"
 stage: execution
 description: "Dynamically transforms Knowledge Base specifications into Framework-Specific physical source code based on user-selected Architecture Layers (Database, Backend, Frontend)."
@@ -20,21 +20,25 @@ Check the user's prompt for a `--feature_slug` parameter. If missing, HALT and a
 *"Mảnh ghép nào bạn muốn sinh Code? Vui lòng cung cấp Feature Slug (ví dụ: `payment`, `auth`)."* Wait for the user's response.
 
 **2. Determine Target Layer:**
-Check the user's prompt for a `--layer` parameter. If missing, HALT and display the following interactive menu:
+Check the user's prompt for a `--layer` parameter. If missing and this is a single, isolated skill execution, HALT and display the following interactive menu:
 ```text
 Vui lòng chọn Layer (Phân lớp) bạn muốn Code Gen (Trộn bằng số hoặc chữ):
-[1] Database (Sinh Schema, Migrations, Entities)
-[2] Backend (Sinh Controller, DTO, Service Core)
-[3] Frontend (Sinh UI Component, State Management)
+[1] Foundation (Sinh cấu hình dự án, Docker, Package.json)
+[2] Database (Sinh Schema, Migrations, Entities)
+[3] Backend (Sinh Controller, DTO, Service Core)
+[4] Frontend (Sinh UI Component, State Management)
 ```
 Wait for the user to reply.
 
-## Phase B: Configuration Routing (Proxy Pattern)
-Once parameters are resolved, you must dynamically read the configuration from System Mappings:
+**AUTONOMOUS MODE OVERRIDE:** If the system is executing in Autonomous full-flow mode (e.g. user just types "Continue" tracking the Full Pipeline without defining layers), **DO NOT HALT**. Instead, automatically sequence and execute ALL Four Layers in precise order: `[1] Foundation -> [2] Database -> [3] Backend -> [4] Frontend`. After the code generation sequence finishes, IMMEDIATELY chain into executing **Skill 24 (Code Reflection Auditor)** and then **Skill 25 (Autonomous Test Generation)** as one continuous pipeline sweep.
 
-- If **[1] Database**, read config at: `.agents/00-system-rules/03-system-mappings/skill-23-database-gen.yaml`
-- If **[2] Backend**, read config at: `.agents/00-system-rules/03-system-mappings/skill-23-backend-gen.yaml`
-- If **[3] Frontend**, read config at: `.agents/00-system-rules/03-system-mappings/skill-23-frontend-gen.yaml`
+## Phase B: Configuration Routing (Proxy Pattern)
+Once parameters are resolved, you must dynamically read the configuration from System Mappings (If running Autonomously, execute them sequentially):
+
+- If **[1] Foundation**, read config at: `.agents/00-system-rules/03-system-mappings/skill-23-foundation-gen.yaml`
+- If **[2] Database**, read config at: `.agents/00-system-rules/03-system-mappings/skill-23-database-gen.yaml`
+- If **[3] Backend**, read config at: `.agents/00-system-rules/03-system-mappings/skill-23-backend-gen.yaml`
+- If **[4] Frontend**, read config at: `.agents/00-system-rules/03-system-mappings/skill-23-frontend-gen.yaml`
 
 Load the `prompt` and strictly follow the execution constraints provided within the Persona setup.
 

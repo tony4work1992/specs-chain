@@ -3,8 +3,8 @@ skill-id: '03'
 name: End User Requirement Generation
 inputs:
   foundation:
-    - 03-artifacts-draft/00-project-foundation/01-business-and-constraints.md
-    - 03-artifacts-draft/00-project-foundation/07-cost-management.md
+    - 04-knowledge-prod/domain-architecture/_system/01-business-and-constraints/01-business-and-constraints.md
+    - 04-knowledge-prod/domain-architecture/_system/07-cost-management/07-cost-management.md
   rules:
     - 00-system-rules/01-governance/00-idempotency-lock-rule.md
     - 00-system-rules/01-governance/output-quality-rules.md
@@ -20,6 +20,6 @@ inputs:
   templates:
     - 00-system-rules/04-artifact-templates/01-requirement-development/01-end-user-requirement-template.md
 output:
-  draft: 03-artifacts-draft/{request-code}/01-business-layer/end-user-requirement.md
-  snapshot: 03-artifacts-draft/{request-code}/01-business-layer/.snapshots/
+  draft: 03-artifacts-draft/{folder-name}/01-business-layer/end-user-requirement.md
+  snapshot: 03-artifacts-draft/{folder-name}/01-business-layer/.snapshots/
 execution_rule: Generate draft artifact based on inputs, template, and prompt. If exists, copy old version to .snapshots.

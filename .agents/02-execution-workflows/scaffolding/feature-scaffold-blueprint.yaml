@@ -71,7 +71,7 @@ draft-structure:
         - name: functional-requirement-auditor.md
           skill: "09"
           required: true
-        - name: function-specifications.yaml
+        - name: functional-specifications.yaml
           skill: "10"
           required: true
     03-testing-layer:
@@ -157,6 +157,9 @@ execution-workflow:
         state-1-scaffold:
           action: Interactive Q&A to generate 9 Foundation documents
           skill: "02"
+        state-2-sync-foundation:
+          action: Automatically sync Foundation drafts directly into Production Knowledge Base
+          skill: "20"
     phase-1-business:
       description: Understand WHY and WHAT with validation gating
       states:
@@ -239,7 +242,7 @@ done-criteria:
       - 01-business-layer/end-user-requirement.md
       - 01-business-layer/business-requirement-document.md
       - 02-technical-layer/functional-requirement-document.md
-      - 02-technical-layer/function-specifications.yaml
+      - 02-technical-layer/functional-specifications.yaml
       - 04-architecture-layer/strategic-architecture.md
     file-count: 5
   implementation-ready:

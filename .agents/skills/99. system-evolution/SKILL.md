@@ -1,5 +1,5 @@
 ---
-name: Agentic OS upgrade
+name: 99. Agentic OS upgrade
 description: 99. Meta-Skill - Perform structural upgrades, add new Skills, or modify the OS architecture safely.
 ---
 

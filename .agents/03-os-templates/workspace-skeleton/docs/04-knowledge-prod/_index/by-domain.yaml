@@ -1,37 +1,23 @@
-_description: Domain → Feature → File paths
-_version: '2026-04-04'
+_description: Domain → Feature hierarchies
+_version: '2026-04-06'
 domains:
   domain-architecture:
+    fileCount: 9
     features:
       _system:
         files:
-          - domain-architecture/_system/01-system-context/c4-container-diagram.md
-          - domain-architecture/_system/01-system-context/c4-system-context.md
-          - domain-architecture/_system/01-system-context/cross-feature-flows.md
-          - domain-architecture/_system/02-frontend/design-system.md
-          - domain-architecture/_system/02-frontend/routing.md
-          - domain-architecture/_system/02-frontend/state-management.md
-          - domain-architecture/_system/03-backend/event-driven.md
-          - domain-architecture/_system/03-backend/module-structure.md
-          - domain-architecture/_system/03-backend/shared-libraries.md
-          - domain-architecture/_system/04-data/backup-restore.md
-          - domain-architecture/_system/04-data/migration-strategy.md
-          - domain-architecture/_system/05-infrastructure/ci-cd-pipeline.md
-          - domain-architecture/_system/05-infrastructure/container-orchestration.md
-          - domain-architecture/_system/05-infrastructure/environment-config.md
-          - domain-architecture/_system/06-networking/api-gateway.md
-          - domain-architecture/_system/06-networking/cdn-config.md
-          - domain-architecture/_system/06-networking/load-balancing.md
-          - domain-architecture/_system/07-security/auth-authz.md
-          - domain-architecture/_system/07-security/compliance.md
-          - domain-architecture/_system/07-security/encryption.md
-          - domain-architecture/_system/08-observability/logging.md
-          - domain-architecture/_system/08-observability/metrics.md
-          - domain-architecture/_system/08-observability/tracing.md
-    fileCount: 23
+          - domain-architecture/_system/01-business-and-constraints/01-business-and-constraints.md
+          - domain-architecture/_system/02-architecture-patterns/02-architecture-patterns.md
+          - domain-architecture/_system/03-technology-stack/03-technology-stack.md
+          - domain-architecture/_system/04-project-structure-and-conventions/04-project-structure-and-conventions.md
+          - domain-architecture/_system/05-infrastructure-and-cicd/05-infrastructure-and-cicd.md
+          - domain-architecture/_system/06-networking-and-security/06-networking-and-security.md
+          - domain-architecture/_system/07-cost-management/07-cost-management.md
+          - domain-architecture/_system/08-design-system-and-ui/08-design-system-and-ui.md
+          - domain-architecture/_system/09-observability-and-monitoring/09-observability-and-monitoring.md
   domain-model:
+    fileCount: 1
     features:
       _system:
         files:
           - domain-model/_system/shared-schemas.md
-    fileCount: 1

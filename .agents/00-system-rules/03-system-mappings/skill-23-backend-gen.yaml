@@ -13,4 +13,4 @@ inputs:
     - read_from_dynamic: docs/05-support-assets/code-mappings/framework-routing.yaml
 output:
   dynamic: read_from: docs/05-support-assets/code-mappings/framework-routing.yaml
-execution_rule: Evaluate target framework routing and generate physical code logic based on injected Knowledge constraints.
+execution_rule: Evaluate target framework routing and STRICTLY HYDRATE the physical template files defined in the routing. NEVER hallucinate architecture logic or component structure.

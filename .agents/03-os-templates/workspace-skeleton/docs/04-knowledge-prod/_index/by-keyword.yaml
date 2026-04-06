@@ -1,83 +1,45 @@
 _description: Keyword → File paths for semantic search
-_version: '2026-04-04'
+_version: '2026-04-06'
 keywords:
-  container:
-    - domain-architecture/_system/01-system-context/c4-container-diagram.md
-    - domain-architecture/_system/05-infrastructure/container-orchestration.md
-  diagram:
-    - domain-architecture/_system/01-system-context/c4-container-diagram.md
-  system:
-    - domain-architecture/_system/01-system-context/c4-system-context.md
-    - domain-architecture/_system/02-frontend/design-system.md
-  context:
-    - domain-architecture/_system/01-system-context/c4-system-context.md
-  cross:
-    - domain-architecture/_system/01-system-context/cross-feature-flows.md
-  feature:
-    - domain-architecture/_system/01-system-context/cross-feature-flows.md
-  flows:
-    - domain-architecture/_system/01-system-context/cross-feature-flows.md
-  design:
-    - domain-architecture/_system/02-frontend/design-system.md
-  routing:
-    - domain-architecture/_system/02-frontend/routing.md
-  state:
-    - domain-architecture/_system/02-frontend/state-management.md
-  management:
-    - domain-architecture/_system/02-frontend/state-management.md
-  event:
-    - domain-architecture/_system/03-backend/event-driven.md
-  driven:
-    - domain-architecture/_system/03-backend/event-driven.md
-  module:
-    - domain-architecture/_system/03-backend/module-structure.md
+  business:
+    - domain-architecture/_system/01-business-and-constraints/01-business-and-constraints.md
+  constraints:
+    - domain-architecture/_system/01-business-and-constraints/01-business-and-constraints.md
+  architecture:
+    - domain-architecture/_system/02-architecture-patterns/02-architecture-patterns.md
+  patterns:
+    - domain-architecture/_system/02-architecture-patterns/02-architecture-patterns.md
+  technology:
+    - domain-architecture/_system/03-technology-stack/03-technology-stack.md
+  stack:
+    - domain-architecture/_system/03-technology-stack/03-technology-stack.md
+  project:
+    - domain-architecture/_system/04-project-structure-and-conventions/04-project-structure-and-conventions.md
   structure:
-    - domain-architecture/_system/03-backend/module-structure.md
-  shared:
-    - domain-architecture/_system/03-backend/shared-libraries.md
-    - domain-model/_system/shared-schemas.md
-  libraries:
-    - domain-architecture/_system/03-backend/shared-libraries.md
-  backup:
-    - domain-architecture/_system/04-data/backup-restore.md
-  restore:
-    - domain-architecture/_system/04-data/backup-restore.md
-  migration:
-    - domain-architecture/_system/04-data/migration-strategy.md
-  strategy:
-    - domain-architecture/_system/04-data/migration-strategy.md
-  pipeline:
-    - domain-architecture/_system/05-infrastructure/ci-cd-pipeline.md
-  orchestration:
-    - domain-architecture/_system/05-infrastructure/container-orchestration.md
-  environment:
-    - domain-architecture/_system/05-infrastructure/environment-config.md
-  config:
-    - domain-architecture/_system/05-infrastructure/environment-config.md
-    - domain-architecture/_system/06-networking/cdn-config.md
-  api:
-    - domain-architecture/_system/06-networking/api-gateway.md
-  gateway:
-    - domain-architecture/_system/06-networking/api-gateway.md
-  cdn:
-    - domain-architecture/_system/06-networking/cdn-config.md
-  load:
-    - domain-architecture/_system/06-networking/load-balancing.md
-  balancing:
-    - domain-architecture/_system/06-networking/load-balancing.md
-  auth:
-    - domain-architecture/_system/07-security/auth-authz.md
-  authz:
-    - domain-architecture/_system/07-security/auth-authz.md
-  compliance:
-    - domain-architecture/_system/07-security/compliance.md
-  encryption:
-    - domain-architecture/_system/07-security/encryption.md
-  logging:
-    - domain-architecture/_system/08-observability/logging.md
-  metrics:
-    - domain-architecture/_system/08-observability/metrics.md
-  tracing:
-    - domain-architecture/_system/08-observability/tracing.md
+    - domain-architecture/_system/04-project-structure-and-conventions/04-project-structure-and-conventions.md
+  conventions:
+    - domain-architecture/_system/04-project-structure-and-conventions/04-project-structure-and-conventions.md
+  infrastructure:
+    - domain-architecture/_system/05-infrastructure-and-cicd/05-infrastructure-and-cicd.md
+  cicd:
+    - domain-architecture/_system/05-infrastructure-and-cicd/05-infrastructure-and-cicd.md
+  networking:
+    - domain-architecture/_system/06-networking-and-security/06-networking-and-security.md
+  security:
+    - domain-architecture/_system/06-networking-and-security/06-networking-and-security.md
+  cost:
+    - domain-architecture/_system/07-cost-management/07-cost-management.md
+  management:
+    - domain-architecture/_system/07-cost-management/07-cost-management.md
+  design:
+    - domain-architecture/_system/08-design-system-and-ui/08-design-system-and-ui.md
+  system:
+    - domain-architecture/_system/08-design-system-and-ui/08-design-system-and-ui.md
+  ui:
+    - domain-architecture/_system/08-design-system-and-ui/08-design-system-and-ui.md
+  observability:
+    - domain-architecture/_system/09-observability-and-monitoring/09-observability-and-monitoring.md
+  monitoring:
+    - domain-architecture/_system/09-observability-and-monitoring/09-observability-and-monitoring.md
   schemas:
     - domain-model/_system/shared-schemas.md
